@@ -2,9 +2,11 @@ package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.EmailAlreadyExistsException;
 import com.project.autoshop.exceptions.EmptyFieldException;
+import com.project.autoshop.exceptions.InvalidEmailException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
 import com.project.autoshop.repositories.ClientRepository;
+import com.project.autoshop.utils.EmailValidator;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ import java.util.Optional;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+    private final EmailValidator emailValidator;
     Logger logger = LoggerFactory.logger(ClientService.class);
 
     @Autowired
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, EmailValidator emailValidator) {
         this.clientRepository = clientRepository;
+        this.emailValidator = emailValidator;
     }
 
     //method getting a list of all clients
@@ -63,7 +67,11 @@ public class ClientService {
             logger.error("empty field exception caused by empty empty/null email");
             throw new EmptyFieldException("client email is required");
         }
-        //TODO validate email
+        //checks if email is valid
+        if(!this.emailValidator.validate(newClient.getEmail())){
+            logger.error("invalid email expcetion caused by email: " + newClient.getEmail());
+            throw new InvalidEmailException(newClient.getEmail() + " is not valid");
+        }
         //check if client with the same email exists
         if(this.clientRepository.findClientByEmail(newClient.getEmail()).isPresent()){
             //throw email exists exception if email is already taken
@@ -93,11 +101,16 @@ public class ClientService {
          }
          //validate email before saving to database
          if(email != null && email.length() > 0 && !Objects.equals(email, client.getEmail())){
-              if(this.clientRepository.findClientByEmail(email).isPresent()){
+             //check if new email is already used
+              if(this.clientRepository.findClientByEmail(email).isPresent()) {
                   logger.error("email already exists exception for email: " + email);
-                  throw new EmailAlreadyExistsException("client with email: "+ email +" already exists");
+                  throw new EmailAlreadyExistsException("client with email: " + email + " already exists");
               }
-              //TODO validate email
+              //check if email is valid
+             if(!this.emailValidator.validate(email)){
+                 logger.error("invalid email exception caused by email: " + email);
+                 throw new InvalidEmailException(email + " is not valid");
+             }
              logger.info("client with id: " + id + " email updated from: " + client.getEmail() + " to: " + email);
              client.setEmail(email);
          }
