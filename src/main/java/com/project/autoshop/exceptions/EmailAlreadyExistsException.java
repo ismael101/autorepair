@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 //custom exception for when creating clients with duplicate emails
 @ResponseStatus(value = HttpStatus.FORBIDDEN)
 public class EmailAlreadyExistsException extends RuntimeException{
-    public EmailAlreadyExistsException() {
-    }
+    public EmailAlreadyExistsException() {}
 
     public EmailAlreadyExistsException(String message) {
         super(message);

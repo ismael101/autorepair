@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 //custom exception for not null values
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class EmptyFieldException extends RuntimeException{
+    public EmptyFieldException() {}
+
     public EmptyFieldException(String message) {
         super(message);
     }
