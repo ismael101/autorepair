@@ -13,7 +13,7 @@ public class Vehicle {
     private String model;
     @Column(nullable = false)
     private Integer year;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Client client;
 
     public Vehicle(String make, String model, Integer year, Client client) {
