@@ -9,7 +9,6 @@ import com.project.autoshop.repositories.ClientRepository;
 import com.project.autoshop.utils.EmailValidator;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +20,11 @@ import java.util.Optional;
 public class ClientService {
 
     private final ClientRepository clientRepository;
-    private final EmailValidator emailValidator;
+    private final EmailValidator emailValidator = new EmailValidator();
     Logger logger = LoggerFactory.logger(ClientService.class);
 
-    @Autowired
-    public ClientService(ClientRepository clientRepository, EmailValidator emailValidator) {
+    public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
-        this.emailValidator = emailValidator;
     }
 
     //method getting a list of all clients
@@ -52,17 +49,17 @@ public class ClientService {
     //methods for creating new clients
     public void createClient(Client newClient){
         //validation for client first, last and email
-        if(newClient.getFirst() != null || newClient.getFirst().length() == 0){
+        if(newClient.getFirst() == null || newClient.getFirst().length() == 0){
             //throw empty field exception if first name is null or lest than 1 char
             logger.error("empty field exception caused by empty empty/null first name");
             throw new EmptyFieldException("client first name is required");
         }
-        if(newClient.getLast() != null || newClient.getLast().length() == 0){
+        if(newClient.getLast() == null || newClient.getLast().length() == 0){
             //throw empty field exception if last name is null or lest than 1 char
             logger.error("empty field exception caused by empty empty/null last name");
             throw new EmptyFieldException("client last name is required");
         }
-        if(newClient.getEmail() != null || newClient.getEmail().length() == 0){
+        if(newClient.getEmail() == null || newClient.getEmail().length() == 0){
             //throw empty field exception if email is null or lest than 1 char
             logger.error("empty field exception caused by empty empty/null email");
             throw new EmptyFieldException("client email is required");
@@ -85,7 +82,7 @@ public class ClientService {
 
     @Transactional
     //method for updating client
-    public void updateClient(Integer id, String first, String last, String email){
+    public Client updateClient(Integer id, String first, String last, String email){
         //get client from database or throw not found exception if it doesn't exist
          Client client = this.clientRepository.findById(id)
                  .orElseThrow(() -> new NotFoundException("client with id: " + id + " doesnt exist"));
@@ -114,6 +111,7 @@ public class ClientService {
              logger.info("client with id: " + id + " email updated from: " + client.getEmail() + " to: " + email);
              client.setEmail(email);
          }
+         return client;
     }
 
     //method for deleting clients

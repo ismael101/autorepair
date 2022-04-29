@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class EmailValidator {
     //loads regex from environmenmt
-    public String regex = System.getenv("REGEX");
+    public String regex = "^(.+)@(\\S+)$";;
 
     //checks to see if email is valid
     public Boolean validate(String email){
