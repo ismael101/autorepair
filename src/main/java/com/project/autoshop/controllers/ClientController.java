@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping(path = "api/v1/clients")
 public class ClientController {
     private final ClientService clientService;
 
@@ -15,14 +16,14 @@ public class ClientController {
     }
 
     //endpoint for fetching all the clients in the database
-    @GetMapping("/clients")
+    @GetMapping
     public ResponseEntity getClients(){
         //return json body with status code and list of all clients
         return ResponseEntity.status(HttpStatus.OK).body(clientService.getClients());
     }
 
     //endpoint for fetching a client by id
-    @GetMapping("/clients/{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity getClient(@PathVariable("id") Integer id){
         //return json body with status code and client
         return ResponseEntity.status(HttpStatus.OK).body(clientService.getClient(id));
@@ -38,7 +39,7 @@ public class ClientController {
     }
 
     //endpoint for updating client information
-    @PutMapping("/clients/{id}")
+    @PutMapping(path = "{id}")
     //optional to pass in client information
     public ResponseEntity updateClient(@PathVariable("id") Integer id,
                                        @RequestParam(required = false) String first,
@@ -52,7 +53,7 @@ public class ClientController {
     }
 
     //endpoint for deleting client
-    @DeleteMapping("/clients/{id}")
+    @DeleteMapping(path = "{id}")
     public ResponseEntity deleteClient(@PathVariable("id") Integer id){
         //deletes client
         clientService.deleteClient(id);

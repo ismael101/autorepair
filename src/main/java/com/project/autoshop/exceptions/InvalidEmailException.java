@@ -23,4 +23,9 @@ public class InvalidEmailException extends RuntimeException{
     public InvalidEmailException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 }
