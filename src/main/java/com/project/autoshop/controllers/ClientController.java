@@ -1,5 +1,6 @@
 package com.project.autoshop.controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.project.autoshop.models.Client;
 import com.project.autoshop.services.ClientService;
 import org.springframework.http.HttpStatus;
@@ -32,24 +33,20 @@ public class ClientController {
     //endpoint for creating a new client
     @PostMapping()
     public ResponseEntity createClient(@RequestBody Client client){
-        //creates client
-        clientService.createClient(client);
-        //return json body with status code and message
-        return ResponseEntity.status(HttpStatus.CREATED).body("client created");
+        //create client and return json body with status code and message
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(client));
     }
 
     //endpoint for updating client information
     @PutMapping(path = "{id}")
     //optional to pass in client information
     public ResponseEntity updateClient(@PathVariable("id") Integer id,
-                                       @RequestParam(required = false) String first,
-                                       @RequestParam(required = false) String last,
-                                       @RequestParam(required = false) String email
-                                       ){
-        //updates client
-        clientService.updateClient(id, first, last, email);
-        //return json body with status code and message
-        return ResponseEntity.status(HttpStatus.OK).body("client updated");
+                                       @RequestBody() Client client){
+        //updates client and return json body with status code and message
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(clientService
+                        .updateClient(id, client.getFirst(), client.getLast(), client.getEmail())
+                );
     }
 
     //endpoint for deleting client
