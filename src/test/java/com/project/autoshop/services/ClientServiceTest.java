@@ -1,7 +1,7 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.EmailAlreadyExistsException;
-import com.project.autoshop.exceptions.EmptyFieldException;
+import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.InvalidEmailException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
@@ -64,7 +64,7 @@ class ClientServiceTest {
 
     @Test
     void itShouldFailToCreate(){
-        Exception emptyFirst = assertThrows(EmptyFieldException.class, () -> {
+        Exception emptyFirst = assertThrows(BadRequestException.class, () -> {
             Client client = new Client();
             client.setLast("last");
             client.setEmail("ismael@gmail.com");
@@ -72,7 +72,7 @@ class ClientServiceTest {
         });
         assertEquals("client first name is required", emptyFirst.getMessage());
 
-        Exception emptyLast = assertThrows(EmptyFieldException.class, () -> {
+        Exception emptyLast = assertThrows(BadRequestException.class, () -> {
             Client client = new Client();
             client.setFirst("first");
             client.setEmail("ismael@gmail.com");
@@ -80,7 +80,7 @@ class ClientServiceTest {
         });
         assertEquals("client last name is required", emptyLast.getMessage());
 
-        Exception emptyEmail = assertThrows(EmptyFieldException.class, () -> {
+        Exception emptyEmail = assertThrows(BadRequestException.class, () -> {
             Client client = new Client();
             client.setLast("last");
             client.setFirst("first");

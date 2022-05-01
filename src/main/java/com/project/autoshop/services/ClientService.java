@@ -1,7 +1,7 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.EmailAlreadyExistsException;
-import com.project.autoshop.exceptions.EmptyFieldException;
+import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.InvalidEmailException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
@@ -52,17 +52,17 @@ public class ClientService {
         if(client.getFirst() == null || client.getFirst().length() == 0){
             //throw empty field exception if first name is null or lest than 1 char
             logger.error("empty field exception caused by empty empty/null first name");
-            throw new EmptyFieldException("client first name is required");
+            throw new BadRequestException("client first name is required");
         }
         if(client.getLast() == null || client.getLast().length() == 0){
             //throw empty field exception if last name is null or lest than 1 char
             logger.error("empty field exception caused by empty empty/null last name");
-            throw new EmptyFieldException("client last name is required");
+            throw new BadRequestException("client last name is required");
         }
         if(client.getEmail() == null || client.getEmail().length() == 0){
             //throw empty field exception if email is null or lest than 1 char
             logger.error("empty field exception caused by empty empty/null email");
-            throw new EmptyFieldException("client email is required");
+            throw new BadRequestException("client email is required");
         }
         //checks if email is valid
         if(!this.emailValidator.validate(client.getEmail())){
