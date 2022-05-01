@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,15 +14,15 @@ public class Client {
     @Id
     @GeneratedValue
     private Integer id;
-    @Size(min = 1, max = 15, message = "first name must be between {min} and {max} length")
     @NotNull(message = "first name cannot be null")
+    @NotBlank(message = "first has to be more than 1 word")
     private String first;
-    @Size(min = 1, max = 15, message = "last name must be between {min} and {max} length")
     @NotNull(message = "last name cannot be null")
+    @NotBlank(message = "last has to be more than 1 word")
     private String last;
     @Email(regexp = "^(.+)@(\\S+)$", message = "email is invalid")
-    @Size(min = 1, max = 30, message = "email must be between {min} and {max} length")
     @NotNull(message = "email cannot be null")
+    @NotBlank(message = "email has to be more than 1 word")
     @Column(unique = true)
     private String email;
 

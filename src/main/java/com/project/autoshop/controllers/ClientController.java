@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping(path = "api/v1/clients")
 public class ClientController {
@@ -41,11 +43,11 @@ public class ClientController {
     @PutMapping(path = "{id}")
     //optional to pass in client information
     public ResponseEntity updateClient(@PathVariable("id") Integer id,
-                                       @RequestBody() Client client){
+                                       @RequestBody Client client){
         //updates client and return json body with status code and message
         return ResponseEntity.status(HttpStatus.OK)
                 .body(clientService
-                        .updateClient(id, client.getFirst(), client.getLast(), client.getEmail())
+                        .updateClient(id, client)
                 );
     }
 

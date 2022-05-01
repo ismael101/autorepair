@@ -1,10 +1,7 @@
 package com.project.autoshop.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 
 @Entity
@@ -12,18 +9,18 @@ public class Work {
     @Id
     @GeneratedValue
     private Integer id;
-    @Size(min = 1, max = 15, message = "make has to be between {min} and {max} length")
     @NotNull(message = "make cannot be null")
+    @NotBlank(message = "make cannot be empty")
     private String make;
-    @Size(min = 1, max = 10, message = "modal has to be between {min} and {max} length")
     @NotNull(message = "model cannot be null")
+    @NotBlank(message = "model cannot be null")
     private String model;
     @Min(value = 1950, message = "year can't be less then 1950")
     @Max(value = 2050, message = "year can't be greater than 2050")
     @NotNull(message = "year cannot be null")
     private Integer year;
-    @Size(min = 5, max = 100, message = "description has to be between {min} and {max} length")
     @NotNull(message = "description cannot be null")
+    @NotBlank(message = "description cannot be empty")
     private String description;
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Client client;

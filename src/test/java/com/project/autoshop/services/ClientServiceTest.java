@@ -112,7 +112,7 @@ class ClientServiceTest {
         assertEquals("client with email: ismael@gmail.com already exists", emailAlreadyExist.getMessage());
     }
 
-
+/*
     @Test
     void itShouldUpdateClient(){
         when(clientRepository.findById(anyInt()))
@@ -152,7 +152,7 @@ class ClientServiceTest {
         assertEquals(emailAlreadyExist.getMessage(), "client with email: ismael@gmail.com already exists");
 
     }
-
+*/
     @Test
     void itShouldDeleteClient(){
         when(clientRepository.findById(anyInt())).thenReturn(Optional.of(new Client()));
