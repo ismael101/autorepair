@@ -16,13 +16,13 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    //endpoint for fetching all the clients
+    //endpoint for fetching all clients
     @GetMapping
     public ResponseEntity getClients(){
         return ResponseEntity.status(HttpStatus.OK).body(clientService.getClients());
     }
 
-    //endpoint for fetching a client by id
+    //endpoint for fetching client by id
     @GetMapping(path = "{id}")
     public ResponseEntity getClient(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(clientService.getClient(id));
