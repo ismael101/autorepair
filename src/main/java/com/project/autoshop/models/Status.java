@@ -1,7 +1,9 @@
 package com.project.autoshop.models;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 public class Status {
@@ -10,15 +12,15 @@ public class Status {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private Stage stage;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @CreationTimestamp
+    private Timestamp createdAt;
+    @UpdateTimestamp
+    private Timestamp updatedAt;
     @OneToOne(optional = false)
     private Work work;
 
-    public Status(Stage stage, LocalDateTime createdAt, LocalDateTime updatedAt, Work work) {
+    public Status(Stage stage, Work work) {
         this.stage = stage;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.work = work;
     }
 
@@ -41,19 +43,19 @@ public class Status {
         this.stage = stage;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -63,5 +65,16 @@ public class Status {
 
     public void setWork(Work work) {
         this.work = work;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "id=" + id +
+                ", stage=" + stage +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", work=" + work +
+                '}';
     }
 }

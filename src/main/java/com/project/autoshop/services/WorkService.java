@@ -2,7 +2,10 @@ package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.NotFoundException;
+import com.project.autoshop.models.Stage;
+import com.project.autoshop.models.Status;
 import com.project.autoshop.models.Work;
+import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.WorkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +19,15 @@ import java.util.Set;
 @Service
 public class WorkService {
     private final WorkRepository workRepository;
+    private final StatusRepository statusRepository;
+    private final StatusService statusService;
     @Autowired
     private Validator validator;
 
-    public WorkService(WorkRepository workRepository) {
+    public WorkService(WorkRepository workRepository, StatusRepository statusRepository, StatusService statusService) {
         this.workRepository = workRepository;
+        this.statusRepository = statusRepository;
+        this.statusService = statusService;
     }
 
     //method for getting all work
@@ -50,7 +57,8 @@ public class WorkService {
             }
             throw new BadRequestException("Error occurred: " + sb.toString());
         }
-        workRepository.save(work);
+        this.workRepository.save(work);
+        this.statusService.createStatus(work.getId());
         return work;
     }
 
@@ -60,19 +68,23 @@ public class WorkService {
         Work work = this.workRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(update.getMake())
                 .filter(make -> make != null && make.length() > 0 && make != work.getMake())
-                .ifPresent(make -> update.setMake(make));
+                .ifPresent(make -> work.setMake(make));
 
         Optional.ofNullable(update.getModel())
                 .filter(model -> model != null && model.length() > 0 && model != work.getModel())
-                .ifPresent(model -> update.setModel(model));
+                .ifPresent(model -> work.setModel(model));
 
         Optional.ofNullable(update.getYear())
                 .filter(year -> year != null && year > 1990 && year < 2050 && work.getYear() != year)
-                .ifPresent(year -> update.setYear(year));
+                .ifPresent(year -> work.setYear(year));
 
         Optional.ofNullable(update.getDescription())
                 .filter(description -> description != null && description.length() > 0 && description != work.getDescription())
-                .ifPresent(description -> update.setDescription(description));
+                .ifPresent(description -> work.setDescription(description));
+
+        Optional.ofNullable(update.getLabor())
+                .filter(labor -> labor != null && labor < 0 && work.getLabor() != labor)
+                .ifPresent(labor -> work.setLabor(labor));
 
         return work;
     }
