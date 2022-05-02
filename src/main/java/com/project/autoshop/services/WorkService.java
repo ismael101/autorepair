@@ -2,8 +2,6 @@ package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Stage;
-import com.project.autoshop.models.Status;
 import com.project.autoshop.models.Work;
 import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.WorkRepository;
@@ -58,7 +56,7 @@ public class WorkService {
             throw new BadRequestException("Error occurred: " + sb.toString());
         }
         this.workRepository.save(work);
-        this.statusService.createStatus(work.getId());
+        this.statusService.createStatus(work);
         return work;
     }
 

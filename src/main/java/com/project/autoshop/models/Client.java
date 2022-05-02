@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 public class Client {
@@ -74,13 +73,4 @@ public class Client {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", first='" + first + '\'' +
-                ", last='" + last + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

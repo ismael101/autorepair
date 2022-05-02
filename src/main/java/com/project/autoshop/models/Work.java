@@ -97,15 +97,4 @@ public class Work {
         this.labor = labor;
     }
 
-    @Override
-    public String toString() {
-        return "Work{" +
-                "id=" + id +
-                ", make='" + make + '\'' +
-                ", model='" + model + '\'' +
-                ", year=" + year +
-                ", description='" + description + '\'' +
-                ", client=" + client +
-                '}';
-    }
 }

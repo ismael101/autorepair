@@ -10,8 +10,11 @@ public class Status {
     @Id
     @GeneratedValue
     private Integer id;
-    @Enumerated(EnumType.STRING)
-    private Stage stage;
+    private Boolean review = true;
+    private Boolean approved;
+    private Boolean rejected;
+    private Boolean progress;
+    private Boolean complete;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
@@ -19,9 +22,8 @@ public class Status {
     @OneToOne(optional = false)
     private Work work;
 
-    public Status(Stage stage, Work work) {
-        this.stage = stage;
-        this.work = work;
+    public Status(Work work) {
+
     }
 
     public Status() {
@@ -35,12 +37,44 @@ public class Status {
         this.id = id;
     }
 
-    public Stage getStage() {
-        return stage;
+    public Boolean getReview() {
+        return review;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    public void setReview(Boolean review) {
+        this.review = review;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
+    }
+
+    public Boolean getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Boolean progress) {
+        this.progress = progress;
+    }
+
+    public Boolean getComplete() {
+        return complete;
+    }
+
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
     }
 
     public Timestamp getCreatedAt() {
@@ -67,14 +101,4 @@ public class Status {
         this.work = work;
     }
 
-    @Override
-    public String toString() {
-        return "Status{" +
-                "id=" + id +
-                ", stage=" + stage +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", work=" + work +
-                '}';
-    }
 }

@@ -40,9 +40,9 @@ public class ClientService {
     public Client createClient(Client client){
         Set<ConstraintViolation<Client>> violations = validator.validate(client);
         if (!violations.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
+            StringJoiner sb = new StringJoiner(" ");
             for (ConstraintViolation<Client> violation : violations) {
-                sb.append(violation.getMessage());
+                sb.add(violation.getMessage());
             }
             throw new BadRequestException("Error occurred: " + sb.toString());
         }

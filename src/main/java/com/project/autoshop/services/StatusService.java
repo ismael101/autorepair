@@ -1,7 +1,6 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Stage;
 import com.project.autoshop.models.Status;
 import com.project.autoshop.models.Work;
 import com.project.autoshop.repositories.StatusRepository;
@@ -36,20 +35,16 @@ public class StatusService {
         return status;
     }
 
-    public void createStatus(Integer id){
-        Work work = this.workRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        Status status = new Status(Stage.PENDING, work);
+    public void createStatus(Work work){
+        this.workRepository.findById(work.getId())
+                .orElseThrow(() -> new NotFoundException("work with id: " + work.getId() + " not found"));
+        Status status = new Status(work);
         this.statusRepository.save(status);
     }
 
-    public void updateStatus(Integer id, Stage stage){
+    public void updateStatus(Integer id){
            Status status = this.statusRepository.findStatusByWork(id)
                    .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
-
-           switch (stage){
-               case PENDING:
-                   //todo send email to client of
-           }
+           
     }
 }
