@@ -10,9 +10,9 @@ public class Status {
     @Id
     @GeneratedValue
     private Integer id;
-    private Boolean review = true;
     private Boolean approved;
     private Boolean rejected;
+    private Boolean partsOrdered;
     private Boolean progress;
     private Boolean complete;
     @CreationTimestamp
@@ -37,12 +37,12 @@ public class Status {
         this.id = id;
     }
 
-    public Boolean getReview() {
-        return review;
+    public Boolean getPartsOrdered() {
+        return partsOrdered;
     }
 
-    public void setReview(Boolean review) {
-        this.review = review;
+    public void setPartsOrdered(Boolean partsOrdered) {
+        this.partsOrdered = partsOrdered;
     }
 
     public Boolean getApproved() {

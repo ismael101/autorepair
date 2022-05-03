@@ -14,12 +14,15 @@ import javax.mail.MessagingException;
 @RestController
 @RequestMapping(path = "api/v1/email")
 public class EmailController {
+
+    //hdwcbkqeykrvhpwx
     private final EmailService emailService;
 
     public EmailController(EmailService emailService) {
         this.emailService = emailService;
     }
 
+    //method for sending custom email
     @PostMapping
     public ResponseEntity sendEmail(@RequestBody EmailRequest email) throws MessagingException {
         this.emailService.sendEmail(email.getTo(), email.getSubject(), email.getBody());

@@ -51,7 +51,7 @@ public class StatusService {
 
         Optional.ofNullable(update.getRejected())
                 .ifPresent(rejected -> {
-                    if(rejected == true){
+                    if(rejected){
                         status.setRejected(true);
                         status.setApproved(false);
                         status.setProgress(false);
@@ -64,7 +64,7 @@ public class StatusService {
 
         Optional.ofNullable(update.getApproved())
                 .ifPresent(approved -> {
-                    if(approved == true){
+                    if(approved){
                         status.setApproved(true);
                         status.setRejected(false);
                     }else{
@@ -73,6 +73,12 @@ public class StatusService {
                         status.setProgress(false);
                         status.setComplete(false);
                     }
+                });
+
+        Optional.ofNullable(update.getPartsOrdered())
+                .filter(partOrdered -> status.getApproved() == true)
+                .ifPresent(partsOrdered -> {
+                    status.setPartsOrdered(partsOrdered);
                 });
 
         Optional.ofNullable(update.getProgress())
