@@ -45,7 +45,7 @@ public class StatusService {
     }
 
     @Transactional
-    public void updateStatus(Integer id, Status update){
+    public Status updateStatus(Integer id, Status update){
         Status status = this.statusRepository.findStatusByWork(id)
                .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
 
@@ -85,6 +85,7 @@ public class StatusService {
                     update.setComplete(complete);
                 });
 
+        return update;
     }
 
 
