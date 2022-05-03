@@ -6,8 +6,10 @@ import com.project.autoshop.models.Work;
 import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.WorkRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StatusService {
@@ -42,9 +44,48 @@ public class StatusService {
         this.statusRepository.save(status);
     }
 
-    public void updateStatus(Integer id){
-           Status status = this.statusRepository.findStatusByWork(id)
-                   .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
-           
+    @Transactional
+    public void updateStatus(Integer id, Status update){
+        Status status = this.statusRepository.findStatusByWork(id)
+               .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
+
+        Optional.ofNullable(update.getRejected())
+                .ifPresent(rejected -> {
+                    if(rejected == true){
+                        status.setRejected(true);
+                        status.setApproved(false);
+                        status.setProgress(false);
+                        status.setComplete(false);
+                    }else{
+                        status.setRejected(false);
+                        status.setApproved(true);
+                    }
+                });
+
+        Optional.ofNullable(update.getApproved())
+                .ifPresent(approved -> {
+                    if(approved == true){
+                        status.setApproved(true);
+                        status.setRejected(false);
+                    }else{
+                        status.setRejected(true);
+                        status.setApproved(false);
+                        status.setProgress(false);
+                        status.setComplete(false);
+                    }
+                });
+
+        Optional.ofNullable(update.getProgress())
+                .filter(progress -> status.getApproved() == true && status.getRejected() == false && status.getComplete() == false)
+                .ifPresent(progress -> status.setProgress(progress));
+
+        Optional.ofNullable(update.getComplete())
+                .filter(complete -> status.getRejected() == false && status.getComplete() == true)
+                .ifPresent(complete -> {
+                    update.setComplete(complete);
+                });
+
     }
+
+
 }
