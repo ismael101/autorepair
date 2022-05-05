@@ -7,24 +7,30 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @ToString
-public class Client {
+@Builder
+public class Jobs {
     @Id
     @GeneratedValue
     private Integer id;
     @Column(nullable = false)
-    private String first;
+    private String make;
     @Column(nullable = false)
-    private String last;
-    @Column(unique = true)
-    private String email;
+    private String model;
+    @Column(nullable = false)
+    private Integer year;
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
+    private Double labor;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    private Client client;
 }

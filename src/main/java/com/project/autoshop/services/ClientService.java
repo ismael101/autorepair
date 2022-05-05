@@ -5,6 +5,7 @@ import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
 import com.project.autoshop.repositories.ClientRepository;
+import com.project.autoshop.request.ClientRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class ClientService {
 
     //method getting a list of all clients
     public List<Client> getClients(){
+        System.out.println(this.clientRepository.findAll().toString());
         return this.clientRepository.findAll();
     }
 
@@ -37,18 +39,23 @@ public class ClientService {
     }
 
     //methods for creating new clients
-    public Client createClient(Client client){
-        Set<ConstraintViolation<Client>> violations = validator.validate(client);
+    public Client createClient(ClientRequest clientRequest){
+        Set<ConstraintViolation<ClientRequest>> violations = validator.validate(clientRequest);
         if (!violations.isEmpty()) {
-            StringJoiner sb = new StringJoiner(" ");
-            for (ConstraintViolation<Client> violation : violations) {
+            StringJoiner sb = new StringJoiner(", ");
+            for (ConstraintViolation<ClientRequest> violation : violations) {
                 sb.add(violation.getMessage());
             }
             throw new BadRequestException("Error occurred: " + sb.toString());
         }
-        if(!this.clientRepository.findClientByEmail(client.getEmail()).isEmpty()){
-            throw new EmailAlreadyExistsException("email: " + client.getEmail() + " already exists for other client");
+        if(!this.clientRepository.findClientByEmail(clientRequest.getEmail()).isEmpty()){
+            throw new EmailAlreadyExistsException("email: " + clientRequest.getEmail() + " already exists for other client");
         }
+        Client client = Client.builder()
+                .first(clientRequest.getFirst())
+                .last(clientRequest.getLast())
+                .email(clientRequest.getEmail())
+                .build();
         clientRepository.save(client);
         return client;
     }

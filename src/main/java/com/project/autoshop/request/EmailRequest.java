@@ -1,38 +1,26 @@
 package com.project.autoshop.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class EmailRequest {
+    @NotNull(message = "to cannot be null")
+    @NotBlank(message = "to cannot be blank")
     private String to;
+    @NotNull(message = "body cannot be null")
+    @NotBlank(message = "body cannot be blank")
     private String body;
+    @NotNull(message = "subject cannot be null")
+    @NotBlank(message = "subject cannot be blank")
     private String subject;
 
-    public EmailRequest(String to, String body, String subject) {
-        this.to = to;
-        this.body = body;
-        this.subject = subject;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
 }
 

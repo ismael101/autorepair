@@ -1,6 +1,6 @@
 package com.project.autoshop.repositories;
 
-import com.project.autoshop.models.Work;
+import com.project.autoshop.models.Jobs;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface WorkRepository extends JpaRepository<Work, Integer> {
+public interface JobsRepository extends JpaRepository<Jobs, Integer> {
     //query for fetching work by client
-    @Query("SELECT w FROM Work w WHERE w.client = ?1")
-    List<Work> findByClient(Integer id);
+    @Query("SELECT j FROM Jobs j WHERE j.client = ?1")
+    List<Jobs> findByClient(Integer id);
 }

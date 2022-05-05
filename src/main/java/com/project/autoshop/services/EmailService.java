@@ -5,7 +5,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -15,8 +14,6 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
-    @Autowired
-    private TemplateEngine templateEngine;
 
     @Async
     public void sendEmail(String email, String subject, String body) throws MessagingException {

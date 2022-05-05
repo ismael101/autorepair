@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ClientServiceTest {
+    /*
     @Mock
     private ClientRepository clientRepository;
     private ClientService underTest;
@@ -152,7 +153,6 @@ class ClientServiceTest {
         assertEquals(emailAlreadyExist.getMessage(), "client with email: ismael@gmail.com already exists");
 
     }
-*/
     @Test
     void itShouldDeleteClient(){
         when(clientRepository.findById(anyInt())).thenReturn(Optional.of(new Client()));
@@ -169,4 +169,5 @@ class ClientServiceTest {
 
         assertEquals(notFound.getMessage(), "client doesn't exist");
     }
+    */
 }

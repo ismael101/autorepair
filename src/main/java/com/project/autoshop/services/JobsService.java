@@ -2,9 +2,12 @@ package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Work;
+import com.project.autoshop.models.Client;
+import com.project.autoshop.models.Jobs;
+import com.project.autoshop.repositories.ClientRepository;
 import com.project.autoshop.repositories.StatusRepository;
-import com.project.autoshop.repositories.WorkRepository;
+import com.project.autoshop.repositories.JobsRepository;
+import com.project.autoshop.request.JobsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,57 +16,69 @@ import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 
 @Service
-public class WorkService {
-    private final WorkRepository workRepository;
+public class JobsService {
+    private final JobsRepository jobsRepository;
     private final StatusRepository statusRepository;
     private final StatusService statusService;
+    private final ClientRepository clientRepository;
     @Autowired
     private Validator validator;
 
-    public WorkService(WorkRepository workRepository, StatusRepository statusRepository, StatusService statusService) {
-        this.workRepository = workRepository;
+    public JobsService(JobsRepository jobsRepository, StatusRepository statusRepository, StatusService statusService, ClientRepository clientRepository) {
+        this.jobsRepository = jobsRepository;
         this.statusRepository = statusRepository;
         this.statusService = statusService;
+        this.clientRepository = clientRepository;
     }
 
     //method for getting all work
-    public List<Work> getWorks(){
-        return this.workRepository.findAll();
+    public List<Jobs> getJobs(){
+        return this.jobsRepository.findAll();
     }
 
     //method for getting work by clients
-    public List<Work> getWorksByClient(Integer id){
-        return this.workRepository.findByClient(id);
+    public List<Jobs> getClientJobs(Integer id){
+        return this.jobsRepository.findByClient(id);
     }
 
     //method for getting work by id
-    public Work getWorkById(Integer id){
-        Work work = this.workRepository.findById(id)
+    public Jobs getJobById(Integer id){
+        Jobs jobs = this.jobsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        return work;
+        return jobs;
     }
 
     //method for creating work
-    public Work createWork(Work work){
-        Set<ConstraintViolation<Work>> violations = validator.validate(work);
+    public Jobs createJob(JobsRequest newJob){
+        Set<ConstraintViolation<JobsRequest>> violations = validator.validate(newJob);
         if (!violations.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (ConstraintViolation<Work> violation : violations) {
-                sb.append(violation.getMessage());
+            StringJoiner sb = new StringJoiner(", ");
+            for (ConstraintViolation<JobsRequest> violation : violations) {
+                sb.add(violation.getMessage());
             }
             throw new BadRequestException("Error occurred: " + sb.toString());
         }
-        this.workRepository.save(work);
-        this.statusService.createStatus(work);
-        return work;
+        Client client = this.clientRepository.findById(newJob.getClient_id())
+               .orElseThrow(() -> new NotFoundException("client with id: " + newJob.getClient_id() + " not found"));
+        Jobs job = Jobs.builder()
+                .make(newJob.getMake())
+                .model(newJob.getModel())
+                .year(newJob.getYear())
+                .labor(newJob.getLabor())
+                .description(newJob.getDescription())
+                .client(client)
+                .build();
+        this.jobsRepository.save(job);
+        return job;
     }
 
     @Transactional
     //method for updating work
-    public Work updateWork(Integer id, Work update){
-        Work work = this.workRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
+    public Jobs updateJob(Integer id, JobsRequest update){
+        Jobs work = this.jobsRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(update.getMake())
                 .filter(make -> make != null && make.length() > 0 && make != work.getMake())
                 .ifPresent(make -> work.setMake(make));
@@ -89,9 +104,9 @@ public class WorkService {
 
     //method for deleting work
     public void deleteWork(Integer id){
-        this.workRepository.findById(id)
+        this.jobsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        this.workRepository.deleteById(id);
+        this.jobsRepository.deleteById(id);
     }
 
 }

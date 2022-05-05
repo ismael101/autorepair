@@ -1,104 +1,29 @@
 package com.project.autoshop.models;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Status {
     @Id
     @GeneratedValue
     private Integer id;
-    private Boolean approved;
-    private Boolean rejected;
-    private Boolean partsOrdered;
-    private Boolean progress;
-    private Boolean complete;
+    private Boolean approved = false;
+    private Boolean rejected =  false;
+    private Boolean ordered = false;
+    private Boolean progress = false;
+    private Boolean complete = false;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @OneToOne(optional = false)
-    private Work work;
-
-    public Status(Work work) {
-
-    }
-
-    public Status() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Boolean getPartsOrdered() {
-        return partsOrdered;
-    }
-
-    public void setPartsOrdered(Boolean partsOrdered) {
-        this.partsOrdered = partsOrdered;
-    }
-
-    public Boolean getApproved() {
-        return approved;
-    }
-
-    public void setApproved(Boolean approved) {
-        this.approved = approved;
-    }
-
-    public Boolean getRejected() {
-        return rejected;
-    }
-
-    public void setRejected(Boolean rejected) {
-        this.rejected = rejected;
-    }
-
-    public Boolean getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Boolean progress) {
-        this.progress = progress;
-    }
-
-    public Boolean getComplete() {
-        return complete;
-    }
-
-    public void setComplete(Boolean complete) {
-        this.complete = complete;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Work getWork() {
-        return work;
-    }
-
-    public void setWork(Work work) {
-        this.work = work;
-    }
-
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    private Jobs job;
 }

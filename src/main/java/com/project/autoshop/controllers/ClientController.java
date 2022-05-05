@@ -1,6 +1,7 @@
 package com.project.autoshop.controllers;
 
 import com.project.autoshop.models.Client;
+import com.project.autoshop.request.ClientRequest;
 import com.project.autoshop.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,8 @@ public class ClientController {
 
     //endpoint for creating client
     @PostMapping
-    public ResponseEntity createClient(@RequestBody Client client){
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(client));
+    public ResponseEntity createClient(@RequestBody ClientRequest clientRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(clientRequest));
     }
 
     //endpoint for updating client

@@ -1,10 +1,10 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
+import com.project.autoshop.models.Jobs;
 import com.project.autoshop.models.Status;
-import com.project.autoshop.models.Work;
 import com.project.autoshop.repositories.StatusRepository;
-import com.project.autoshop.repositories.WorkRepository;
+import com.project.autoshop.repositories.JobsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +14,13 @@ import java.util.Optional;
 @Service
 public class StatusService {
     private final StatusRepository statusRepository;
-    private final WorkRepository workRepository;
+    private final EmailService emailService;
+    private final JobsRepository workRepository;
 
-    public StatusService(StatusRepository statusRepository, WorkRepository workRepository) {
+    public StatusService(StatusRepository statusRepository, EmailService emailService, JobsRepository jobsRepository) {
         this.statusRepository = statusRepository;
-        this.workRepository = workRepository;
+        this.emailService = emailService;
+        this.workRepository = jobsRepository;
     }
 
     public List<Status> getAllStatus(){
@@ -37,10 +39,10 @@ public class StatusService {
         return status;
     }
 
-    public void createStatus(Work work){
+    public void createStatus(Jobs work){
         this.workRepository.findById(work.getId())
                 .orElseThrow(() -> new NotFoundException("work with id: " + work.getId() + " not found"));
-        Status status = new Status(work);
+        Status status = new Status();
         this.statusRepository.save(status);
     }
 
@@ -75,10 +77,10 @@ public class StatusService {
                     }
                 });
 
-        Optional.ofNullable(update.getPartsOrdered())
+        Optional.ofNullable(update.getOrdered())
                 .filter(partOrdered -> status.getApproved() == true)
                 .ifPresent(partsOrdered -> {
-                    status.setPartsOrdered(partsOrdered);
+                    status.setOrdered(partsOrdered);
                 });
 
         Optional.ofNullable(update.getProgress())
