@@ -1,6 +1,5 @@
 package com.project.autoshop.services;
 
-import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
 import com.project.autoshop.models.Jobs;
@@ -53,14 +52,6 @@ public class JobsService {
 
     //method for creating work
     public Jobs createJob(JobsRequest newJob){
-        Set<ConstraintViolation<JobsRequest>> violations = validator.validate(newJob);
-        if (!violations.isEmpty()) {
-            StringJoiner sb = new StringJoiner(", ");
-            for (ConstraintViolation<JobsRequest> violation : violations) {
-                sb.add(violation.getMessage());
-            }
-            throw new BadRequestException("Error occurred: " + sb.toString());
-        }
         Client client = this.clientRepository.findById(newJob.getClient_id())
                .orElseThrow(() -> new NotFoundException("client with id: " + newJob.getClient_id() + " not found"));
         Jobs job = Jobs.builder()

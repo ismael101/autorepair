@@ -1,10 +1,6 @@
 package com.project.autoshop.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
 //custom exception for not found
-@ResponseStatus(HttpStatus.NOT_FOUND)
 public class NotFoundException extends RuntimeException{
     public NotFoundException() {}
 

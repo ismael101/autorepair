@@ -15,7 +15,6 @@ import javax.mail.MessagingException;
 @RequestMapping(path = "api/v1/email")
 public class EmailController {
 
-    //hdwcbkqeykrvhpwx
     private final EmailService emailService;
 
     public EmailController(EmailService emailService) {

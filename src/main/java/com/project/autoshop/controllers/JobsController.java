@@ -40,7 +40,7 @@ public class JobsController {
 
     //endpoint for creating work
     @PostMapping
-    public ResponseEntity createJob(@RequestBody JobsRequest job){
+    public ResponseEntity createJob(@RequestBody @Valid JobsRequest job){
         return ResponseEntity.status(HttpStatus.OK).body(this.jobsService.createJob(job));
     }
 

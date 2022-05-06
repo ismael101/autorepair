@@ -3,7 +3,7 @@ package com.project.autoshop.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.hibernate.validator.constraints.URL;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +16,7 @@ public class PartsRequest {
     private String name;
     @NotNull(message = "website cannot be null")
     @NotBlank(message = "website cannot be blank")
+    @URL
     private String website;
     @NotNull(message = "price cannot be null")
     @NotBlank(message = "price cannot be blank")

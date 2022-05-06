@@ -34,7 +34,7 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler(EmailAlreadyExistsException.class)
     protected ResponseEntity<Object> handleEmailAlreadyExists(EmailAlreadyExistsException ex, WebRequest wb){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -42,13 +42,6 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    protected ResponseEntity<Object> handleBadRequest(BadRequestException ex, WebRequest wb){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

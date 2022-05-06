@@ -1,7 +1,5 @@
 package com.project.autoshop.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 //custom exception for when creating clients with duplicate emails
 public class EmailAlreadyExistsException extends RuntimeException{

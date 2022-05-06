@@ -1,7 +1,6 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.EmailAlreadyExistsException;
-import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
 import com.project.autoshop.repositories.ClientRepository;
@@ -39,14 +38,6 @@ public class ClientService {
 
     //methods for creating new clients
     public Client createClient(ClientRequest clientRequest){
-        Set<ConstraintViolation<ClientRequest>> violations = validator.validate(clientRequest);
-        if (!violations.isEmpty()) {
-            StringJoiner sb = new StringJoiner(", ");
-            for (ConstraintViolation<ClientRequest> violation : violations) {
-                sb.add(violation.getMessage());
-            }
-            throw new BadRequestException("Error occurred: " + sb.toString());
-        }
         if(!this.clientRepository.findClientByEmail(clientRequest.getEmail()).isEmpty()){
             throw new EmailAlreadyExistsException("email: " + clientRequest.getEmail() + " already exists for other client");
         }

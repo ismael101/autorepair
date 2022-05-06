@@ -1,7 +1,6 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.EmailAlreadyExistsException;
-import com.project.autoshop.exceptions.BadRequestException;
 import com.project.autoshop.exceptions.InvalidEmailException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Client;
