@@ -1,13 +1,14 @@
 package com.project.autoshop.controllers;
 
-import com.project.autoshop.models.Client;
 import com.project.autoshop.request.ClientRequest;
+import com.project.autoshop.request.Create;
+import com.project.autoshop.request.Update;
 import com.project.autoshop.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 
 @RestController
@@ -33,13 +34,13 @@ public class ClientController {
 
     //endpoint for creating client
     @PostMapping
-    public ResponseEntity createClient(@RequestBody @Valid ClientRequest clientRequest){
+    public ResponseEntity createClient(@RequestBody @Validated(Create.class) ClientRequest clientRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(clientRequest));
     }
 
     //endpoint for updating client
     @PutMapping(path = "{id}")
-    public ResponseEntity updateClient(@PathVariable("id") Integer id, @Valid @ModelAttribute ClientRequest clientRequest){
+    public ResponseEntity updateClient(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) ClientRequest clientRequest){
         return ResponseEntity.status(HttpStatus.OK).body(clientService.updateClient(id, clientRequest));
     }
 

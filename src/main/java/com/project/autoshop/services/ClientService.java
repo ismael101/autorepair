@@ -55,18 +55,11 @@ public class ClientService {
     public Client updateClient(Integer id, ClientRequest clientRequest){
         Client update = this.clientRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(clientRequest.getEmail())
-                .ifPresent(email -> {
-                    if(this.clientRepository.findClientByEmail(email).isPresent()){
-                        throw new EmailAlreadyExistsException("email: " + email + "already exist for other client");
-                    }
-                    update.setEmail(email);
-                });
+                .ifPresent(email -> update.setEmail(email));
         Optional.ofNullable(clientRequest.getFirst())
-                .filter(first -> first != null && first.length() > 0 && first != update.getFirst())
                 .ifPresent(first -> update.setFirst(first) );
 
         Optional.ofNullable(clientRequest.getLast())
-                .filter(last -> last != null && last.length() > 0 && last != update.getLast())
                 .ifPresent(last -> update.setLast(last));
         return update;
     }

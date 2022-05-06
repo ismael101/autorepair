@@ -1,12 +1,13 @@
 package com.project.autoshop.controllers;
 
+import com.project.autoshop.request.Create;
 import com.project.autoshop.request.PartsRequest;
+import com.project.autoshop.request.Update;
 import com.project.autoshop.services.PartsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/v1/parts")
@@ -33,12 +34,12 @@ public class PartsController {
     }
 
     @PostMapping
-    public ResponseEntity createPart(@RequestBody @Valid PartsRequest partsRequest){
+    public ResponseEntity createPart(@RequestBody @Validated(Create.class) PartsRequest partsRequest){
         return ResponseEntity.status(HttpStatus.OK).body(partsService.createPart(partsRequest));
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity updatePart(@PathVariable Integer id, @RequestBody @Valid PartsRequest partsRequest){
+    public ResponseEntity updatePart(@PathVariable Integer id, @RequestBody @Validated(Update.class) PartsRequest partsRequest){
         return ResponseEntity.status(HttpStatus.OK).body(partsService.updatePart(id, partsRequest));
     }
 

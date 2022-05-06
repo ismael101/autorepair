@@ -1,25 +1,24 @@
 package com.project.autoshop.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@ToString
 public class ClientRequest {
-    @NotNull(message = "first cannot be null")
-    @NotBlank(message = "last cannot be blank")
+    @NotNull(message = "first cannot be null", groups = Create.class)
+    @NotBlank(message = "first cannot be blank", groups = {Create.class, Update.class})
     private String first;
-    @NotNull(message = "last cannot be null")
-    @NotBlank(message = "last cannot be blank")
+    @NotNull(message = "last cannot be null", groups = Create.class)
+    @NotBlank(message = "last cannot be blank", groups = {Create.class, Update.class})
     private String last;
-    @NotNull(message = "email cannot be null")
-    @NotBlank(message = "email cannot be blank")
-    @Email
+    @NotNull(message = "email cannot be null", groups = Create.class)
+    @NotBlank(message = "email cannot be blank", groups = {Create.class, Update.class})
+    @Email(groups = {Create.class, Update.class})
     private String email;
 }

@@ -1,9 +1,11 @@
 package com.project.autoshop.controllers;
 
 import com.project.autoshop.models.Status;
+import com.project.autoshop.request.Update;
 import com.project.autoshop.services.StatusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,7 +37,7 @@ public class StatusController {
 
     //method updating status of work
     @PutMapping(path = "{id}")
-    public ResponseEntity updateStatus(@PathVariable("id") Integer id, @RequestBody Status update){
+    public ResponseEntity updateStatus(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) Status update){
         return ResponseEntity.status(HttpStatus.OK).body(this.statusService.updateStatus(id, update));
     }
 

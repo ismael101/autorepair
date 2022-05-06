@@ -1,14 +1,13 @@
 package com.project.autoshop.controllers;
 
-import com.project.autoshop.models.Jobs;
+import com.project.autoshop.request.Create;
 import com.project.autoshop.request.JobsRequest;
+import com.project.autoshop.request.Update;
 import com.project.autoshop.services.JobsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 
 @RestController
@@ -40,13 +39,13 @@ public class JobsController {
 
     //endpoint for creating work
     @PostMapping
-    public ResponseEntity createJob(@RequestBody @Valid JobsRequest job){
+    public ResponseEntity createJob(@RequestBody @Validated(Create.class) JobsRequest job){
         return ResponseEntity.status(HttpStatus.OK).body(this.jobsService.createJob(job));
     }
 
     //endpoint for updating work
     @PutMapping(path = "{id}")
-    public ResponseEntity updateJob(@PathVariable Integer id, @RequestBody JobsRequest update){
+    public ResponseEntity updateJob(@PathVariable Integer id, @RequestBody @Validated(Update.class) JobsRequest update){
         return ResponseEntity.status(HttpStatus.OK).body(this.jobsService.updateJob(id, update));
     }
 

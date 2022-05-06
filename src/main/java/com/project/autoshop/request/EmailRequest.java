@@ -1,16 +1,14 @@
 package com.project.autoshop.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@ToString
 public class EmailRequest {
     @NotNull(message = "to cannot be null")
     @NotBlank(message = "to cannot be blank")
