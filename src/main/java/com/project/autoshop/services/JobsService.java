@@ -41,7 +41,7 @@ public class JobsService {
 
     //method for getting work by clients
     public List<Jobs> getClientJobs(Integer id){
-        return this.jobsRepository.findByClient(id);
+        return this.jobsRepository.findJobsByClient(id);
     }
 
     //method for getting work by id

@@ -31,6 +31,6 @@ public class Jobs {
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Client client;
 }

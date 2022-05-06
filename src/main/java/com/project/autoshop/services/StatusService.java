@@ -50,7 +50,6 @@ public class StatusService {
     public Status updateStatus(Integer id, Status update){
         Status status = this.statusRepository.findStatusByWork(id)
                .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
-
         Optional.ofNullable(update.getRejected())
                 .ifPresent(rejected -> {
                     if(rejected){

@@ -21,7 +21,7 @@ public class Client {
     private String first;
     @Column(nullable = false)
     private String last;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     @CreationTimestamp
     private Timestamp createdAt;

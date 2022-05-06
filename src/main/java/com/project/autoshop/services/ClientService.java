@@ -25,7 +25,6 @@ public class ClientService {
 
     //method getting a list of all clients
     public List<Client> getClients(){
-        System.out.println(this.clientRepository.findAll().toString());
         return this.clientRepository.findAll();
     }
 
@@ -62,23 +61,23 @@ public class ClientService {
 
     @Transactional
     //method for updating client
-    public Client updateClient(Integer id, Client update){
-        Client client = this.clientRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        Optional.ofNullable(update.getEmail())
+    public Client updateClient(Integer id, ClientRequest clientRequest){
+        Client update = this.clientRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
+        Optional.ofNullable(clientRequest.getEmail())
                 .ifPresent(email -> {
                     if(this.clientRepository.findClientByEmail(email).isPresent()){
                         throw new EmailAlreadyExistsException("email: " + email + "already exist for other client");
                     }
-                    client.setEmail(email);
+                    update.setEmail(email);
                 });
-        Optional.ofNullable(update.getFirst())
-                .filter(first -> first != null && first.length() > 0 && first != client.getFirst())
-                .ifPresent(first -> client.setFirst(first) );
+        Optional.ofNullable(clientRequest.getFirst())
+                .filter(first -> first != null && first.length() > 0 && first != update.getFirst())
+                .ifPresent(first -> update.setFirst(first) );
 
-        Optional.ofNullable(update.getLast())
-                .filter(last -> last != null && last.length() > 0 && last != client.getLast())
-                .ifPresent(last -> client.setLast(last));
-        return client;
+        Optional.ofNullable(clientRequest.getLast())
+                .filter(last -> last != null && last.length() > 0 && last != update.getLast())
+                .ifPresent(last -> update.setLast(last));
+        return update;
     }
 
     //method for deleting clients

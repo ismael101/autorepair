@@ -27,7 +27,7 @@ public class Parts {
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Jobs job;
 
 }

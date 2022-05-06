@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping(path = "api/v1/clients")
@@ -31,14 +33,14 @@ public class ClientController {
 
     //endpoint for creating client
     @PostMapping
-    public ResponseEntity createClient(@RequestBody ClientRequest clientRequest){
+    public ResponseEntity createClient(@RequestBody @Valid ClientRequest clientRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(clientRequest));
     }
 
     //endpoint for updating client
     @PutMapping(path = "{id}")
-    public ResponseEntity updateClient(@PathVariable("id") Integer id, @RequestBody Client client){
-        return ResponseEntity.status(HttpStatus.OK).body(clientService.updateClient(id, client));
+    public ResponseEntity updateClient(@PathVariable("id") Integer id, @Valid @ModelAttribute ClientRequest clientRequest){
+        return ResponseEntity.status(HttpStatus.OK).body(clientService.updateClient(id, clientRequest));
     }
 
     //endpoint for deleting client

@@ -11,5 +11,5 @@ import java.util.List;
 public interface JobsRepository extends JpaRepository<Jobs, Integer> {
     //query for fetching work by client
     @Query("SELECT j FROM Jobs j WHERE j.client = ?1")
-    List<Jobs> findByClient(Integer id);
+    List<Jobs> findJobsByClient(Integer id);
 }
