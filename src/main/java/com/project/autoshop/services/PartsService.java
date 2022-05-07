@@ -52,10 +52,8 @@ public class PartsService {
         Parts part = partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));
         Optional.ofNullable(partsRequest.getName())
                 .ifPresent(name -> part.setName(name));
-
         Optional.ofNullable(partsRequest.getWebsite())
                 .ifPresent(website -> part.setWebsite(website));
-
         Optional.ofNullable(partsRequest.getPrice())
                 .ifPresent(price -> part.setPrice(price));
 

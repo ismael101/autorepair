@@ -10,12 +10,10 @@ import com.project.autoshop.request.JobsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.StringJoiner;
+
 
 @Service
 public class JobsService {
@@ -71,23 +69,14 @@ public class JobsService {
     public Jobs updateJob(Integer id, JobsRequest update){
         Jobs work = this.jobsRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(update.getMake())
-                .filter(make -> make != null && make.length() > 0 && make != work.getMake())
                 .ifPresent(make -> work.setMake(make));
-
         Optional.ofNullable(update.getModel())
-                .filter(model -> model != null && model.length() > 0 && model != work.getModel())
                 .ifPresent(model -> work.setModel(model));
-
         Optional.ofNullable(update.getYear())
-                .filter(year -> year != null && year > 1990 && year < 2050 && work.getYear() != year)
                 .ifPresent(year -> work.setYear(year));
-
         Optional.ofNullable(update.getDescription())
-                .filter(description -> description != null && description.length() > 0 && description != work.getDescription())
                 .ifPresent(description -> work.setDescription(description));
-
         Optional.ofNullable(update.getLabor())
-                .filter(labor -> labor != null && labor < 0 && work.getLabor() != labor)
                 .ifPresent(labor -> work.setLabor(labor));
 
         return work;
