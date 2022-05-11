@@ -4,6 +4,7 @@ import com.project.autoshop.request.Create;
 import com.project.autoshop.request.JobsRequest;
 import com.project.autoshop.request.Update;
 import com.project.autoshop.services.JobService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/jobs")
+@RequiredArgsConstructor
 public class JobController {
     private final JobService jobService;
 
-    public JobController(JobService jobService) {
-        this.jobService = jobService;
-    }
 
     //endpoint for fetching all works
     @GetMapping

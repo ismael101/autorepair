@@ -3,6 +3,7 @@ package com.project.autoshop.controllers;
 import com.project.autoshop.models.Status;
 import com.project.autoshop.request.Update;
 import com.project.autoshop.services.StatusService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -10,12 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/status")
+@RequiredArgsConstructor
 public class StatusController {
     private final StatusService statusService;
-
-    public StatusController(StatusService statusService) {
-        this.statusService = statusService;
-    }
 
     //method for getting every status
     @GetMapping

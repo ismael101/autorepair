@@ -2,6 +2,7 @@ package com.project.autoshop.controllers;
 
 import com.project.autoshop.request.EmailRequest;
 import com.project.autoshop.services.EmailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,13 +14,10 @@ import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping(path = "api/v1/email")
+@RequiredArgsConstructor
 public class EmailController {
 
     private final EmailService emailService;
-
-    public EmailController(EmailService emailService) {
-        this.emailService = emailService;
-    }
 
     //method for sending custom email
     @PostMapping

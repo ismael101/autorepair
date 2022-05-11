@@ -4,6 +4,7 @@ import com.project.autoshop.request.CustomerRequest;
 import com.project.autoshop.request.Create;
 import com.project.autoshop.request.Update;
 import com.project.autoshop.services.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,12 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/customer")
+@RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
-
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     //endpoint for fetching all clients
     @GetMapping

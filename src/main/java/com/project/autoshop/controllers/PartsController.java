@@ -4,6 +4,7 @@ import com.project.autoshop.request.Create;
 import com.project.autoshop.request.PartsRequest;
 import com.project.autoshop.request.Update;
 import com.project.autoshop.services.PartsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,12 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/parts")
+@RequiredArgsConstructor
 public class PartsController {
     private final PartsService partsService;
-
-    public PartsController(PartsService partsService) {
-        this.partsService = partsService;
-    }
 
     @GetMapping
     public ResponseEntity getParts(){
