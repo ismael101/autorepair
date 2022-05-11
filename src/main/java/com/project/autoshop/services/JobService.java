@@ -2,71 +2,60 @@ package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Job;
+import com.project.autoshop.models.Status;
 import com.project.autoshop.repositories.CustomerRepository;
 import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.JobRepository;
 import com.project.autoshop.request.JobsRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
-public class JobsService {
+public class JobService {
     private final JobRepository jobRepository;
-    private final StatusRepository statusRepository;
     private final StatusService statusService;
-    private final CustomerRepository customerRepository;
-    @Autowired
-    private Validator validator;
 
-    public JobsService(JobRepository jobRepository, StatusRepository statusRepository, StatusService statusService, CustomerRepository customerRepository) {
+
+    public JobService(JobRepository jobRepository, StatusService statusService) {
         this.jobRepository = jobRepository;
-        this.statusRepository = statusRepository;
         this.statusService = statusService;
-        this.customerRepository = customerRepository;
     }
 
-    //method for getting all work
+    //method for getting all jobs
     public List<Job> getJobs(){
         return this.jobRepository.findAll();
     }
 
-    //method for getting work by clients
-    public List<Job> getClientJobs(Integer id){
-        return this.jobRepository.findJobsByClient(id);
-    }
-
-    //method for getting work by id
+    //method for getting job by id
     public Job getJobById(Integer id){
         Job jobs = this.jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         return jobs;
     }
 
-    //method for creating work
+    //method for creating job
     public Job createJob(JobsRequest newJob){
         Job job = Job.builder()
                 .labor(newJob.getLabor())
                 .description(newJob.getDescription())
                 .build();
-        this.jobRepository.save(job);
+        jobRepository.save(job);
+        statusService.createStatus(job);
         return job;
     }
 
     @Transactional
-    //method for updating work
+    //method for updating job
     public Job updateJob(Integer id, JobsRequest update){
-        Job work = this.jobRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
+        Job job = this.jobRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(update.getDescription())
-                .ifPresent(description -> work.setDescription(description));
+                .ifPresent(description -> job.setDescription(description));
         Optional.ofNullable(update.getLabor())
-                .ifPresent(labor -> work.setLabor(labor));
-
-        return work;
+                .ifPresent(labor -> job.setLabor(labor));
+        return job;
     }
 
     //method for deleting work

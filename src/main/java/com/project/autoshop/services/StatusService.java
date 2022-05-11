@@ -15,12 +15,12 @@ import java.util.Optional;
 public class StatusService {
     private final StatusRepository statusRepository;
     private final EmailService emailService;
-    private final JobRepository workRepository;
+    private final JobRepository jobRepository;
 
     public StatusService(StatusRepository statusRepository, EmailService emailService, JobRepository jobRepository) {
         this.statusRepository = statusRepository;
         this.emailService = emailService;
-        this.workRepository = jobRepository;
+        this.jobRepository = jobRepository;
     }
 
     public List<Status> getAllStatus(){
@@ -39,9 +39,9 @@ public class StatusService {
         return status;
     }
 
-    public void createStatus(Job work){
-        this.workRepository.findById(work.getId())
-                .orElseThrow(() -> new NotFoundException("work with id: " + work.getId() + " not found"));
+    public void createStatus(Job job){
+        this.jobRepository.findById(job.getId())
+                .orElseThrow(() -> new NotFoundException("job with id: " + job.getId() + " not found"));
         Status status = new Status();
         this.statusRepository.save(status);
     }
