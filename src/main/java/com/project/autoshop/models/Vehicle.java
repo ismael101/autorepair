@@ -31,5 +31,5 @@ public class Vehicle {
     private Timestamp updatedAt;
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JsonBackReference
-    private Customer customer;
+    private Job job;
 }

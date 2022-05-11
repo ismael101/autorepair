@@ -2,9 +2,9 @@ package com.project.autoshop.controllers;
 
 import com.project.autoshop.request.AddressRequest;
 import com.project.autoshop.request.Create;
-import com.project.autoshop.request.CustomerRequest;
 import com.project.autoshop.request.Update;
 import com.project.autoshop.services.AddressService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/address")
+@RequiredArgsConstructor
 public class AddressController {
     private final AddressService addressService;
 
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
     //endpoint for fetching all addresses
     @GetMapping
     public ResponseEntity getAddresses(){
