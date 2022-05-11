@@ -9,10 +9,7 @@ import java.sql.Timestamp;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 public class Part {
     @Id

@@ -2,7 +2,7 @@ package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Job;
-import com.project.autoshop.repositories.ClientRepository;
+import com.project.autoshop.repositories.CustomerRepository;
 import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.JobRepository;
 import com.project.autoshop.request.JobsRequest;
@@ -19,15 +19,15 @@ public class JobsService {
     private final JobRepository jobRepository;
     private final StatusRepository statusRepository;
     private final StatusService statusService;
-    private final ClientRepository clientRepository;
+    private final CustomerRepository customerRepository;
     @Autowired
     private Validator validator;
 
-    public JobsService(JobRepository jobRepository, StatusRepository statusRepository, StatusService statusService, ClientRepository clientRepository) {
+    public JobsService(JobRepository jobRepository, StatusRepository statusRepository, StatusService statusService, CustomerRepository customerRepository) {
         this.jobRepository = jobRepository;
         this.statusRepository = statusRepository;
         this.statusService = statusService;
-        this.clientRepository = clientRepository;
+        this.customerRepository = customerRepository;
     }
 
     //method for getting all work

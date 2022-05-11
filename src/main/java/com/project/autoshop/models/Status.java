@@ -9,9 +9,8 @@ import java.sql.Timestamp;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
 public class Status {
     @Id
     @GeneratedValue

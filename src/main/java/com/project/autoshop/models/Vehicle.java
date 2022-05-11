@@ -9,12 +9,9 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Builder
-@ToString
+@Data
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

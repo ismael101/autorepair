@@ -10,11 +10,8 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@Data
 @Builder
-@Getter
-@Setter
 public class Job {
     @Id
     @GeneratedValue

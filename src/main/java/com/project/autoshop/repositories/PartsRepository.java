@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface PartsRepository extends JpaRepository<Part, Integer> {
     //query for fetching parts by job
-    @Query("SELECT p FROM Parts p WHERE p.job = ?1")
+    @Query("SELECT p FROM Part p WHERE p.job_id = ?1")
     List<Part> findPartsByJob(Integer id);
 }

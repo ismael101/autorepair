@@ -8,12 +8,9 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-@ToString
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

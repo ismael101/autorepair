@@ -9,13 +9,10 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 @Entity
-@ToString
 public class Insurance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
