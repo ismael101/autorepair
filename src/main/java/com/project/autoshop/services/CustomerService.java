@@ -3,18 +3,22 @@ package com.project.autoshop.services;
 import com.project.autoshop.exceptions.EmailAlreadyExistsException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Customer;
+import com.project.autoshop.models.Job;
 import com.project.autoshop.repositories.ClientRepository;
-import com.project.autoshop.request.ClientRequest;
+import com.project.autoshop.repositories.JobRepository;
+import com.project.autoshop.request.CustomerRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-public class ClientService {
+public class CustomerService {
     private final ClientRepository clientRepository;
+    private final JobRepository jobRepository;
 
-    public ClientService(ClientRepository clientRepository) {
+    public CustomerService(ClientRepository clientRepository, JobRepository jobRepository) {
         this.clientRepository = clientRepository;
+        this.jobRepository = jobRepository;
     }
 
     //method getting a list of all clients
@@ -30,13 +34,17 @@ public class ClientService {
     }
 
     //methods for creating new clients
-    public Customer createClient(ClientRequest clientRequest){
-        this.clientRepository.findClientByEmail(clientRequest.getEmail())
-                .orElseThrow(() -> new EmailAlreadyExistsException("email: " + clientRequest.getEmail() + " already exists for other client"));
+    public Customer createClient(CustomerRequest customerRequest){
+        Job job = this.jobRepository.findById(customerRequest.getJob())
+                .orElseThrow(() -> new NotFoundException("job with id: " + customerRequest.getJob() + " not found"));
+        this.clientRepository.findClientByEmail(customerRequest.getEmail())
+                .orElseThrow(() -> new EmailAlreadyExistsException("email: " + customerRequest.getEmail() + " already exists for other client"));
         Customer customer = Customer.builder()
-                .first(clientRequest.getFirst())
-                .last(clientRequest.getLast())
-                .email(clientRequest.getEmail())
+                .first(customerRequest.getFirst())
+                .last(customerRequest.getLast())
+                .email(customerRequest.getEmail())
+                .phone(customerRequest.getPhone())
+                .job(job)
                 .build();
         clientRepository.save(customer);
         return customer;
@@ -44,13 +52,13 @@ public class ClientService {
 
     @Transactional
     //method for updating client
-    public Customer updateClient(Integer id, ClientRequest clientRequest){
+    public Customer updateClient(Integer id, CustomerRequest customerRequest){
         Customer update = this.clientRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        Optional.ofNullable(clientRequest.getEmail())
+        Optional.ofNullable(customerRequest.getEmail())
                 .ifPresent(email -> update.setEmail(email));
-        Optional.ofNullable(clientRequest.getFirst())
+        Optional.ofNullable(customerRequest.getFirst())
                 .ifPresent(first -> update.setFirst(first) );
-        Optional.ofNullable(clientRequest.getLast())
+        Optional.ofNullable(customerRequest.getLast())
                 .ifPresent(last -> update.setLast(last));
         return update;
     }

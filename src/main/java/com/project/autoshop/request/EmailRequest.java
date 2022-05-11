@@ -5,10 +5,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class EmailRequest {
     @NotNull(message = "to cannot be null")
     @NotBlank(message = "to cannot be blank")

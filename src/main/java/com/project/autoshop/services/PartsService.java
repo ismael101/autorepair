@@ -3,7 +3,7 @@ package com.project.autoshop.services;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Job;
 import com.project.autoshop.models.Part;
-import com.project.autoshop.repositories.JobsRepository;
+import com.project.autoshop.repositories.JobRepository;
 import com.project.autoshop.repositories.PartsRepository;
 import com.project.autoshop.request.PartsRequest;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ import java.util.Optional;
 @Service
 public class PartsService {
     private final PartsRepository partsRepository;
-    private final JobsRepository jobsRepository;
+    private final JobRepository jobRepository;
 
-    public PartsService(PartsRepository partsRepository, JobsRepository jobsRepository) {
+    public PartsService(PartsRepository partsRepository, JobRepository jobRepository) {
         this.partsRepository = partsRepository;
-        this.jobsRepository = jobsRepository;
+        this.jobRepository = jobRepository;
     }
 
     public List<Part> getParts(){
@@ -36,7 +36,7 @@ public class PartsService {
     }
 
     public Part createPart(PartsRequest partsRequest){
-        Job jobs = jobsRepository.findById(partsRequest.getJob_id()).orElseThrow(() -> new NotFoundException("part with id: " + partsRequest.getJob_id() + " not found"));
+        Job jobs = jobRepository.findById(partsRequest.getJob_id()).orElseThrow(() -> new NotFoundException("part with id: " + partsRequest.getJob_id() + " not found"));
         Part part = Part.builder()
                 .name(partsRequest.getName())
                 .website(partsRequest.getWebsite())

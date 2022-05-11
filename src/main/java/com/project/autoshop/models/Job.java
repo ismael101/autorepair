@@ -43,6 +43,8 @@ public class Job {
     @OneToMany
     @JsonManagedReference
     private List<Part> parts;
+    @ElementCollection
+    private List<String> images;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp

@@ -4,7 +4,7 @@ import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Job;
 import com.project.autoshop.models.Status;
 import com.project.autoshop.repositories.StatusRepository;
-import com.project.autoshop.repositories.JobsRepository;
+import com.project.autoshop.repositories.JobRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +15,12 @@ import java.util.Optional;
 public class StatusService {
     private final StatusRepository statusRepository;
     private final EmailService emailService;
-    private final JobsRepository workRepository;
+    private final JobRepository workRepository;
 
-    public StatusService(StatusRepository statusRepository, EmailService emailService, JobsRepository jobsRepository) {
+    public StatusService(StatusRepository statusRepository, EmailService emailService, JobRepository jobRepository) {
         this.statusRepository = statusRepository;
         this.emailService = emailService;
-        this.workRepository = jobsRepository;
+        this.workRepository = jobRepository;
     }
 
     public List<Status> getAllStatus(){

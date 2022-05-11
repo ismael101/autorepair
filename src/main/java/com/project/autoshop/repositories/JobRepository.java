@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface JobsRepository extends JpaRepository<Job, Integer> {
+public interface JobRepository extends JpaRepository<Job, Integer> {
     //query for fetching work by client
     @Query("SELECT j FROM Jobs j WHERE j.client = ?1")
     List<Job> findJobsByClient(Integer id);

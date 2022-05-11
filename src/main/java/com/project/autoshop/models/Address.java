@@ -25,7 +25,7 @@ public class Address {
     @Column(nullable = false)
     private String street;
     @Column(nullable = false)
-    private String zipcode;
+    private Integer zipcode;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
