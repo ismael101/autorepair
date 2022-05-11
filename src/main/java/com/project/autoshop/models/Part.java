@@ -9,23 +9,27 @@ import java.sql.Timestamp;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Status {
+@Builder
+public class Part {
     @Id
     @GeneratedValue
     private Integer id;
-    private Boolean approved = false;
-    private Boolean rejected =  false;
-    private Boolean ordered = false;
-    private Boolean progress = false;
-    private Boolean complete = false;
+    @Column(nullable = false)
+    private String name;
+    private String description;
+    @Column(nullable = false)
+    private String website;
+    @Column(nullable = false)
+    private Double price;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JsonBackReference
     private Job job;
 }

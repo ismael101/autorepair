@@ -1,5 +1,6 @@
 package com.project.autoshop.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -7,30 +8,29 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
-public class Jobs {
+@ToString
+public class Customer {
     @Id
     @GeneratedValue
     private Integer id;
     @Column(nullable = false)
-    private String make;
+    private String first;
     @Column(nullable = false)
-    private String model;
+    private String last;
+    @Column(nullable = false, unique = true)
+    private String email;
     @Column(nullable = false)
-    private Integer year;
-    @Column(nullable = false)
-    private String description;
-    @Column(nullable = false)
-    private Double labor;
+    private Integer phone;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    private Client client;
+    @JsonBackReference
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    private Job job;
 }

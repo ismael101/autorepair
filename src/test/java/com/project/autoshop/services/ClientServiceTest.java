@@ -1,21 +1,8 @@
 package com.project.autoshop.services;
 
-import com.project.autoshop.exceptions.EmailAlreadyExistsException;
-import com.project.autoshop.exceptions.InvalidEmailException;
-import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Client;
-import com.project.autoshop.repositories.ClientRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
-import org.mockito.Mock;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ClientServiceTest {

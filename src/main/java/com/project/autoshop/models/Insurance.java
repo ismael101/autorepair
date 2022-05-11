@@ -1,33 +1,38 @@
 package com.project.autoshop.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
-public class Parts {
+@Entity
+@ToString
+public class Insurance {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(nullable = false)
-    private String name;
+    private Integer policy;
     @Column(nullable = false)
-    private String website;
+    private String provider;
+    private LocalDateTime effective;
+    private LocalDateTime expiration;
     @Column(nullable = false)
-    private Double price;
+    private String vin;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    private Jobs job;
-
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Job job;
 }

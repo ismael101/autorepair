@@ -1,8 +1,8 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Client;
-import com.project.autoshop.models.Jobs;
+import com.project.autoshop.models.Job;
+import com.project.autoshop.models.Vehicle;
 import com.project.autoshop.repositories.ClientRepository;
 import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.JobsRepository;
@@ -32,33 +32,27 @@ public class JobsService {
     }
 
     //method for getting all work
-    public List<Jobs> getJobs(){
+    public List<Job> getJobs(){
         return this.jobsRepository.findAll();
     }
 
     //method for getting work by clients
-    public List<Jobs> getClientJobs(Integer id){
+    public List<Job> getClientJobs(Integer id){
         return this.jobsRepository.findJobsByClient(id);
     }
 
     //method for getting work by id
-    public Jobs getJobById(Integer id){
-        Jobs jobs = this.jobsRepository.findById(id)
+    public Job getJobById(Integer id){
+        Job jobs = this.jobsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         return jobs;
     }
 
     //method for creating work
-    public Jobs createJob(JobsRequest newJob){
-        Client client = this.clientRepository.findById(newJob.getClient_id())
-               .orElseThrow(() -> new NotFoundException("client with id: " + newJob.getClient_id() + " not found"));
-        Jobs job = Jobs.builder()
-                .make(newJob.getMake())
-                .model(newJob.getModel())
-                .year(newJob.getYear())
+    public Job createJob(JobsRequest newJob){
+        Job job = Job.builder()
                 .labor(newJob.getLabor())
                 .description(newJob.getDescription())
-                .client(client)
                 .build();
         this.jobsRepository.save(job);
         return job;
@@ -66,14 +60,8 @@ public class JobsService {
 
     @Transactional
     //method for updating work
-    public Jobs updateJob(Integer id, JobsRequest update){
-        Jobs work = this.jobsRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        Optional.ofNullable(update.getMake())
-                .ifPresent(make -> work.setMake(make));
-        Optional.ofNullable(update.getModel())
-                .ifPresent(model -> work.setModel(model));
-        Optional.ofNullable(update.getYear())
-                .ifPresent(year -> work.setYear(year));
+    public Job updateJob(Integer id, JobsRequest update){
+        Job work = this.jobsRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(update.getDescription())
                 .ifPresent(description -> work.setDescription(description));
         Optional.ofNullable(update.getLabor())

@@ -1,7 +1,7 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Jobs;
+import com.project.autoshop.models.Job;
 import com.project.autoshop.models.Status;
 import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.JobsRepository;
@@ -39,7 +39,7 @@ public class StatusService {
         return status;
     }
 
-    public void createStatus(Jobs work){
+    public void createStatus(Job work){
         this.workRepository.findById(work.getId())
                 .orElseThrow(() -> new NotFoundException("work with id: " + work.getId() + " not found"));
         Status status = new Status();

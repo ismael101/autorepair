@@ -1,8 +1,8 @@
 package com.project.autoshop.services;
 
 import com.project.autoshop.exceptions.NotFoundException;
-import com.project.autoshop.models.Jobs;
-import com.project.autoshop.models.Parts;
+import com.project.autoshop.models.Job;
+import com.project.autoshop.models.Part;
 import com.project.autoshop.repositories.JobsRepository;
 import com.project.autoshop.repositories.PartsRepository;
 import com.project.autoshop.request.PartsRequest;
@@ -22,22 +22,22 @@ public class PartsService {
         this.jobsRepository = jobsRepository;
     }
 
-    public List<Parts> getParts(){
+    public List<Part> getParts(){
         return partsRepository.findAll();
     }
 
-    public List<Parts> getJobParts(Integer id){
+    public List<Part> getJobParts(Integer id){
         return partsRepository.findPartsByJob(id);
     }
 
-    public Parts getPart(Integer id){
-        Parts part = partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));
+    public Part getPart(Integer id){
+        Part part = partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));
         return part;
     }
 
-    public Parts createPart(PartsRequest partsRequest){
-        Jobs jobs = jobsRepository.findById(partsRequest.getJob_id()).orElseThrow(() -> new NotFoundException("part with id: " + partsRequest.getJob_id() + " not found"));
-        Parts part = Parts.builder()
+    public Part createPart(PartsRequest partsRequest){
+        Job jobs = jobsRepository.findById(partsRequest.getJob_id()).orElseThrow(() -> new NotFoundException("part with id: " + partsRequest.getJob_id() + " not found"));
+        Part part = Part.builder()
                 .name(partsRequest.getName())
                 .website(partsRequest.getWebsite())
                 .price(partsRequest.getPrice())
@@ -48,8 +48,8 @@ public class PartsService {
     }
 
     @Transactional
-    public Parts updatePart(Integer id, PartsRequest partsRequest){
-        Parts part = partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));
+    public Part updatePart(Integer id, PartsRequest partsRequest){
+        Part part = partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));
         Optional.ofNullable(partsRequest.getName())
                 .ifPresent(name -> part.setName(name));
         Optional.ofNullable(partsRequest.getWebsite())

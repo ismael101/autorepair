@@ -4,28 +4,32 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @ToString
-public class Status {
+public class Vehicle {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Boolean approved = false;
-    private Boolean rejected =  false;
-    private Boolean ordered = false;
-    private Boolean progress = false;
-    private Boolean complete = false;
+    @Column(nullable = false)
+    private String make;
+    @Column(nullable = false)
+    private String model;
+    @Column(nullable = false)
+    private Integer year;
     @CreationTimestamp
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JsonBackReference
-    private Job job;
+    private Customer customer;
 }
