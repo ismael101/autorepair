@@ -2,14 +2,12 @@ package com.project.autoshop.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
+
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 public class Vehicle {
@@ -22,10 +20,6 @@ public class Vehicle {
     private String model;
     @Column(nullable = false)
     private Integer year;
-    @CreationTimestamp
-    private Timestamp createdAt;
-    @UpdateTimestamp
-    private Timestamp updatedAt;
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JsonBackReference
     private Job job;

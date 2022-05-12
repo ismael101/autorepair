@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -33,7 +34,7 @@ public class JobController {
     //endpoint for creating work
     @PostMapping
     public ResponseEntity createJob(@RequestBody @Validated(Create.class) JobsRequest job){
-        return ResponseEntity.status(HttpStatus.OK).body(this.jobService.createJob(job));
+        return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob(job));
     }
 
     //endpoint for updating work

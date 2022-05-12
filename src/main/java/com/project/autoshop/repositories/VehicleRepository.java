@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     //query for fetching vehicle by job
-    @Query("SELECT v FROM Vehicle v WHERE v.job_id = ?1")
+    @Query("SELECT v FROM Vehicle v WHERE v.job = ?1")
     Optional<Vehicle> findVehicleByJob(Integer id);
 }

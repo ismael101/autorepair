@@ -35,12 +35,12 @@ public class PartsService {
         return part;
     }
 
-    public Part createPart(PartsRequest partsRequest){
-        Job jobs = jobRepository.findById(partsRequest.getJob_id()).orElseThrow(() -> new NotFoundException("part with id: " + partsRequest.getJob_id() + " not found"));
+    public Part createPart(PartsRequest request){
+        Job jobs = jobRepository.findById(request.getJob()).orElseThrow(() -> new NotFoundException("part with id: " + request.getJob() + " not found"));
         Part part = Part.builder()
-                .name(partsRequest.getName())
-                .website(partsRequest.getWebsite())
-                .price(partsRequest.getPrice())
+                .name(request.getName())
+                .website(request.getWebsite())
+                .price(request.getPrice())
                 .job(jobs)
                 .build();
         partsRepository.save(part);

@@ -2,17 +2,14 @@ package com.project.autoshop.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Builder
 @Entity
+@Builder
 public class Insurance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,10 +22,6 @@ public class Insurance {
     private LocalDateTime expiration;
     @Column(nullable = false)
     private String vin;
-    @CreationTimestamp
-    private Timestamp createdAt;
-    @UpdateTimestamp
-    private Timestamp updatedAt;
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @JsonBackReference
     private Job job;

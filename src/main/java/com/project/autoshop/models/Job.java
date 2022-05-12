@@ -2,14 +2,12 @@ package com.project.autoshop.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 public class Job {
@@ -22,31 +20,27 @@ public class Job {
     private Double labor;
     @Transient
     private Double total;
-    @OneToOne
+    @OneToOne(mappedBy = "job")
     @JsonManagedReference
     private Customer customer;
-    @OneToOne
+    @OneToOne(mappedBy = "job")
     @JsonManagedReference
     private Insurance insurance;
-    @OneToOne
+    @OneToOne(mappedBy = "job")
     @JsonManagedReference
     private Address address;
-    @OneToOne
+    @OneToOne(mappedBy = "job")
     @JsonManagedReference
     private Vehicle vehicle;
-    @OneToOne
+    @OneToOne(mappedBy = "job")
     @JsonManagedReference
     private Status status;
-    @OneToMany
+    @OneToMany(mappedBy = "job")
     @JsonManagedReference
     private List<Part> parts;
-    @ElementCollection
-    private List<String> images;
-    @CreationTimestamp
-    private Timestamp createdAt;
-    @UpdateTimestamp
-    private Timestamp updatedAt;
-
+    @OneToMany(mappedBy = "job")
+    @JsonManagedReference
+    private List<Image> images;
 
     public Double getTotal() {
         Double sum = this.labor;

@@ -34,7 +34,7 @@ public class StatusService {
     }
 
     public Status getStatusByWork(Integer id){
-        Status status = this.statusRepository.findStatusByWork(id)
+        Status status = this.statusRepository.findStatusByJob(id)
                 .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
         return status;
     }
@@ -42,13 +42,21 @@ public class StatusService {
     public void createStatus(Job job){
         this.jobRepository.findById(job.getId())
                 .orElseThrow(() -> new NotFoundException("job with id: " + job.getId() + " not found"));
-        Status status = new Status();
+        Status status = Status
+                .builder()
+                .approved(false)
+                .rejected(false)
+                .ordered(false)
+                .progress(false)
+                .complete(false)
+                .job(job)
+                .build();
         this.statusRepository.save(status);
     }
 
     @Transactional
     public Status updateStatus(Integer id, Status update){
-        Status status = this.statusRepository.findStatusByWork(id)
+        Status status = this.statusRepository.findStatusByJob(id)
                .orElseThrow(() -> new NotFoundException("status with id: " + id + " not found"));
         Optional.ofNullable(update.getRejected())
                 .ifPresent(rejected -> {
