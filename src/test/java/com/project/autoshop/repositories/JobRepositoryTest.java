@@ -20,7 +20,6 @@ class JobRepositoryTest {
                 .builder()
                 .id(1)
                 .description("transmission issues")
-                .labor(100.0)
                 .build());
         assertTrue(underTest.findById(1).isPresent());
     }

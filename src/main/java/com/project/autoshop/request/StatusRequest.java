@@ -1,16 +1,12 @@
 package com.project.autoshop.request;
 
-import lombok.AllArgsConstructor;
+import com.project.autoshop.request.groups.Update;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
 import javax.validation.constraints.NotBlank;
 
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class StatusRequest {
     @NotBlank(message = "rejected cannot be blank", groups = Update.class)
     private Boolean rejected;

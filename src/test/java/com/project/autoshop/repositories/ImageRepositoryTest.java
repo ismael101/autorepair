@@ -30,7 +30,6 @@ class ImageRepositoryTest {
                 .builder()
                 .id(1)
                 .description("broken transmission")
-                .labor(100.0)
                 .build();
         jobRepository.save(job);
         Image image = Image

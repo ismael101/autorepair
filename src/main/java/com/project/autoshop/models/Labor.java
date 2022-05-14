@@ -1,5 +1,6 @@
 package com.project.autoshop.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +20,12 @@ public class Labor {
     @Column(nullable = false)
     private String task;
     @Column(nullable = false)
+    private String location;
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
     private Double cost;
+    @JsonBackReference
+    @ManyToOne(optional = false)
+    private Job job;
 }

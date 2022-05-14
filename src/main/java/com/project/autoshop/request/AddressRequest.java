@@ -1,13 +1,16 @@
 package com.project.autoshop.request;
 
-import lombok.Data;
-
+import com.project.autoshop.request.groups.Create;
+import com.project.autoshop.request.groups.Update;
+import lombok.Getter;
+import lombok.Setter;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 public class AddressRequest {
     @NotNull(message = "city cannot be null", groups = Create.class)
     @NotBlank(message = "city cannot be blank", groups = {Create.class, Update.class})

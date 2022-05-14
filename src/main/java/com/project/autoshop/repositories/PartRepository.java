@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PartsRepository extends JpaRepository<Part, Integer> {
+public interface PartRepository extends JpaRepository<Part, Integer> {
     //query for fetching parts by job
     @Query("SELECT p FROM Part p WHERE p.job.id = ?1")
     List<Part> findPartsByJob(Integer id);

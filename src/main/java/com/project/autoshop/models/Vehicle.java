@@ -20,6 +20,7 @@ public class Vehicle {
     private String model;
     @Column(nullable = false)
     private Integer year;
+    @Column(nullable = false)
     private String vin;
     @OneToOne(optional = false)
     @JsonBackReference

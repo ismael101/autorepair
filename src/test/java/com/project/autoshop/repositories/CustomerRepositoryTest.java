@@ -27,7 +27,6 @@ class CustomerRepositoryTest {
                 .builder()
                 .id(1)
                 .description("broken transmission")
-                .labor(100.0)
                 .build();
         jobRepository.save(job);
         Customer customer = Customer

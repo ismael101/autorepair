@@ -22,8 +22,10 @@ public class Part {
     @Column(nullable = false)
     private String website;
     @Column(nullable = false)
-    private Double price;
+    private Double cost;
+    @Column(nullable = false)
     private Boolean ordered;
+    @Column(nullable = false)
     private String notes;
     @ManyToOne(optional = false)
     @JsonBackReference

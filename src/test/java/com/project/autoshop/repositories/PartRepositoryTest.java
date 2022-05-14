@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PartsRepositoryTest {
+class PartRepositoryTest {
     @Autowired
     public JobRepository jobRepository;
     @Autowired
-    public PartsRepository underTest;
+    public PartRepository underTest;
 
     @BeforeAll
     void setUp(){

@@ -5,7 +5,7 @@ import com.project.autoshop.models.Image;
 import com.project.autoshop.models.Job;
 import com.project.autoshop.repositories.ImageRepository;
 import com.project.autoshop.repositories.JobRepository;
-import com.project.autoshop.request.JobsRequest;
+import com.project.autoshop.request.JobRequest;
 import com.project.autoshop.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.zip.Deflater;
 
@@ -38,11 +37,11 @@ public class JobService {
     }
 
     //method for creating job
-    public Job createJob(JobsRequest request){
+    public Job createJob(JobRequest request){
         Job job = Job.builder()
-                .labor(request.getLabor())
                 .complete(false)
                 .description(request.getDescription())
+                .labors(List.of())
                 .parts(List.of())
                 .images(List.of())
                 .build();
@@ -52,31 +51,19 @@ public class JobService {
 
     @Transactional
     //method for updating job
-    public Job updateJob(Integer id, JobsRequest update){
+    public Job updateJob(Integer id, JobRequest update){
         Job job = this.jobRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         Optional.ofNullable(update.getDescription())
                 .ifPresent(description -> job.setDescription(description));
-        Optional.ofNullable(update.getLabor())
-                .ifPresent(labor -> job.setLabor(labor));
+        Optional.ofNullable(update.getComplete())
+                .ifPresent(complete -> job.setComplete(complete));
         return job;
     }
 
-    //method for deleting work
+    //method for deleting job
     public void deleteWork(Integer id){
         this.jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
         this.jobRepository.deleteById(id);
-    }
-
-    public Image upload(Integer id, MultipartFile file) throws IOException {
-        Job job = this.jobRepository.findById(id).orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        Deflater compressor = new Deflater(Deflater.BEST_COMPRESSION);
-        Image image = Image
-                .builder()
-                .name(file.getOriginalFilename())
-                .data(FileUtils.compress(file.getBytes(), Deflater.BEST_COMPRESSION, false))
-                .job(job)
-                .build();
-        return image;
     }
 }

@@ -17,10 +17,7 @@ public class Job {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private Double labor;
     private Boolean complete;
-    @Transient
-    private Double total;
     @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Customer customer;
@@ -35,16 +32,11 @@ public class Job {
     private Vehicle vehicle;
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
+    private List<Labor> labors;
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Part> parts;
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Image> images;
-
-    public Double getTotal() {
-        Double sum = this.labor;
-        for(Part part: this.parts){
-            sum = sum + part.getPrice();
-        }
-        return sum;
-    }
 }

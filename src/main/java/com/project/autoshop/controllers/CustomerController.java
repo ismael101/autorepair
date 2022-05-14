@@ -1,8 +1,8 @@
 package com.project.autoshop.controllers;
 
 import com.project.autoshop.request.CustomerRequest;
-import com.project.autoshop.request.Create;
-import com.project.autoshop.request.Update;
+import com.project.autoshop.request.groups.Create;
+import com.project.autoshop.request.groups.Update;
 import com.project.autoshop.services.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

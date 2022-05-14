@@ -1,7 +1,7 @@
 package com.project.autoshop.controllers;
 
-import com.project.autoshop.request.Create;
-import com.project.autoshop.request.Update;
+import com.project.autoshop.request.groups.Create;
+import com.project.autoshop.request.groups.Update;
 import com.project.autoshop.request.VehicleRequest;
 import com.project.autoshop.services.VehicleService;
 import lombok.RequiredArgsConstructor;

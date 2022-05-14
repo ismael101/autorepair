@@ -1,8 +1,8 @@
 package com.project.autoshop.controllers;
 
-import com.project.autoshop.request.Create;
-import com.project.autoshop.request.JobsRequest;
-import com.project.autoshop.request.Update;
+import com.project.autoshop.request.groups.Create;
+import com.project.autoshop.request.JobRequest;
+import com.project.autoshop.request.groups.Update;
 import com.project.autoshop.services.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,13 +32,13 @@ public class JobController {
 
     //endpoint for creating work
     @PostMapping
-    public ResponseEntity createJob(@RequestBody @Validated(Create.class) JobsRequest job){
+    public ResponseEntity createJob(@RequestBody @Validated(Create.class) JobRequest job){
         return ResponseEntity.status(HttpStatus.OK).body(jobService.createJob(job));
     }
 
     //endpoint for updating work
     @PutMapping(path = "{id}")
-    public ResponseEntity updateJob(@PathVariable Integer id, @RequestBody @Validated(Update.class) JobsRequest update){
+    public ResponseEntity updateJob(@PathVariable Integer id, @RequestBody @Validated(Update.class) JobRequest update){
         return ResponseEntity.status(HttpStatus.OK).body(this.jobService.updateJob(id, update));
     }
 

@@ -1,20 +1,17 @@
 package com.project.autoshop.request;
 
-import lombok.AllArgsConstructor;
+import com.project.autoshop.request.groups.Create;
+import com.project.autoshop.request.groups.Update;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.URL;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class PartsRequest {
+public class PartRequest {
     @NotNull(message = "name cannot be null", groups = Create.class)
     @NotBlank(message = "name cannot be blank", groups = {Create.class, Update.class})
     private String name;

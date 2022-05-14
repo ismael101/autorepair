@@ -25,7 +25,6 @@ class AddressRepositoryTest {
                 .builder()
                 .id(1)
                 .description("broken transmission")
-                .labor(100.0)
                 .build();
         jobRepository.save(job);
         Address address = Address
