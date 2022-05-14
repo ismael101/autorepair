@@ -27,14 +27,13 @@ class PartsRepositoryTest {
                 .builder()
                 .id(1)
                 .description("broken transmission")
-                .labor(100.0)
                 .build();
         jobRepository.save(job);
         Part part = Part
                 .builder()
                 .name("transmission")
                 .website("www.google.com")
-                .price(100.0)
+                .cost(100.0)
                 .job(job)
                 .build();
         underTest.save(part);
