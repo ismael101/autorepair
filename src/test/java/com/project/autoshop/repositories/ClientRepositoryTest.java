@@ -17,7 +17,7 @@ class ClientRepositoryTest {
         underTest.save(client);
     }
 
-    @AfterAll
+    @AfterAll `
     void deleteClient(){
         underTest.deleteById(1);
     }

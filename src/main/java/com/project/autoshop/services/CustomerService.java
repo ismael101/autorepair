@@ -37,8 +37,6 @@ public class CustomerService {
     public Customer createClient(CustomerRequest customerRequest){
         Job job = this.jobRepository.findById(customerRequest.getJob())
                 .orElseThrow(() -> new NotFoundException("job with id: " + customerRequest.getJob() + " not found"));
-        this.customerRepository.findClientByEmail(customerRequest.getEmail())
-                .orElseThrow(() -> new EmailAlreadyExistsException("email: " + customerRequest.getEmail() + " already exists for other client"));
         Customer customer = Customer.builder()
                 .first(customerRequest.getFirst())
                 .last(customerRequest.getLast())

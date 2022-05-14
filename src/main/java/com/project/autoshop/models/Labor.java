@@ -1,6 +1,5 @@
 package com.project.autoshop.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,19 +8,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @Data
-public class Image {
+@Builder
+public class Labor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(nullable = false)
-    private String name;
+    private String task;
     @Column(nullable = false)
-    private byte[] data;
-    @ManyToOne(optional = false)
-    @JsonBackReference
-    private Job job;
+    private Double cost;
 }

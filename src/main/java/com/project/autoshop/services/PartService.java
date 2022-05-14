@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PartsService {
+public class PartService {
     private final PartsRepository partsRepository;
     private final JobRepository jobRepository;
 
-    public PartsService(PartsRepository partsRepository, JobRepository jobRepository) {
+    public PartService(PartsRepository partsRepository, JobRepository jobRepository) {
         this.partsRepository = partsRepository;
         this.jobRepository = jobRepository;
     }
@@ -40,6 +40,7 @@ public class PartsService {
         Part part = Part.builder()
                 .name(request.getName())
                 .website(request.getWebsite())
+                .ordered(false)
                 .price(request.getPrice())
                 .job(jobs)
                 .build();

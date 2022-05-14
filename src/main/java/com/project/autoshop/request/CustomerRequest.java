@@ -22,7 +22,7 @@ public class CustomerRequest {
     @NotNull(message = "phone cannot be null", groups = Create.class)
     @Min(message = "invalid phone number", value = 1000000000)
     @Min(message = "invalid phone number", value = 9999999999l)
-    private Integer phone;
+    private Long phone;
     @NotNull(message = "job required")
     private Integer job;
 }

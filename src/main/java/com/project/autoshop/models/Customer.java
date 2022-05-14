@@ -8,7 +8,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,12 +19,12 @@ public class Customer {
     private String first;
     @Column(nullable = false)
     private String last;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private Integer phone;
+    private Long phone;
     @JsonBackReference
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false)
     private Job job;
 
 }

@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {
     //query for fetching address by job
-    @Query("SELECT a FROM Address a WHERE a.job = ?1")
+    @Query("SELECT a FROM Address a WHERE a.job.id = ?1")
     Optional<Address> findAddressByJob(Integer id);
 }

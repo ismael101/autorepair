@@ -16,10 +16,16 @@ public class Part {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
+    private String location;
+    @Column(nullable = false)
+    private String description;
+    @Column(nullable = false)
     private String website;
     @Column(nullable = false)
     private Double price;
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    private Boolean ordered;
+    private String notes;
+    @ManyToOne(optional = false)
     @JsonBackReference
     private Job job;
 }

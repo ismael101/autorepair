@@ -18,27 +18,25 @@ public class Job {
     private String description;
     @Column(nullable = false)
     private Double labor;
+    private Boolean complete;
     @Transient
     private Double total;
-    @OneToOne(mappedBy = "job")
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Customer customer;
-    @OneToOne(mappedBy = "job")
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Insurance insurance;
-    @OneToOne(mappedBy = "job")
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
-    @OneToOne(mappedBy = "job")
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Vehicle vehicle;
-    @OneToOne(mappedBy = "job")
-    @JsonManagedReference
-    private Status status;
-    @OneToMany(mappedBy = "job")
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Part> parts;
-    @OneToMany(mappedBy = "job")
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Image> images;
 

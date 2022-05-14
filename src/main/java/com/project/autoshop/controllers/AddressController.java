@@ -28,6 +28,12 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.OK).body(addressService.getAddress(id));
     }
 
+    //endpoint for fetching address by id
+    @GetMapping(path = "/job/{id}")
+    public ResponseEntity getJobAddress(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(addressService.getJobAddress(id));
+    }
+
     //endpoint for creating address
     @PostMapping
     public ResponseEntity createAddress(@RequestBody @Validated(Create.class) AddressRequest request){

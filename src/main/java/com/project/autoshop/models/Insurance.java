@@ -18,11 +18,9 @@ public class Insurance {
     private Integer policy;
     @Column(nullable = false)
     private String provider;
-    private LocalDateTime effective;
-    private LocalDateTime expiration;
     @Column(nullable = false)
     private String vin;
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false)
     @JsonBackReference
     private Job job;
 }

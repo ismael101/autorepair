@@ -3,10 +3,7 @@ package com.project.autoshop.services;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Image;
 import com.project.autoshop.models.Job;
-import com.project.autoshop.models.Status;
-import com.project.autoshop.repositories.CustomerRepository;
 import com.project.autoshop.repositories.ImageRepository;
-import com.project.autoshop.repositories.StatusRepository;
 import com.project.autoshop.repositories.JobRepository;
 import com.project.autoshop.request.JobsRequest;
 import com.project.autoshop.utils.FileUtils;
@@ -17,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.zip.Deflater;
 
@@ -26,7 +24,6 @@ import java.util.zip.Deflater;
 public class JobService {
     private final JobRepository jobRepository;
     private final ImageRepository imageRepository;
-    private final StatusService statusService;
 
     //method for getting all jobs
     public List<Job> getJobs(){
@@ -44,11 +41,12 @@ public class JobService {
     public Job createJob(JobsRequest request){
         Job job = Job.builder()
                 .labor(request.getLabor())
+                .complete(false)
                 .description(request.getDescription())
                 .parts(List.of())
+                .images(List.of())
                 .build();
         jobRepository.save(job);
-        statusService.createStatus(job);
         return job;
     }
 

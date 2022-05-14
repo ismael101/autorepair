@@ -20,7 +20,8 @@ public class Vehicle {
     private String model;
     @Column(nullable = false)
     private Integer year;
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    private String vin;
+    @OneToOne(optional = false)
     @JsonBackReference
     private Job job;
 }

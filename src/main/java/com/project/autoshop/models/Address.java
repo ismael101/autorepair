@@ -7,8 +7,10 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
+@Getter
+@Setter
+@ToString
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +24,6 @@ public class Address {
     @Column(nullable = false)
     private Integer zipcode;
     @JsonBackReference
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false)
     private Job job;
 }
