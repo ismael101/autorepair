@@ -1,22 +1,25 @@
 package com.project.autoshop.repositories;
 
-import com.project.autoshop.models.Customer;
 import com.project.autoshop.models.Job;
-import org.junit.jupiter.api.*;
+import com.project.autoshop.models.Labor;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class CustomerRepositoryTest {
+class LaborRepositoryTest {
     @Autowired
     public JobRepository jobRepository;
     @Autowired
-    public CustomerRepository underTest;
+    public LaborRepository underTest;
 
     @BeforeEach
     void setUp(){
@@ -26,15 +29,15 @@ class CustomerRepositoryTest {
                 .complete(false)
                 .build();
         jobRepository.save(job);
-        Customer customer = Customer
+        Labor labor = Labor
                 .builder()
-                .first("ismael")
-                .last("mohamed")
-                .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .location("bottom")
+                .description("part for transmission")
+                .task("attachment")
+                .cost(100.0)
                 .job(job)
                 .build();
-        underTest.save(customer);
+        underTest.save(labor);
     }
     @AfterEach
     void breakDown(){
@@ -43,8 +46,9 @@ class CustomerRepositoryTest {
     }
 
     @Test
-    void itShouldFindCustomerByJob(){
-        Optional<Customer> customer = underTest.findClientByJob(1);
-        assertTrue(customer.isPresent());
+    void itShouldFindLaborByJob(){
+        List<Labor> labors = underTest.findLaborsByJob(1);
+        assertFalse(labors.isEmpty());
+        assertEquals(1, labors.size());
     }
 }

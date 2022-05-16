@@ -2,10 +2,7 @@ package com.project.autoshop.repositories;
 
 import com.project.autoshop.models.Job;
 import com.project.autoshop.models.Part;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -14,31 +11,35 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class PartRepositoryTest {
     @Autowired
     public JobRepository jobRepository;
     @Autowired
     public PartRepository underTest;
 
-    @BeforeAll
+    @BeforeEach
     void setUp(){
         Job job = Job
                 .builder()
-                .id(1)
                 .description("broken transmission")
+                .complete(false)
                 .build();
         jobRepository.save(job);
         Part part = Part
                 .builder()
                 .name("transmission")
                 .website("www.google.com")
+                .location("bottom")
+                .ordered(false)
+                .notes("")
+                .description("part for transmission")
                 .cost(100.0)
                 .job(job)
                 .build();
         underTest.save(part);
     }
-    @AfterAll
+    @AfterEach
     void breakDown(){
         jobRepository.deleteAll();
         underTest.deleteAll();

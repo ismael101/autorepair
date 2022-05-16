@@ -22,7 +22,7 @@ class ClientServiceTest {
         underTest.getClients();
         verify(clientRepository).findAll();
     }
-
+ 
     @Test
     void itShouldFindOne(){
         Client client = new Client(1,"ismael","mohamed", "ismaelomermohamed@gmail.com");

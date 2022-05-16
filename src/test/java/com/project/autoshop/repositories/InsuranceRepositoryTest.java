@@ -1,6 +1,6 @@
 package com.project.autoshop.repositories;
 
-import com.project.autoshop.models.Customer;
+import com.project.autoshop.models.Insurance;
 import com.project.autoshop.models.Job;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,40 +11,42 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class CustomerRepositoryTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class InsuranceRepositoryTest  {
+    @Autowired
+    public InsuranceRepository underTest;
     @Autowired
     public JobRepository jobRepository;
-    @Autowired
-    public CustomerRepository underTest;
 
-    @BeforeEach
-    void setUp(){
+    @BeforeAll
+    void beforeAll() {
         Job job = Job
                 .builder()
                 .description("broken transmission")
                 .complete(false)
                 .build();
         jobRepository.save(job);
-        Customer customer = Customer
+        Insurance insurance = Insurance
                 .builder()
-                .first("ismael")
-                .last("mohamed")
-                .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .policy("acasdcasdc")
+                .provider("geico")
+                .vin("vin")
                 .job(job)
                 .build();
-        underTest.save(customer);
+        underTest.save(insurance);
+
     }
-    @AfterEach
-    void breakDown(){
+
+    @AfterAll
+    void afterAll(){
         jobRepository.deleteAll();
         underTest.deleteAll();
     }
 
+
     @Test
-    void itShouldFindCustomerByJob(){
-        Optional<Customer> customer = underTest.findClientByJob(1);
-        assertTrue(customer.isPresent());
+    void itShouldFindInsuranceByJob(){
+        Optional<Insurance> insurance = underTest.findInsuranceByJob(1);
+        assertTrue(insurance.isPresent());
     }
 }
