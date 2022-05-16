@@ -1,18 +1,17 @@
 package com.project.autoshop.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Builder
+@Getter
+@Setter
+@ToString
 public class Labor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

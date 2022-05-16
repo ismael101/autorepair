@@ -19,33 +19,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(InvalidEmailException.class)
-    protected ResponseEntity<Object> handleInvalidEmail(InvalidEmailException ex, WebRequest request){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("path", ((ServletWebRequest)request).getRequest().getRequestURI().toString());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    protected ResponseEntity<Object> handleNotFound(NotFoundException ex, WebRequest request){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("path", ((ServletWebRequest)request).getRequest().getRequestURI().toString());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-    }
-
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    protected ResponseEntity<Object> handleEmailAlreadyExists(EmailAlreadyExistsException ex, WebRequest request){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("path", ((ServletWebRequest)request).getRequest().getRequestURI().toString());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();

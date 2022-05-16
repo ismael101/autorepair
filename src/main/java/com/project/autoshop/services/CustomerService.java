@@ -1,25 +1,21 @@
 package com.project.autoshop.services;
 
-import com.project.autoshop.exceptions.EmailAlreadyExistsException;
 import com.project.autoshop.exceptions.NotFoundException;
 import com.project.autoshop.models.Customer;
 import com.project.autoshop.models.Job;
 import com.project.autoshop.repositories.CustomerRepository;
 import com.project.autoshop.repositories.JobRepository;
 import com.project.autoshop.request.CustomerRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final JobRepository jobRepository;
-
-    public CustomerService(CustomerRepository customerRepository, JobRepository jobRepository) {
-        this.customerRepository = customerRepository;
-        this.jobRepository = jobRepository;
-    }
 
     //method getting a list of all clients
     public List<Customer> getClients(){
@@ -29,7 +25,7 @@ public class CustomerService {
     //method for getting a single client by id
     public Customer getClient(Integer id){
         Customer customer = this.customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("client with id: " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("customer with id: " + id + " not found"));
         return customer;
     }
 

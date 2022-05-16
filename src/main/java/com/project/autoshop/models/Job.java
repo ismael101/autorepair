@@ -6,10 +6,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Builder
+@Getter
+@Setter
+@ToString
 public class Job {
     @Id
     @GeneratedValue

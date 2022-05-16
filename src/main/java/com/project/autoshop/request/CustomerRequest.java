@@ -14,18 +14,18 @@ import javax.validation.constraints.NotNull;
 public class CustomerRequest {
     @NotNull(message = "first cannot be null", groups = Create.class)
     @NotBlank(message = "first cannot be blank", groups = {Create.class, Update.class})
-    private String first;
+    public String first;
     @NotNull(message = "last cannot be null", groups = Create.class)
     @NotBlank(message = "last cannot be blank", groups = {Create.class, Update.class})
-    private String last;
+    public String last;
     @NotNull(message = "email cannot be null", groups = Create.class)
     @NotBlank(message = "email cannot be blank", groups = {Create.class, Update.class})
     @Email(groups = {Create.class, Update.class})
-    private String email;
+    public String email;
     @NotNull(message = "phone cannot be null", groups = Create.class)
     @Min(message = "invalid phone number", value = 1000000000l)
     @Min(message = "invalid phone number", value = 9999999999l)
-    private Long phone;
+    public Long phone;
     @NotNull(message = "job required")
-    private Integer job;
+    public Integer job;
 }

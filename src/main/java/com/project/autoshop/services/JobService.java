@@ -62,8 +62,8 @@ public class JobService {
 
     //method for deleting job
     public void deleteWork(Integer id){
-        this.jobRepository.findById(id)
+        Job job = this.jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("work with id: " + id + " not found"));
-        this.jobRepository.deleteById(id);
+        this.jobRepository.delete(job);
     }
 }

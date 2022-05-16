@@ -5,17 +5,19 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Entity
 @Builder
+@Getter
+@Setter
+@ToString
 public class Insurance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(nullable = false)
-    private Integer policy;
+    private String policy;
     @Column(nullable = false)
     private String provider;
     @Column(nullable = false)

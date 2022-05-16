@@ -9,7 +9,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

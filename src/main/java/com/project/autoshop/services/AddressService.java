@@ -6,6 +6,7 @@ import com.project.autoshop.models.Job;
 import com.project.autoshop.repositories.AddressRepository;
 import com.project.autoshop.repositories.JobRepository;
 import com.project.autoshop.request.AddressRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,14 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AddressService {
     private final AddressRepository addressRepository;
     private final JobRepository jobRepository;
-
-    public AddressService(AddressRepository addressRepository, JobRepository jobRepository) {
-        this.addressRepository = addressRepository;
-        this.jobRepository = jobRepository;
-    }
 
     public List<Address> getAddresses(){
         return addressRepository.findAll();

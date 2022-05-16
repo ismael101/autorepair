@@ -30,7 +30,7 @@ public class VehicleService {
 
     public Vehicle getJobVehicle(Integer id){
         return this.vehicleRepository.findVehicleByJob(id)
-                .orElseThrow(() -> new NotFoundException("vehicle with id: " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("vehicle with job id: " + id + " not found"));
     }
 
     public Vehicle createVehicle(VehicleRequest request){

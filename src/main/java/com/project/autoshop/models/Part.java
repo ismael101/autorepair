@@ -7,8 +7,10 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
+@Getter
+@Setter
+@ToString
 public class Part {
     @Id
     @GeneratedValue
