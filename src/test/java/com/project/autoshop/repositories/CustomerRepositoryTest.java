@@ -44,7 +44,7 @@ class CustomerRepositoryTest {
 
     @Test
     void itShouldFindCustomerByJob(){
-        Optional<Customer> customer = underTest.findClientByJob(1);
+        Optional<Customer> customer = underTest.findCustomerByJob(1);
         assertTrue(customer.isPresent());
     }
 }

@@ -33,7 +33,7 @@ public class PartService {
     }
 
     public Part createPart(PartRequest request){
-        Job job = jobRepository.findById(request.getJob()).orElseThrow(() -> new NotFoundException("part with id: " + request.getJob() + " not found"));
+        Job job = jobRepository.findById(request.getJob()).orElseThrow(() -> new NotFoundException("job with id: " + request.getJob() + " not found"));
         Part part = Part.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -66,12 +66,14 @@ public class PartService {
                 .ifPresent(website -> part.setWebsite(website));
         Optional.ofNullable(request.getCost())
                 .ifPresent(price -> part.setCost(price));
+        Optional.ofNullable(request.getNotes())
+                .ifPresent(notes -> part.setNotes(notes));
 
         return part;
     }
 
     public void deletePart(Integer id){
-        partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));;
-        partsRepository.deleteById(id);
+        Part part = partsRepository.findById(id).orElseThrow(() -> new NotFoundException("part with id: " + id + " not found"));;
+        partsRepository.delete(part);
     }
 }

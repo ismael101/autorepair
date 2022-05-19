@@ -2,6 +2,7 @@ package com.project.autoshop.request;
 
 import com.project.autoshop.request.groups.Create;
 import com.project.autoshop.request.groups.Update;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@Builder
 public class PartRequest {
     @NotNull(message = "name cannot be null", groups = Create.class)
     @NotBlank(message = "name cannot be blank", groups = {Create.class, Update.class})

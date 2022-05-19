@@ -37,6 +37,7 @@ public class ImageService {
     }
 
     public List<Image> getJobImages(Integer id) throws DataFormatException, IOException {
+        jobRepository.findById(id).orElseThrow(() -> new NotFoundException("job with id: " + id + " not found"));
         List<Image> images = imageRepository.findImagesByJob(id);
         for (Image i: images){
             i.setData(FileUtils.decompress(i.getData(), false));

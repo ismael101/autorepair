@@ -29,7 +29,7 @@ public class AddressService {
     }
     public Address getJobAddress(Integer id){
         return addressRepository.findAddressByJob(id).
-                orElseThrow(() -> new NotFoundException("address with id: " + id + " not found"));
+                orElseThrow(() -> new NotFoundException("address with job id: " + id + " not found"));
     }
 
     public Address createAddress(AddressRequest request){
@@ -48,7 +48,7 @@ public class AddressService {
 
     @Transactional
     public Address updateAddress(Integer id, AddressRequest request){
-        Address address = addressRepository.findAddressByJob(id).
+        Address address = addressRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("address with id: " + id + " not found"));
         Optional.ofNullable(request.getStreet())
                 .ifPresent(street -> address.setStreet(street));
@@ -62,7 +62,7 @@ public class AddressService {
     }
 
     public void deleteAddress(Integer id){
-        Address address = addressRepository.findAddressByJob(id).
+        Address address = addressRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("address with id: " + id + " not found"));
         addressRepository.delete(address);
     }

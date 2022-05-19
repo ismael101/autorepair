@@ -21,31 +21,31 @@ public class CustomerController {
     //endpoint for fetching all clients
     @GetMapping
     public ResponseEntity getClients(){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.getClients());
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomers());
     }
 
     //endpoint for fetching client by id
     @GetMapping(path = "{id}")
     public ResponseEntity getClient(@PathVariable("id") Integer id){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.getClient(id));
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomer(id));
     }
 
     //endpoint for creating client
     @PostMapping
     public ResponseEntity createClient(@RequestBody @Validated(Create.class) CustomerRequest customerRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createClient(customerRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customerRequest));
     }
 
     //endpoint for updating client
     @PutMapping(path = "{id}")
     public ResponseEntity updateClient(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) CustomerRequest customerRequest){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.updateClient(id, customerRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.updateCustomer(id, customerRequest));
     }
 
     //endpoint for deleting client
     @DeleteMapping(path = "{id}")
     public ResponseEntity deleteClient(@PathVariable("id") Integer id){
-        customerService.deleteClient(id);
+        customerService.deleteCustomer(id);
         return ResponseEntity.status(HttpStatus.OK).body("client deleted");
     }
 }

@@ -24,6 +24,8 @@ public class Labor {
     private String description;
     @Column(nullable = false)
     private Double cost;
+    @Column(nullable = false)
+    private String notes;
     @JsonBackReference
     @ManyToOne(optional = false)
     private Job job;

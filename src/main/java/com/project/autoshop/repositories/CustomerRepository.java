@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     //query for fetching customer by job
     @Query("SELECT c FROM Customer c WHERE c.job.id = ?1")
-    Optional<Customer> findClientByJob(Integer id);
+    Optional<Customer> findCustomerByJob(Integer id);
 }

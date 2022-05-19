@@ -45,7 +45,7 @@ public class JobController {
     //endpoint for deleting work
     @DeleteMapping(path = "{id}")
     public ResponseEntity deleteJob(@PathVariable Integer id){
-        this.jobService.deleteWork(id);
+        this.jobService.deleteJob(id);
         return ResponseEntity.status(HttpStatus.OK).body("work deleted");
     }
 }

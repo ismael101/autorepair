@@ -40,8 +40,10 @@ public class VehicleService {
                 .make(request.getMake())
                 .model(request.getModel())
                 .year(request.getYear())
+                .vin(request.getVin())
                 .job(job)
                 .build();
+        vehicleRepository.save(vehicle);
         return vehicle;
     }
 
@@ -54,7 +56,9 @@ public class VehicleService {
         Optional.ofNullable(request.getModel())
                 .ifPresent(model -> vehicle.setModel(model));
         Optional.ofNullable(request.getYear())
-                .ifPresent(year -> request.setYear(year));
+                .ifPresent(year -> vehicle.setYear(year));
+        Optional.ofNullable(request.getVin())
+                .ifPresent(vin -> vehicle.setVin(vin));
         return vehicle;
     }
 

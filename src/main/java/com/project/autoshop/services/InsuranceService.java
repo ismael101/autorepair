@@ -25,13 +25,13 @@ public class InsuranceService {
 
     public Insurance getJobInsurance(Integer id){
         Insurance insurance = insuranceRepository.findInsuranceByJob(id)
-                .orElseThrow(() -> new NotFoundException("insurance with job id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("insurance with job id: " + id + " not found"));
         return insurance;
     }
 
     public Insurance getInsurance(Integer id){
         Insurance insurance = insuranceRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("insurance with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("insurance with id: " + id + " not found"));
         return insurance;
     }
 
@@ -52,7 +52,7 @@ public class InsuranceService {
     @Transactional
     public Insurance updateInsurance(Integer id, InsuranceRequest request){
         Insurance insurance = insuranceRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("insurance with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("insurance with id: " + id + " not found"));
         Optional.ofNullable(request.getPolicy())
                 .ifPresent(policy -> insurance.setPolicy(policy));
         Optional.ofNullable(request.getProvider())
@@ -64,7 +64,7 @@ public class InsuranceService {
 
     public void deleteInsurance(Integer id){
         Insurance insurance = insuranceRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("insurance with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("insurance with id: " + id + " not found"));
         insuranceRepository.delete(insurance);
     }
 }
