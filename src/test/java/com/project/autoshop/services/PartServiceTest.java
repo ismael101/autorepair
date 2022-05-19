@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -89,6 +90,32 @@ class PartServiceTest {
 
     @Test
     void itShouldCreatePart(){
+        when(jobRepository.findById(anyInt())).thenReturn(Optional.of(Job.builder().build()));
+        Part part = underTest.createPart(PartRequest
+                .builder()
+                .name("replacement")
+                .description("drivetrain replacement")
+                .cost(500.00)
+                .location("drivetrain")
+                .ordered(true)
+                .website("http://www.yahoo.com")
+                .notes("different replacement")
+                .job(1)
+                .build()
+        );
+        verify(jobRepository).findById(1);
+        verify(partRepository).save(part);
+        assertEquals(part.getName(), "replacement");
+        assertEquals(part.getDescription(), "drivetrain replacement");
+        assertEquals(part.getCost(), 500.00);
+        assertEquals(part.getLocation(), "drivetrain");
+        assertEquals(part.getOrdered(), true);
+        assertEquals(part.getWebsite(), "http://www.yahoo.com");
+        assertEquals(part.getNotes(), "different replacement");
+    }
+
+    @Test
+    void itShouldUpdatePart(){
         when(partRepository.findById(anyInt())).thenReturn(Optional.of(Part
                 .builder()
                 .name("changer")

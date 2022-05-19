@@ -40,6 +40,7 @@ public class PartService {
                 .website(request.getWebsite())
                 .ordered(request.getOrdered())
                 .location(request.getLocation())
+                .notes(request.getNotes())
                 .cost(request.getCost())
                 .job(job)
                 .build();
