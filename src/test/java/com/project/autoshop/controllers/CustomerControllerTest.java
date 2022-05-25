@@ -158,11 +158,6 @@ class CustomerControllerTest {
     void itShouldDeleteCustomer() throws Exception{
         when(customerRepository.findById(anyInt())).thenReturn(Optional.of(Customer
                 .builder()
-                .email("mock email")
-                .first("mock first")
-                .last("mock last")
-                .phone("7632275152")
-                .job(new Job())
                 .build()));
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/customer/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk());

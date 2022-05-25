@@ -45,7 +45,7 @@ public class ImageService {
         return images;
     }
 
-    public Image upload(Integer id, MultipartFile file) throws IOException {
+    public Image upload(Integer id, MultipartFile file) throws IOException, DataFormatException {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("job with id: " + id + " not found"));
         Image image = Image
@@ -55,6 +55,7 @@ public class ImageService {
                 .job(job)
                 .build();
         imageRepository.save(image);
+        image.setData(FileUtils.decompress(image.getData(), false));
         return image;
     }
 

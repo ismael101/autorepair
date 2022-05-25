@@ -157,11 +157,6 @@ class AddressControllerTest {
     void itShouldDeleteAddress() throws Exception{
         when(addressRepository.findById(anyInt())).thenReturn(Optional.of(Address
                 .builder()
-                .street("mock street")
-                .city("mock city")
-                .state("mock state")
-                .zipcode(55432)
-                .job(new Job())
                 .build()));
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/address/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk());

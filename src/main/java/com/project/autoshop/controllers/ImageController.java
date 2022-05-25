@@ -32,7 +32,7 @@ public class ImageController {
     }
 
     @PostMapping(path = "/job/{id}")
-    public ResponseEntity uploadImage(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile file) throws IOException {
+    public ResponseEntity uploadImage(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile file) throws IOException, DataFormatException {
         return ResponseEntity.status(HttpStatus.OK).body(imageService.upload(id, file));
     }
 

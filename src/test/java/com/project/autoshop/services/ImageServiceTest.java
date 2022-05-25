@@ -91,7 +91,7 @@ class ImageServiceTest {
     }
 
     @Test
-    void itShouldCreateImage() throws IOException {
+    void itShouldCreateImage() throws IOException, DataFormatException {
         Path path = Paths.get(System.getProperty("user.dir") + "/src/test/java/com/project/autoshop/services/test.png");
         MultipartFile file = new MockMultipartFile("test.png", "test.png", "image/jpeg", Files.readAllBytes(path));
         when(jobRepository.findById(anyInt())).thenReturn(Optional.of(Job.builder().build()));
@@ -99,7 +99,7 @@ class ImageServiceTest {
         verify(jobRepository).findById(1);
         verify(imageRepository).save(image);
         assertEquals(image.getName(), "test.png");
-        assertArrayEquals(image.getData(), FileUtils.compress(Files.readAllBytes(path), Deflater.BEST_COMPRESSION, false));
+        assertArrayEquals(image.getData(), Files.readAllBytes(path));
     }
 
     @Test

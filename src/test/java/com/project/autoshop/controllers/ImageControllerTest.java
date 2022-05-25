@@ -13,10 +13,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -98,17 +103,41 @@ class ImageControllerTest {
 
     @Test
     void itShouldCreateImage() throws Exception {
+        when(jobRepository.findById(anyInt())).thenReturn(Optional.of(Job
+                .builder()
+                .build()));
         Path path = Paths.get(System.getProperty("user.dir") + "/src/test/java/com/project/autoshop/controllers/test.png");
         byte[] data = Files.readAllBytes(path);
-        when(imageRepository.findById(anyInt())).thenReturn(Optional.of(Image
-                .builder()
-                .name("mock name")
-                .job(new Job())
-                .data(FileUtils.compress(data, Deflater.BEST_COMPRESSION, false))
-                .build()));
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/image/1"))
+        MockMultipartFile file = new MockMultipartFile("image", "mock.png", MediaType.TEXT_PLAIN_VALUE, data);
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/image/job/1").file(file))
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("mock name")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("mock.png")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data", Matchers.is(Base64.getEncoder().encodeToString(data))));
     }
+
+    @Test
+    void itShouldDeleteImage() throws Exception {
+        when(imageRepository.findById(anyInt())).thenReturn(Optional.of(Image
+                .builder()
+                .build()));
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/image/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void itShouldThrowNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/image/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/image/1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(404)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.is("image with id: 1 not found")));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/image/job/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/image/job/1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(404)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.is("image with job id: 1 not found")));
+    }
+
 }
