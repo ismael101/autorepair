@@ -11,33 +11,35 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CustomerRepositoryTest {
     @Autowired
     public JobRepository jobRepository;
     @Autowired
     public CustomerRepository underTest;
 
-    @BeforeEach
+    @BeforeAll
     void setUp(){
         Job job = Job
                 .builder()
-                .description("broken transmission")
+                .id(1)
                 .complete(false)
+                .description("mock description")
                 .build();
         jobRepository.save(job);
         Customer customer = Customer
                 .builder()
-                .first("ismael")
-                .last("mohamed")
-                .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .first("mock first")
+                .last("mock last")
+                .email("mock email")
+                .phone("7632275152")
                 .job(job)
                 .build();
         underTest.save(customer);
     }
-    @AfterEach
-    void breakDown(){
+
+    @AfterAll
+    void afterAll(){
         jobRepository.deleteAll();
         underTest.deleteAll();
     }
@@ -45,6 +47,16 @@ class CustomerRepositoryTest {
     @Test
     void itShouldFindCustomerByJob(){
         Optional<Customer> customer = underTest.findCustomerByJob(1);
-        assertTrue(customer.isPresent());
+        assertFalse(customer.isEmpty());
+        assertEquals(customer.get().getFirst(), "mock first");
+        assertEquals(customer.get().getLast(), "mock last");
+        assertEquals(customer.get().getEmail(), "mock email");
+        assertEquals(customer.get().getPhone(), 7632275152l);
+    }
+
+    @Test
+    void itShouldNotFindCustomerByJob(){
+        Optional<Customer> customer = underTest.findCustomerByJob(2);
+        assertTrue(customer.isEmpty());
     }
 }

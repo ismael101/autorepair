@@ -1,45 +1,42 @@
 package com.project.autoshop.repositories;
-
-import com.project.autoshop.models.Customer;
 import com.project.autoshop.models.Image;
 import com.project.autoshop.models.Job;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImageRepositoryTest {
     @Autowired
     public JobRepository jobRepository;
     @Autowired
     public ImageRepository underTest;
 
-    @BeforeEach
+    @BeforeAll
     void setUp(){
         Job job = Job
                 .builder()
-                .description("broken transmission")
+                .id(1)
                 .complete(false)
+                .description("mock description")
                 .build();
         jobRepository.save(job);
         Image image = Image
                 .builder()
-                .name("main")
-                .data("acdadc".getBytes(StandardCharsets.UTF_8))
+                .name("mock name")
+                .data("mock data".getBytes(StandardCharsets.UTF_8))
                 .job(job)
                 .build();
         underTest.save(image);
     }
 
-    @AfterEach
-    void breakDown(){
+    @AfterAll
+    void afterAll(){
         jobRepository.deleteAll();
         underTest.deleteAll();
     }
@@ -48,6 +45,14 @@ class ImageRepositoryTest {
     void itShouldFindImagesByJob(){
         List<Image> images = underTest.findImagesByJob(1);
         assertFalse(images.isEmpty());
-        assertEquals(1, images.size());
+        assertEquals(images.size(), 1);
+        assertEquals(images.get(0).getName(), "mock name");
+        assertArrayEquals(images.get(0).getData(), "mock data".getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void itShouldNotFindImagesByJob(){
+        List<Image> images = underTest.findImagesByJob(2);
+        assertTrue(images.isEmpty());
     }
 }

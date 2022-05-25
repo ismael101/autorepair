@@ -55,14 +55,10 @@ public class PartService {
                 .ifPresent(name -> part.setName(name));
         Optional.ofNullable(request.getDescription())
                 .ifPresent(description -> part.setDescription(description));
-        Optional.ofNullable(request.getDescription())
-                .ifPresent(description -> part.setDescription(description));
         Optional.ofNullable(request.getLocation())
                 .ifPresent(location -> part.setLocation(location));
         Optional.ofNullable(request.getOrdered())
                 .ifPresent(ordered -> part.setOrdered(ordered));
-        Optional.ofNullable(request.getName())
-                .ifPresent(name -> part.setName(name));
         Optional.ofNullable(request.getWebsite())
                 .ifPresent(website -> part.setWebsite(website));
         Optional.ofNullable(request.getCost())

@@ -19,22 +19,22 @@ class InsuranceRepositoryTest  {
     public JobRepository jobRepository;
 
     @BeforeAll
-    void beforeAll() {
+    void setUp(){
         Job job = Job
                 .builder()
-                .description("broken transmission")
+                .id(1)
                 .complete(false)
+                .description("mock description")
                 .build();
         jobRepository.save(job);
         Insurance insurance = Insurance
                 .builder()
-                .policy("acasdcasdc")
-                .provider("geico")
-                .vin("vin")
+                .provider("mock provider")
+                .policy("mock policy")
+                .vin("mock vin")
                 .job(job)
                 .build();
         underTest.save(insurance);
-
     }
 
     @AfterAll
@@ -43,10 +43,18 @@ class InsuranceRepositoryTest  {
         underTest.deleteAll();
     }
 
-
     @Test
     void itShouldFindInsuranceByJob(){
         Optional<Insurance> insurance = underTest.findInsuranceByJob(1);
-        assertTrue(insurance.isPresent());
+        assertFalse(insurance.isEmpty());
+        assertEquals(insurance.get().getProvider(), "mock provider");
+        assertEquals(insurance.get().getPolicy(), "mock policy");
+        assertEquals(insurance.get().getVin(), "mock vin");
+    }
+
+    @Test
+    void itShouldNotFindInsuranceByJob(){
+        Optional<Insurance> insurance = underTest.findInsuranceByJob(2);
+        assertTrue(insurance.isEmpty());
     }
 }

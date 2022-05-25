@@ -11,35 +11,36 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PartRepositoryTest {
     @Autowired
     public JobRepository jobRepository;
     @Autowired
     public PartRepository underTest;
 
-    @BeforeEach
+    @BeforeAll
     void setUp(){
         Job job = Job
                 .builder()
-                .description("broken transmission")
+                .id(1)
+                .description("mock description")
                 .complete(false)
                 .build();
         jobRepository.save(job);
         Part part = Part
                 .builder()
-                .name("transmission")
-                .website("www.google.com")
-                .location("bottom")
+                .name("mock name")
+                .website("mock website")
+                .location("mock location")
                 .ordered(false)
-                .notes("")
-                .description("part for transmission")
-                .cost(100.0)
+                .notes("mock notes")
+                .description("mock description")
+                .cost(100.00)
                 .job(job)
                 .build();
         underTest.save(part);
     }
-    @AfterEach
+    @AfterAll
     void breakDown(){
         jobRepository.deleteAll();
         underTest.deleteAll();
@@ -49,6 +50,20 @@ class PartRepositoryTest {
     void itShouldFindPartsByJob(){
         List<Part> parts = underTest.findPartsByJob(1);
         assertFalse(parts.isEmpty());
-        assertEquals(1, parts.size());
+        assertEquals(parts.size(), 1);
+        assertEquals(parts.get(0).getName(), "mock name");
+        assertEquals(parts.get(0).getOrdered(), false);
+        assertEquals(parts.get(0).getWebsite(), "mock website");
+        assertEquals(parts.get(0).getNotes(), "mock notes");
+        assertEquals(parts.get(0).getCost(), 100.00);
+        assertEquals(parts.get(0).getDescription(), "mock description");
+        assertEquals(parts.get(0).getLocation(), "mock location");
+    }
+
+
+    @Test
+    void itShouldNotFindLaborsByJob(){
+        List<Part> parts = underTest.findPartsByJob(2);
+        assertTrue(parts.isEmpty());
     }
 }

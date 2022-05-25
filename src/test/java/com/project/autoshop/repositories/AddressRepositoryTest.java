@@ -10,43 +10,53 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AddressRepositoryTest {
     @Autowired
     public AddressRepository underTest;
     @Autowired
     public JobRepository jobRepository;
 
-    @BeforeEach
-    void beforeAll() {
+    @BeforeAll
+    void setUp(){
         Job job = Job
                 .builder()
-                .description("broken transmission")
+                .id(1)
                 .complete(false)
+                .description("mock description")
                 .build();
         jobRepository.save(job);
         Address address = Address
                 .builder()
-                .city("minneapolis")
-                .state("minnesota")
-                .street("washington avenue")
-                .zipcode(55432)
+                .street("mock street")
+                .city("mock city")
+                .state("mock state")
+                .zipcode(55555)
                 .job(job)
                 .build();
         underTest.save(address);
-
     }
 
-    @AfterEach
+    @AfterAll
     void afterAll(){
         jobRepository.deleteAll();
         underTest.deleteAll();
     }
 
-
     @Test
     void itShouldFindAddressByJob(){
         Optional<Address> address = underTest.findAddressByJob(1);
-        assertTrue(address.isPresent());
+        assertFalse(address.isEmpty());
+        assertEquals(address.get().getStreet(), "mock street");
+        assertEquals(address.get().getCity(), "mock city");
+        assertEquals(address.get().getState(), "mock state");
+        assertEquals(address.get().getZipcode(), 55555);
     }
+
+    @Test
+    void itShouldNotFindAddressByJob(){
+        Optional<Address> address = underTest.findAddressByJob(2);
+        assertTrue(address.isEmpty());
+    }
+
 }

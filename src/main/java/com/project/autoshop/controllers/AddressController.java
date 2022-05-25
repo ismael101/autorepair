@@ -48,7 +48,7 @@ public class AddressController {
 
     //endpoint for deleting address
     @DeleteMapping(path = "{id}")
-    public ResponseEntity deleteClient(@PathVariable("id") Integer id){
+    public ResponseEntity deleteAddress(@PathVariable("id") Integer id){
         addressService.deleteAddress(id);
         return ResponseEntity.status(HttpStatus.OK).body("address deleted");
     }

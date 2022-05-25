@@ -1,6 +1,5 @@
 package com.project.autoshop.repositories;
 
-import com.project.autoshop.models.Address;
 import com.project.autoshop.models.Job;
 import com.project.autoshop.models.Vehicle;
 import org.junit.jupiter.api.*;
@@ -12,45 +11,54 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VehicleRepositoryTest {
     @Autowired
     public VehicleRepository underTest;
     @Autowired
     public JobRepository jobRepository;
 
-    @BeforeEach
+    @BeforeAll
     void beforeAll() {
         Job job = Job
                 .builder()
-                .id(60)
+                .id(1)
                 .description("broken transmission")
                 .complete(false)
                 .build();
         jobRepository.save(job);
         Vehicle vehicle = Vehicle
                 .builder()
-                .id(61)
-                .make("toyota")
-                .model("camry")
+                .make("mock make")
+                .model("mock model")
                 .year(2017)
-                .vin("asdcasdcasdc")
+                .vin("mock vin")
                 .job(job)
                 .build();
         underTest.save(vehicle);
 
     }
 
-    @AfterEach
+    @AfterAll
     void afterAll(){
-        jobRepository.deleteById(60);
-        underTest.deleteById(61);
+        jobRepository.deleteAll();
+        underTest.deleteAll();
     }
 
 
     @Test
     void itShouldFindVehicleByJob(){
-        Optional<Vehicle> vehicle = underTest.findVehicleByJob(60);
-        assertTrue(vehicle.isPresent());
+        Optional<Vehicle> vehicle = underTest.findVehicleByJob(1);
+        assertFalse(vehicle.isEmpty());
+        assertEquals(vehicle.get().getMake(), "mock make");
+        assertEquals(vehicle.get().getModel(), "mock model");
+        assertEquals(vehicle.get().getYear(), 2017);
+        assertEquals(vehicle.get().getVin(), "mock vin");
+    }
+
+    @Test
+    void itShouldNotFindVehicle(){
+        Optional<Vehicle> vehicle = underTest.findVehicleByJob(2);
+        assertTrue(vehicle.isEmpty());
     }
 }

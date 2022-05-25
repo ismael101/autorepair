@@ -22,7 +22,7 @@ public class Customer {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private Long phone;
+    private String phone;
     @JsonBackReference
     @OneToOne(optional = false)
     private Job job;

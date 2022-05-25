@@ -43,7 +43,7 @@ class CustomerServiceTest {
                 .first("ismael")
                 .last("mohamed")
                 .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .phone("7632275152")
                 .job(new Job())
                 .build();
         when(customerRepository.findById(anyInt())).thenReturn(Optional.of(customer));
@@ -52,7 +52,7 @@ class CustomerServiceTest {
         assertEquals(underTest.getCustomer(1).getFirst(), "ismael");
         assertEquals(underTest.getCustomer(1).getLast(), "mohamed");
         assertEquals(underTest.getCustomer(1).getEmail(), "ismaelomermohamed@gmail.com");
-        assertEquals(underTest.getCustomer(1).getPhone(), 7632275152l);
+        assertEquals(underTest.getCustomer(1).getPhone(), "7632275152");
     }
 
     @Test
@@ -62,7 +62,7 @@ class CustomerServiceTest {
                 .first("ismael")
                 .last("mohamed")
                 .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .phone("7632275152")
                 .job(new Job())
                 .build();
         when(customerRepository.findCustomerByJob(anyInt())).thenReturn(Optional.of(customer));
@@ -71,7 +71,7 @@ class CustomerServiceTest {
         assertEquals(underTest.getJobCustomer(1).getFirst(), "ismael");
         assertEquals(underTest.getJobCustomer(1).getLast(), "mohamed");
         assertEquals(underTest.getJobCustomer(1).getEmail(), "ismaelomermohamed@gmail.com");
-        assertEquals(underTest.getJobCustomer(1).getPhone(), 7632275152l);
+        assertEquals(underTest.getJobCustomer(1).getPhone(), "7632275152");
     }
 
     @Test
@@ -82,7 +82,7 @@ class CustomerServiceTest {
                 .first("ismael")
                 .last("mohamed")
                 .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .phone("7632275152")
                 .job(1)
                 .build()
         );
@@ -91,7 +91,7 @@ class CustomerServiceTest {
         assertEquals(customer.getFirst(), "ismael");
         assertEquals(customer.getLast(), "mohamed");
         assertEquals(customer.getEmail(), "ismaelomermohamed@gmail.com");
-        assertEquals(customer.getPhone(), 7632275152l);
+        assertEquals(customer.getPhone(), "7632275152");
     }
 
     @Test
@@ -101,7 +101,7 @@ class CustomerServiceTest {
                 .first("ismael")
                 .last("mohamed")
                 .email("ismaelomermohamed@gmail.com")
-                .phone(7632275152l)
+                .phone("7632275152")
                 .job(new Job())
                 .build()
         ));
@@ -110,14 +110,14 @@ class CustomerServiceTest {
                 .first("qaalib")
                 .last("farah")
                 .email("qaalibomerfarah@gmail.com")
-                .phone(7632275251l)
+                .phone("7632275251")
                 .build()
         );
         verify(customerRepository).findById(1);
         assertEquals(customer.getFirst(), "qaalib");
         assertEquals(customer.getLast(), "farah");
         assertEquals(customer.getEmail(), "qaalibomerfarah@gmail.com");
-        assertEquals(customer.getPhone(), 7632275251l);
+        assertEquals(customer.getPhone(), "7632275251");
     }
 
     @Test

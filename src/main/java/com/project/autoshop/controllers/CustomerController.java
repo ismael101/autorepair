@@ -18,33 +18,39 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
     private final CustomerService customerService;
 
-    //endpoint for fetching all clients
+    //endpoint for fetching all customers
     @GetMapping
-    public ResponseEntity getClients(){
+    public ResponseEntity getCustomers(){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomers());
     }
 
-    //endpoint for fetching client by id
+    //endpoint for fetching customer by id
     @GetMapping(path = "{id}")
-    public ResponseEntity getClient(@PathVariable("id") Integer id){
+    public ResponseEntity getCustomer(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomer(id));
     }
 
-    //endpoint for creating client
+    //endpoint for fetching address by id
+    @GetMapping(path = "/job/{id}")
+    public ResponseEntity getJobCustomer(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.getJobCustomer(id));
+    }
+
+    //endpoint for creating customer
     @PostMapping
-    public ResponseEntity createClient(@RequestBody @Validated(Create.class) CustomerRequest customerRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customerRequest));
+    public ResponseEntity createCustomer(@RequestBody @Validated(Create.class) CustomerRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(request));
     }
 
-    //endpoint for updating client
+    //endpoint for updating customer
     @PutMapping(path = "{id}")
-    public ResponseEntity updateClient(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) CustomerRequest customerRequest){
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.updateCustomer(id, customerRequest));
+    public ResponseEntity updateCustomer(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) CustomerRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.updateCustomer(id, request));
     }
 
-    //endpoint for deleting client
+    //endpoint for deleting customer
     @DeleteMapping(path = "{id}")
-    public ResponseEntity deleteClient(@PathVariable("id") Integer id){
+    public ResponseEntity deleteCustomer(@PathVariable("id") Integer id){
         customerService.deleteCustomer(id);
         return ResponseEntity.status(HttpStatus.OK).body("client deleted");
     }

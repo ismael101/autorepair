@@ -30,19 +30,19 @@ public class VehicleController {
 
     //endpoint for creating vehicle
     @PostMapping
-    public ResponseEntity createAddress(@RequestBody @Validated(Create.class) VehicleRequest request){
+    public ResponseEntity createVehicle(@RequestBody @Validated(Create.class) VehicleRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(vehicleService.createVehicle(request));
     }
 
     //endpoint for updating vehicle
     @PutMapping(path = "{id}")
-    public ResponseEntity updateAddress(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) VehicleRequest request){
+    public ResponseEntity updateVehicle(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) VehicleRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.updateVehicle(id, request));
     }
 
     //endpoint for deleting vehicle
     @DeleteMapping(path = "{id}")
-    public ResponseEntity deleteClient(@PathVariable("id") Integer id){
+    public ResponseEntity deleteVehicle(@PathVariable("id") Integer id){
         vehicleService.deleteVehicle(id);
         return ResponseEntity.status(HttpStatus.OK).body("vehicle deleted");
     }
