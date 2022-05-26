@@ -19,7 +19,7 @@ public class InsuranceService {
     private final InsuranceRepository insuranceRepository;
     private final JobRepository jobRepository;
 
-    public List<Insurance> getAllInsurance(){
+    public List<Insurance> getInsurances(){
         return insuranceRepository.findAll();
     }
 

@@ -125,7 +125,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    void itShouldUpdateAddress() throws Exception{
+    void itShouldUpdateCustomer() throws Exception{
         when(customerRepository.findById(anyInt())).thenReturn(Optional.of(Customer
                 .builder()
                 .email("ismaelomermohamed@gmail.com")

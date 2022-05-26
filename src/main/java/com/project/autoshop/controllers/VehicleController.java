@@ -28,6 +28,11 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getVehicle(id));
     }
 
+    @GetMapping(path = "/job/{id}")
+    public ResponseEntity getJobVehicle(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getJobVehicle(id));
+    }
+
     //endpoint for creating vehicle
     @PostMapping
     public ResponseEntity createVehicle(@RequestBody @Validated(Create.class) VehicleRequest request){

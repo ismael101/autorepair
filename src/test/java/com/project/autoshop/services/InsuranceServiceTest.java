@@ -32,7 +32,7 @@ class InsuranceServiceTest {
 
     @Test
     void itShouldGetAllInsurance(){
-        underTest.getAllInsurance();
+        underTest.getInsurances();
         verify(insuranceRepository).findAll();
     }
 
