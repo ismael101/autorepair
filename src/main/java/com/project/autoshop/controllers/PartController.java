@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "api/v1/parts")
+@RequestMapping(path = "api/v1/part")
 @RequiredArgsConstructor
 public class PartController {
     private final PartService partsService;
@@ -21,7 +21,7 @@ public class PartController {
         return ResponseEntity.status(HttpStatus.OK).body(partsService.getParts());
     }
 
-    @GetMapping(path = "/jobs/{id}")
+    @GetMapping(path = "/job/{id}")
     public ResponseEntity getJobParts(@PathVariable Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(partsService.getJobParts(id));
     }
@@ -33,7 +33,7 @@ public class PartController {
 
     @PostMapping
     public ResponseEntity createPart(@RequestBody @Validated(Create.class) PartRequest partsRequest){
-        return ResponseEntity.status(HttpStatus.OK).body(partsService.createPart(partsRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(partsService.createPart(partsRequest));
     }
 
     @PutMapping(path = "{id}")

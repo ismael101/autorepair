@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -97,7 +96,7 @@ class PartServiceTest {
                 .description("drivetrain replacement")
                 .cost(500.00)
                 .location("drivetrain")
-                .ordered(true)
+                .ordered("true")
                 .website("http://www.yahoo.com")
                 .notes("different replacement")
                 .job(1)
@@ -133,7 +132,7 @@ class PartServiceTest {
                 .description("drivetrain replacement")
                 .cost(500.00)
                 .location("drivetrain")
-                .ordered(true)
+                .ordered("true")
                 .website("http://www.yahoo.com")
                 .notes("different replacement")
                 .job(1)

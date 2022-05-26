@@ -47,7 +47,7 @@ class JobServiceTest {
         Job job = underTest.createJob(JobRequest
                 .builder()
                 .description("change transmission")
-                .complete(false)
+                .complete("false")
                 .build());
         verify(jobRepository).save(job);
         assertEquals(job.getDescription(), "change transmission");
@@ -66,7 +66,7 @@ class JobServiceTest {
         Job job = underTest.updateJob(1, JobRequest
                 .builder()
                 .description("brake issues")
-                .complete(true)
+                .complete("true")
                 .build());
 
         verify(jobRepository).findById(1);

@@ -38,7 +38,7 @@ public class PartService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .website(request.getWebsite())
-                .ordered(request.getOrdered())
+                .ordered(Boolean.parseBoolean(request.getOrdered()))
                 .location(request.getLocation())
                 .notes(request.getNotes())
                 .cost(request.getCost())
@@ -58,7 +58,7 @@ public class PartService {
         Optional.ofNullable(request.getLocation())
                 .ifPresent(location -> part.setLocation(location));
         Optional.ofNullable(request.getOrdered())
-                .ifPresent(ordered -> part.setOrdered(ordered));
+                .ifPresent(ordered -> part.setOrdered(Boolean.parseBoolean(ordered)));
         Optional.ofNullable(request.getWebsite())
                 .ifPresent(website -> part.setWebsite(website));
         Optional.ofNullable(request.getCost())

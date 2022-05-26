@@ -32,7 +32,7 @@ public class JobService {
     //method for creating job
     public Job createJob(JobRequest request){
         Job job = Job.builder()
-                .complete(false)
+                .complete(Boolean.parseBoolean(request.getComplete()))
                 .description(request.getDescription())
                 .labors(List.of())
                 .parts(List.of())
@@ -49,7 +49,7 @@ public class JobService {
         Optional.ofNullable(update.getDescription())
                 .ifPresent(description -> job.setDescription(description));
         Optional.ofNullable(update.getComplete())
-                .ifPresent(complete -> job.setComplete(complete));
+                .ifPresent(complete -> job.setComplete(Boolean.parseBoolean(update.getComplete())));
         return job;
     }
 
