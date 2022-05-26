@@ -251,14 +251,14 @@ class PartControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/part/")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(400)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
-                        Matchers.containsInAnyOrder("name cannot be null","description cannot be null","location cannot be null","website cannot be null" ,"website cannot be blank","cost cannot be null","ordered cannot be null","notes cannot be null" ,"description cannot be blank","location cannot be blank","job required")));
+                        Matchers.containsInAnyOrder("name cannot be null", "name cannot be blank", "location cannot be null", "location cannot be blank", "description cannot be null", "description cannot be blank", "website cannot be null", "website cannot be blank", "cost cannot be null", "ordered cannot be null", "notes cannot be null", "job required")));
         request = PartRequest
                 .builder()
                 .name("")
                 .description("")
                 .location("")
                 .website("mock")
-                .cost(100.00)
+                .cost(-100.00)
                 .ordered("")
                 .notes("")
                 .job(1)
@@ -266,14 +266,14 @@ class PartControllerTest {
         mapper = new ObjectMapper();
         content = mapper.writeValueAsString(request);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/labor/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/part/1")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/labor/1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/part/1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(400)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
-                        Matchers.containsInAnyOrder("task cannot be blank", "description cannot be blank", "location cannot be blank", "notes cannot be blank", "cost cannot be less then 0")));
+                        Matchers.containsInAnyOrder("name cannot be blank", "location cannot be blank", "description cannot be blank", "website is not valid", "cost cannot be less then 0", "allowed input: true or false")));
     }
 }

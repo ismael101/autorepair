@@ -26,7 +26,7 @@ public class PartRequest {
     public String description;
     @NotNull(message = "website cannot be null", groups = Create.class)
     @NotBlank(message = "website cannot be blank", groups = {Create.class, Update.class})
-    @URL(message = "website is not valid")
+    @URL(message = "website is not valid", groups = {Create.class, Update.class})
     public String website;
     @NotNull(message = "cost cannot be null", groups = Create.class)
     @Min(message = "cost cannot be less then 0", value = 0, groups = {Create.class, Update.class})

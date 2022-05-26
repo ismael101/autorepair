@@ -134,7 +134,7 @@ class ImageControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/image/job/1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(404)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.is("image with job id: 1 not found")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.is("job with id: 1 not found")));
     }
 
 }
