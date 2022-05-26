@@ -26,19 +26,19 @@ public class Job {
     @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Insurance insurance;
-    @OneToOne(mappedBy = "job", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
-    @OneToOne(mappedBy = "job", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Vehicle vehicle;
-    @OneToMany(mappedBy = "job", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Labor> labors;
-    @OneToMany(mappedBy = "job", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Part> parts;
-    @OneToMany(mappedBy = "job", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Image> images;
 }
