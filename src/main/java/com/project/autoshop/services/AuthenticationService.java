@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.project.autoshop.exceptions.AuthenticationErrorException;
-import com.project.autoshop.repositories.UserRepository;
 import com.project.autoshop.request.AuthenticationRequest;
 import com.project.autoshop.response.AuthenticationResponse;
 import com.project.autoshop.security.AppUserDetail;
@@ -15,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -31,10 +31,9 @@ public class AuthenticationService {
             Algorithm algorithm = Algorithm.HMAC512(System.getenv("SECRET").getBytes());
             String token = JWT.create()
                     .withSubject(userDetails.getUsername())
-                    .withClaim("authority", userDetails.getAuthorities().stream().toList().get(0).toString())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + Integer.parseInt(System.getenv("EXPIRE"))))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 864_000_000))
                     .sign(algorithm);
-            AuthenticationResponse response = AuthenticationResponse.builder().token(token).build();
+            AuthenticationResponse response = AuthenticationResponse.builder().token(token).timeStamp(LocalDateTime.now()).build();
             return response;
 
         }catch(BadCredentialsException b){
@@ -42,6 +41,8 @@ public class AuthenticationService {
 
         }catch(JWTCreationException j){
             throw new RuntimeException(j.getMessage());
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

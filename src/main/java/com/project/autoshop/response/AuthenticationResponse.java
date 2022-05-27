@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
 @Builder
 public class AuthenticationResponse {
     public String token;
-    public LocalDateTime localDateTime = LocalDateTime.now();
+    public LocalDateTime timeStamp;
 }

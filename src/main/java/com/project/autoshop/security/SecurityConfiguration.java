@@ -1,6 +1,6 @@
 package com.project.autoshop.security;
 
-import com.project.autoshop.repositories.UserRepository;
+import com.project.autoshop.repositories.AppUserRepository;
 import lombok.AllArgsConstructor;;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private  AppUserDetailService userDetailService;
-    private  UserRepository userRepository;
+    private final AppUserDetailService userDetailService;
+    private final AppUserRepository userRepository;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterAfter(new JWTTokenVerifier(), JWTAuthenticator.class)
+                //.addFilterAfter(new JWTTokenVerifier(), JWTAuthenticator.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                 .anyRequest().authenticated();

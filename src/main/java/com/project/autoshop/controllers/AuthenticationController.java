@@ -1,6 +1,8 @@
 package com.project.autoshop.controllers;
 
 import com.project.autoshop.request.AuthenticationRequest;
+import com.project.autoshop.services.AuthenticationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "api/v1/auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
+    private final AuthenticationService authenticationService;
 
-    @PostMapping
+    @PostMapping(path = "/login")
     public ResponseEntity login(@RequestBody @Validated AuthenticationRequest request){
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body()
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(authenticationService.login(request));
     }
 }
