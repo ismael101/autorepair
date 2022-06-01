@@ -7,8 +7,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class FileUtils {
-    public static byte[] compress(byte[] input, int compressionLevel,
-                                  boolean GZIPFormat) throws IOException {
+    public static byte[] compress(byte[] input, int compressionLevel, boolean GZIPFormat) throws IOException {
         Deflater compressor = new Deflater(compressionLevel, GZIPFormat);
         compressor.setInput(input);
         compressor.finish();
@@ -23,8 +22,7 @@ public class FileUtils {
         compressor.end();
         return bao.toByteArray();
     }
-    public static byte[] decompress(byte[] input, boolean GZIPFormat)
-            throws IOException, DataFormatException {
+    public static byte[] decompress(byte[] input, boolean GZIPFormat) throws IOException, DataFormatException {
         Inflater decompressor = new Inflater(GZIPFormat);
         decompressor.setInput(input);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();

@@ -32,34 +32,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
-            if(SecurityContextHolder.getContext().getAuthentication() != null){
+            String header = request.getHeader("Authorization");
+            if(header == null || !header.startsWith("Bearer ")){
                 filterChain.doFilter(request, response);
-            }else{
-                String header = request.getHeader("Authorization");
-                if(header == null || header.startsWith("Bearer ")){
-                    Map<String, Object> error = new HashMap<>();
-                    error.put("timestamp", LocalDateTime.now().toString());
-                    error.put("status", 500);
-                    error.put("path", request.getRequestURI().toString());
-                    error.put("error", "Authorization header is not present or does not contain token");
-                    response.setStatus(HttpStatus.BAD_REQUEST.value());
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.writeValue(response.getWriter(), error);
-                }else{
-                    String token = header.substring(7);
-                    Algorithm algorithm = Algorithm.HMAC256(System.getenv("SECRET"));
-                    JWTVerifier verifier = JWT.require(algorithm)
-                            .build();
-                    DecodedJWT jwt = verifier.verify(token);
-                    UserDetails userDetails = appUserDetailsService.loadUserByUsername(jwt.getSubject());
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    filterChain.doFilter(request, response);
-                }
+                return;
             }
-
+            String token = header.substring(7);
+            Algorithm algorithm = Algorithm.HMAC256(System.getenv("SECRET"));
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .build();
+            DecodedJWT jwt = verifier.verify(token);
+            UserDetails userDetails = appUserDetailsService.loadUserByUsername(jwt.getSubject());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
         }catch (JWTVerificationException j){
             Map<String, Object> error = new HashMap<>();
             error.put("timestamp", LocalDateTime.now().toString());

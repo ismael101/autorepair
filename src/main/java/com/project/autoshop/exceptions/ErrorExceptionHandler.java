@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
 
 
-    @ExceptionHandler(AuthenticationErrorException.class)
+    @ExceptionHandler(ServerErrorException.class)
     public ResponseEntity<Object> handleServerErrorException(NotFoundException ex, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
