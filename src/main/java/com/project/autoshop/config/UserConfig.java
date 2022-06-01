@@ -17,10 +17,12 @@ public class UserConfig implements CommandLineRunner {
     public void run(String... args) throws Exception {
         String username = System.getenv("USERNAME");
         String password = System.getenv("PASSWORD");
+        String role = "ROLE_ADMIN";
         AppUser user = AppUser
                 .builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
+                .role(role)
                 .build();
         userRepository.save(user);
     }

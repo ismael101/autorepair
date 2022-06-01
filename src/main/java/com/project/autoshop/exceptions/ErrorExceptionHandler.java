@@ -20,6 +20,26 @@ import java.util.stream.Collectors;
 public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
 
 
+    @ExceptionHandler(AuthenticationErrorException.class)
+    public ResponseEntity<Object> handleServerErrorException(NotFoundException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", 500);
+        body.put("path", ((ServletWebRequest)request).getRequest().getRequestURI().toString());
+        body.put("error", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AuthenticationErrorException.class)
+    public ResponseEntity<Object> handleAuthenticationErrorException(NotFoundException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", 401);
+        body.put("path", ((ServletWebRequest)request).getRequest().getRequestURI().toString());
+        body.put("error", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -29,17 +49,6 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("error", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
-
-    @ExceptionHandler(AuthenticationErrorException.class)
-    public ResponseEntity<Object> handleAuthenticationErrorException(AuthenticationErrorException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", 401);
-        body.put("path", ((ServletWebRequest)request).getRequest().getRequestURI().toString());
-        body.put("error", ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-    }
-
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
