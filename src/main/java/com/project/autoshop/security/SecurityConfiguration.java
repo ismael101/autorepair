@@ -22,18 +22,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private AppUserDetailsService appUserDetailsService;
     private JwtTokenFilter jwtTokenFilter;
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll().
-                anyRequest().authenticated().and().
-                exceptionHandling().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        JwtUsernameAndPasswordFilter jwtUsernameAndPasswordFilter = new JwtUsernameAndPasswordFilter(authenticationManager());
+        jwtUsernameAndPasswordFilter.setFilterProcessesUrl("/api/v1/auth/login");
+        http
+                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(jwtUsernameAndPasswordFilter)
+                .addFilterAfter(new JwtTokenFilter(appUserDetailsService), JwtUsernameAndPasswordFilter.class)
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated();
     }
-
+    @Bean
+    DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(this.appUserDetailsService);
+        return daoAuthenticationProvider;
+    }
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -45,4 +60,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }

@@ -33,9 +33,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             String header = request.getHeader("Authorization");
-            if(header == null || !header.startsWith("Bearer ")){
+            if(header == null || !header.startsWith("Bearer ")) {
                 filterChain.doFilter(request, response);
-                return;
             }
             String token = header.substring(7);
             Algorithm algorithm = Algorithm.HMAC256(System.getenv("SECRET"));
@@ -46,7 +45,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);
+
         }catch (JWTVerificationException j){
             Map<String, Object> error = new HashMap<>();
             error.put("timestamp", LocalDateTime.now().toString());
@@ -58,5 +57,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getWriter(), error);
         }
+        filterChain.doFilter(request,response);
     }
 }
