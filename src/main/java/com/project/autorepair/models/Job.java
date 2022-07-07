@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Job {
     @Id
     @GeneratedValue
@@ -42,4 +41,13 @@ public class Job {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Image> images;
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", complete=" + complete +
+                '}';
+    }
 }

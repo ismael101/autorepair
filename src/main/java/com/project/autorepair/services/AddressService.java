@@ -96,7 +96,7 @@ public class AddressService {
                     logger.error("not found exception caused by address with id: " + id);
                     throw new NotFoundException("address with id: " + id + " not found");
                 });
-        logger.info(address.toString() + " deleted");
+        //logger.info(address.toString() + " deleted");
         addressRepository.delete(address);
     }
 }

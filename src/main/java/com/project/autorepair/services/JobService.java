@@ -74,7 +74,7 @@ public class JobService {
                     logger.error("not found exception caused by job with id: " + id);
                     throw new NotFoundException("job with id: " + id + " not found");
                 });
-        logger.info(job.toString() + " deleted");
+        //logger.info(job.toString() + " deleted");
         this.jobRepository.delete(job);
     }
 }

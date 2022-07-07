@@ -50,14 +50,14 @@ public class InsuranceController {
     //endpoint for updating insurance
     @PutMapping(path = "{id}")
     public ResponseEntity updateInsurance(@PathVariable("id") Integer id, @RequestBody @Validated(Update.class) InsuranceRequest request){
-        logger.info("put request for customer with id: " + id);
+        logger.info("put request for insurance with id: " + id);
         return ResponseEntity.status(HttpStatus.OK).body(insuranceService.updateInsurance(id, request));
     }
 
     //endpoint for deleting insurance
     @DeleteMapping(path = "{id}")
     public ResponseEntity deleteInsurance(@PathVariable("id") Integer id){
-        logger.info("delete request for customer with id: " + id);
+        logger.info("delete request for insurance with id: " + id);
         insuranceService.deleteInsurance(id);
         return ResponseEntity.status(HttpStatus.OK).body("insurance deleted");
     }

@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,4 +27,14 @@ public class Customer {
     @OneToOne(optional = false)
     private Job job;
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", first='" + first + '\'' +
+                ", last='" + last + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }

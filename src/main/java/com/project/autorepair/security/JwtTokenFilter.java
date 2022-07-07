@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 //filter for verifying jwt token on secured endpoints
 @RequiredArgsConstructor
+@Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final AppUserDetailsService appUserDetailsService;
     private Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);

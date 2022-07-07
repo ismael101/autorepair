@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +26,15 @@ public class Address {
     @JsonBackReference
     @OneToOne(optional = false)
     private Job job;
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", street='" + street + '\'' +
+                ", zipcode=" + zipcode +
+                '}';
+    }
 }

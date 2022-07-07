@@ -50,14 +50,14 @@ public class LaborController {
     //endpoint for fetching update labor
     @PutMapping(path = "{id}")
     public ResponseEntity updateLabor(@PathVariable Integer id, @RequestBody @Validated(Update.class) LaborRequest request){
-        logger.info("put request for customer with id: " + id);
+        logger.info("put request for labor with id: " + id);
         return ResponseEntity.status(HttpStatus.OK).body(laborService.updateLabor(id, request));
     }
 
     //endpoint for deleting labor
     @DeleteMapping(path = "{id}")
     public ResponseEntity deleteLabor(@PathVariable Integer id){
-        logger.info("delete request for customer with id: " + id);
+        logger.info("delete request for labor with id: " + id);
         laborService.deleteLabor(id);
         return ResponseEntity.status(HttpStatus.OK).body("labor deleted");
     }

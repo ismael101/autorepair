@@ -44,15 +44,15 @@ public class JobController {
     //endpoint for updating a job
     @PutMapping(path = "{id}")
     public ResponseEntity updateJob(@PathVariable Integer id, @RequestBody @Validated(Update.class) JobRequest update){
-        logger.info("put request for customer with id: " + id);
+        logger.info("put request for job with id: " + id);
         return ResponseEntity.status(HttpStatus.OK).body(this.jobService.updateJob(id, update));
     }
 
     //endpoint for deleting a job
     @DeleteMapping(path = "{id}")
     public ResponseEntity deleteJob(@PathVariable Integer id){
-        logger.info("delete request for customer with id: " + id);
+        logger.info("delete request for job with id: " + id);
         this.jobService.deleteJob(id);
-        return ResponseEntity.status(HttpStatus.OK).body("work deleted");
+        return ResponseEntity.status(HttpStatus.OK).body("job deleted");
     }
 }

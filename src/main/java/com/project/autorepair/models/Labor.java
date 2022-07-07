@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Labor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,4 +30,16 @@ public class Labor {
     @JsonBackReference
     @ManyToOne(optional = false)
     private Job job;
+
+    @Override
+    public String toString() {
+        return "Labor{" +
+                "id=" + id +
+                ", task='" + task + '\'' +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
+                ", cost=" + cost +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
 }

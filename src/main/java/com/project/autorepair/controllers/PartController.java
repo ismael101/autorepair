@@ -51,14 +51,14 @@ public class PartController {
     //endpoint for updating part
     @PutMapping(path = "{id}")
     public ResponseEntity updatePart(@PathVariable Integer id, @RequestBody @Validated(Update.class) PartRequest partsRequest){
-        logger.info("put request for customer with id: " + id);
+        logger.info("put request for part with id: " + id);
         return ResponseEntity.status(HttpStatus.OK).body(partsService.updatePart(id, partsRequest));
     }
 
     //endpoint for deleting part
     @DeleteMapping(path = "{id}")
     public ResponseEntity deletePart(@PathVariable Integer id){
-        logger.info("delete request for customer with id: " + id);
+        logger.info("delete request for part with id: " + id);
         partsService.deletePart(id);
         return ResponseEntity.status(HttpStatus.OK).body("part deleted");
     }

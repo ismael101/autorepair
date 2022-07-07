@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,4 +27,15 @@ public class Vehicle {
     @OneToOne(optional = false)
     @JsonBackReference
     private Job job;
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", vin='" + vin + '\'' +
+                '}';
+    }
 }

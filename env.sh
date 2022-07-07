@@ -1,0 +1,3 @@
+export USERNAME=itoka101
+export PASSWORD=password
+export SECRET=iwjendi3urn43und9ucm9wu9m3unudnu893nshbxmsnmdjkmjsnkjxnjhbygvyhngyvhgbuhnmkjnuybun

@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,4 +23,12 @@ public class Image {
     @ManyToOne(optional = false)
     @JsonBackReference
     private Job job;
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

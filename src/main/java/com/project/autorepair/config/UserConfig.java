@@ -26,6 +26,7 @@ public class UserConfig implements CommandLineRunner {
                 .password(passwordEncoder.encode(password))
                 .role(role)
                 .build();
+        userRepository.deleteAll();
         userRepository.save(user);
     }
 }
