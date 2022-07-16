@@ -28,7 +28,7 @@ public class Part {
     private Double cost;
     @Column(nullable = false)
     private Boolean ordered;
-    @Column(nullable = false)
+    @Column()
     private String notes;
     @ManyToOne(optional = false)
     @JsonBackReference

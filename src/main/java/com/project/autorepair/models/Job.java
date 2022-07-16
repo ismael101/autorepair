@@ -2,7 +2,10 @@ package com.project.autorepair.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 //table for job
@@ -20,6 +23,8 @@ public class Job {
     private String description;
     @Column(nullable = false)
     private Boolean complete;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
     @OneToOne(mappedBy = "job", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Customer customer;

@@ -48,7 +48,6 @@ class LaborControllerTest {
     void itShouldGetLabors() throws Exception {
         when(laborRepository.findAll()).thenReturn(List.of(Labor.builder()
                 .task("mock task")
-                .description("mock description")
                 .location("mock location")
                 .cost(100.00)
                 .notes("mock notes")
@@ -57,7 +56,6 @@ class LaborControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/labor"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].task", Matchers.is("mock task")))
-                .andExpect(MockMvcResultMatchers.jsonPath("[0].description", Matchers.is("mock description")))
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].location", Matchers.is("mock location")))
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].cost", Matchers.is(100.00)))
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].notes", Matchers.is("mock notes")));
@@ -67,7 +65,6 @@ class LaborControllerTest {
     void itShouldGetLabor() throws Exception {
         when(laborRepository.findById(anyInt())).thenReturn(Optional.of(Labor.builder()
                 .task("mock task")
-                .description("mock description")
                 .location("mock location")
                 .cost(100.00)
                 .notes("mock notes")
@@ -76,7 +73,6 @@ class LaborControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/labor/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.task", Matchers.is("mock task")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description", Matchers.is("mock description")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.location", Matchers.is("mock location")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.cost", Matchers.is(100.00)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.notes", Matchers.is("mock notes")));
@@ -86,7 +82,6 @@ class LaborControllerTest {
     void itShouldGetJobLabors() throws Exception {
         when(laborRepository.findLaborsByJob(anyInt())).thenReturn(List.of(Labor.builder()
                 .task("mock task")
-                .description("mock description")
                 .location("mock location")
                 .cost(100.00)
                 .notes("mock notes")
@@ -95,7 +90,6 @@ class LaborControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/labor/job/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].task", Matchers.is("mock task")))
-                .andExpect(MockMvcResultMatchers.jsonPath("[0].description", Matchers.is("mock description")))
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].location", Matchers.is("mock location")))
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].cost", Matchers.is(100.00)))
                 .andExpect(MockMvcResultMatchers.jsonPath("[0].notes", Matchers.is("mock notes")));
@@ -107,7 +101,6 @@ class LaborControllerTest {
         LaborRequest request = LaborRequest
                 .builder()
                 .task("mock task")
-                .description("mock description")
                 .location("mock location")
                 .cost(100.00)
                 .notes("mock notes")
@@ -121,7 +114,6 @@ class LaborControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.task", Matchers.is("mock task")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description", Matchers.is("mock description")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.location", Matchers.is("mock location")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.cost", Matchers.is(100.00)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.notes", Matchers.is("mock notes")));
@@ -131,7 +123,6 @@ class LaborControllerTest {
     void itShouldUpdateLabor() throws Exception {
         when(laborRepository.findById(anyInt())).thenReturn(Optional.of(Labor.builder()
                 .task("mock task")
-                .description("mock description")
                 .location("mock location")
                 .cost(100.00)
                 .notes("mock notes")
@@ -139,7 +130,6 @@ class LaborControllerTest {
         LaborRequest request = LaborRequest
                 .builder()
                 .task("transmission fix")
-                .description("fixed transmission in engine")
                 .location("engine")
                 .cost(200.00)
                 .notes("was hard")
@@ -153,7 +143,6 @@ class LaborControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.task", Matchers.is("transmission fix")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description", Matchers.is("fixed transmission in engine")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.location", Matchers.is("engine")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.cost", Matchers.is(200.00)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.notes", Matchers.is("was hard")));
@@ -177,7 +166,6 @@ class LaborControllerTest {
         LaborRequest request = LaborRequest
                 .builder()
                 .task("transmission fix")
-                .description("fixed transmission in engine")
                 .location("engine")
                 .cost(200.00)
                 .notes("was hard")
@@ -227,12 +215,11 @@ class LaborControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.path", Matchers.is("/api/v1/labor/")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is(400)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
-                        Matchers.containsInAnyOrder("task cannot be null", "task cannot be blank", "location cannot be null", "location cannot be blank", "description cannot be null", "description cannot be blank", "cost cannot be null", "notes cannot be null", "job required")));
+                        Matchers.containsInAnyOrder("task cannot be null", "task cannot be blank", "location cannot be null", "location cannot be blank", "cost cannot be null", "notes cannot be null", "job required")));
 
         request = LaborRequest
                 .builder()
                 .task("")
-                .description("")
                 .location("")
                 .cost(-100.00)
                 .notes("")

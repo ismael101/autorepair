@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.autorepair.request.AuthenticationRequest;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,6 +32,7 @@ import java.util.Map;
 
 //filter for allowing users login and get a token
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private Logger logger = LoggerFactory.getLogger(JwtUsernameAndPasswordFilter.class);
@@ -74,7 +77,7 @@ public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthentication
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withClaim("authority", authResult.getAuthorities().stream().toList().get(0).toString())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 604800))
                 .sign(algorithm);
         Map<String, Object> message = new HashMap<>();
         message.put("token", token);

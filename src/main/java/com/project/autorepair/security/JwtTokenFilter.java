@@ -58,7 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }catch (JWTVerificationException j){
             Map<String, Object> error = new HashMap<>();
             error.put("timestamp", LocalDateTime.now().toString());
-            error.put("status", 500);
+            error.put("status", 401);
             error.put("path", request.getRequestURI().toString());
             error.put("error", j.getMessage());
             response.setStatus(HttpStatus.BAD_REQUEST.value());

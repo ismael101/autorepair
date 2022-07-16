@@ -44,7 +44,6 @@ class LaborServiceTest {
         Labor labor = Labor
                 .builder()
                 .task("transmission change")
-                .description("transmission changer")
                 .cost(500.00)
                 .location("transmission")
                 .notes("different transmission")
@@ -54,7 +53,6 @@ class LaborServiceTest {
         underTest.getLabor(1);
         verify(laborRepository).findById(1);
         assertEquals(underTest.getLabor(1).getTask(), "transmission change");
-        assertEquals(underTest.getLabor(1).getDescription(), "transmission changer");
         assertEquals(underTest.getLabor(1).getCost(), 500.00);
         assertEquals(underTest.getLabor(1).getLocation(), "transmission");
         assertEquals(underTest.getLabor(1).getNotes(), "different transmission");
@@ -65,7 +63,6 @@ class LaborServiceTest {
         Labor labor = Labor
                 .builder()
                 .task("changer")
-                .description("transmission changer")
                 .cost(500.00)
                 .location("transmission")
                 .notes("different transmission")
@@ -75,7 +72,6 @@ class LaborServiceTest {
         underTest.getJobLabors(1);
         verify(laborRepository).findLaborsByJob(1);
         assertEquals(underTest.getJobLabors(1).get(0).getTask(), "changer");
-        assertEquals(underTest.getJobLabors(1).get(0).getDescription(), "transmission changer");
         assertEquals(underTest.getJobLabors(1).get(0).getCost(), 500.00);
         assertEquals(underTest.getJobLabors(1).get(0).getLocation(), "transmission");
         assertEquals(underTest.getJobLabors(1).get(0).getNotes(), "different transmission");
@@ -86,7 +82,6 @@ class LaborServiceTest {
         when(jobRepository.findById(anyInt())).thenReturn(Optional.of(Job.builder().build()));
         Labor labor = underTest.createLabor(LaborRequest
                 .builder()
-                .description("drivetrain replacement")
                 .cost(500.00)
                 .location("drivetrain")
                 .notes("different replacement")
@@ -95,7 +90,6 @@ class LaborServiceTest {
         );
         verify(jobRepository).findById(1);
         verify(laborRepository).save(labor);
-        assertEquals(labor.getDescription(), "drivetrain replacement");
         assertEquals(labor.getCost(), 500.00);
         assertEquals(labor.getLocation(), "drivetrain");
         assertEquals(labor.getNotes(), "different replacement");
@@ -106,7 +100,6 @@ class LaborServiceTest {
         when(laborRepository.findById(anyInt())).thenReturn(Optional.of(Labor
                 .builder()
                 .task("changer")
-                .description("transmission changer")
                 .cost(500.00)
                 .location("transmission")
                 .notes("different transmission")
@@ -115,7 +108,6 @@ class LaborServiceTest {
         Labor labor = underTest.updateLabor(1, LaborRequest
                 .builder()
                 .task("replacement")
-                .description("drivetrain replacement")
                 .cost(400.00)
                 .location("drivetrain")
                 .notes("different drivetrain")
@@ -124,7 +116,6 @@ class LaborServiceTest {
         );
         verify(laborRepository).findById(1);
         assertEquals(labor.getTask(), "replacement");
-        assertEquals(labor.getDescription(), "drivetrain replacement");
         assertEquals(labor.getCost(), 400.00);
         assertEquals(labor.getLocation(), "drivetrain");
         assertEquals(labor.getNotes(), "different drivetrain");

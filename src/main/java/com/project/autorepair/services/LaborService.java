@@ -55,7 +55,6 @@ public class LaborService {
                 });
         Labor labor = Labor.builder()
                 .task(request.getTask())
-                .description(request.getDescription())
                 .location(request.getLocation())
                 .cost(request.getCost())
                 .notes(request.getNotes())
@@ -76,8 +75,6 @@ public class LaborService {
                 });
         Optional.ofNullable(request.getTask())
                 .ifPresent(name -> labor.setTask(name));
-        Optional.ofNullable(request.getDescription())
-                .ifPresent(description -> labor.setDescription(description));
         Optional.ofNullable(request.getLocation())
                 .ifPresent(location -> labor.setLocation(location));
         Optional.ofNullable(request.getCost())

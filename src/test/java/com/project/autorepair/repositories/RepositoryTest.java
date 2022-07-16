@@ -106,7 +106,6 @@ public class RepositoryTest {
                 .task("mock task")
                 .notes("mock notes")
                 .cost(100.00)
-                .description("mock description")
                 .location("mock location")
                 .job(job)
                 .build());

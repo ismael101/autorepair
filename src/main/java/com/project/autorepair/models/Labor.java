@@ -22,10 +22,8 @@ public class Labor {
     @Column(nullable = false)
     private String location;
     @Column(nullable = false)
-    private String description;
-    @Column(nullable = false)
     private Double cost;
-    @Column(nullable = false)
+    @Column()
     private String notes;
     @JsonBackReference
     @ManyToOne(optional = false)
@@ -37,7 +35,6 @@ public class Labor {
                 "id=" + id +
                 ", task='" + task + '\'' +
                 ", location='" + location + '\'' +
-                ", description='" + description + '\'' +
                 ", cost=" + cost +
                 ", notes='" + notes + '\'' +
                 '}';
