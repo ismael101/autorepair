@@ -41,13 +41,13 @@ export default function Dashboard(){
         return(
             <div className="h-screen grid place-items-center">
                 <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
-                    <span class="font-medium">Error</span> {error.message}
+                    <span class="font-medium">Error</span> {error.error}
                 </div>
             </div>
         )
     }
     return(
-        <div className="h-screen p-40">
+        <div className="h-screen grid grid-cols-4 p-40">
             {jobs.map(job => {return(<Job key={job.id} job={job} />)})}
         </div>
     )
