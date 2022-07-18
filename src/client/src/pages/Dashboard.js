@@ -15,14 +15,15 @@ export default function Dashboard(){
     useEffect(() => {
         if(!token){
             navigate('/')
+            return;
         }
         if(error){
             if(error.status == 401){
-                console.log(error)
                 dispatch(logoutService)
                 navigate('/')
             }
             console.log(error)
+            return;
         }
         dispatch(fetchJobService(token))
     },[token])
@@ -40,16 +41,32 @@ export default function Dashboard(){
     if(error){
         return(
             <div className="h-screen grid place-items-center">
-                <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
-                    <span class="font-medium">Error</span> {error.error}
+                <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                    <span className="font-medium">Error</span> {error.error}
                 </div>
             </div>
         )
     }
     return(
-        <div className="h-screen grid grid-cols-4 p-40">
-            {jobs.map(job => {return(<Job key={job.id} job={job} />)})}
+        <div className="h-screen p-24">
+            <div className="flex justify-end mt-2">
+                <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"> 
+                    <div className="flex flex-row">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <p className="ml-2 my-auto">Job</p>
+                    </div>
+                    </button>
+            </div>
+            <hr className="mb-5 mt-2" />
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {jobs.map(job => {
+                    return(<Job key={job.id} job={job} />)
+                    })}
+            </div>    
         </div>
+        
     )
 
 }

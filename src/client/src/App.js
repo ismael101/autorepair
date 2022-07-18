@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 
 export default function App() {
   return (
-    <div className="App row h-screen bg-slate-800">
+    <div className="App row h-screen">
       <Navbar/>
       <BrowserRouter>
         <Routes>

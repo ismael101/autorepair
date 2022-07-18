@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.autorepair.request.AuthenticationRequest;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -77,7 +76,7 @@ public class JwtUsernameAndPasswordFilter extends UsernamePasswordAuthentication
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withClaim("authority", authResult.getAuthorities().stream().toList().get(0).toString())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 604800))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000000000l))
                 .sign(algorithm);
         Map<String, Object> message = new HashMap<>();
         message.put("token", token);
