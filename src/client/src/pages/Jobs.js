@@ -4,9 +4,11 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { logoutService } from "../features/authSlice";
 import Job from "../components/Job";
+import JobModal from "../components/JobModal";
 import { fetchJobService } from "../features/jobSlice";
 
-export default function Dashboard(){
+
+export default function Jobs(){
     const navigate = useNavigate()
     const { jobs, loading, error } = useSelector((store) => store.job);
     const { token } = useSelector((store) => store.auth)
@@ -50,14 +52,7 @@ export default function Dashboard(){
     return(
         <div className="h-screen p-24">
             <div className="flex justify-end mt-2">
-                <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"> 
-                    <div className="flex flex-row">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <p className="ml-2 my-auto">Job</p>
-                    </div>
-                    </button>
+                <JobModal/>
             </div>
             <hr className="mb-5 mt-2" />
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

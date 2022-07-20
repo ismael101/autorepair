@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "api/v1/job")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class JobController {
     private final JobService jobService;
     private Logger logger = LoggerFactory.getLogger(JobController.class);

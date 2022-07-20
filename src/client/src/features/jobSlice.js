@@ -20,8 +20,25 @@ export const fetchJobService = createAsyncThunk(
             return res.data
         }catch(err){
             return thunkAPI.rejectWithValue(err.response)
+        }
     }
-}
+)
+
+
+export const createJobService = createAsyncThunk(
+    'job/create',
+    async(body, thunkAPI) => {
+        try{
+            const res = await axios.post('http://localhost:8080/api/v1/job/', body.job, {
+                headers:{
+                    Authorization: `Bearer ${body.token}`
+                }
+            })
+            return res.data
+        }catch(err){
+            return thunkAPI.rejectWithValue(err.response)
+        }
+    }
 )
 
 const jobSlice = createSlice({
@@ -40,7 +57,19 @@ const jobSlice = createSlice({
         [fetchJobService.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload.data
-        }
+        },
+        [createJobService.pending]: (state) => {
+            state.loading = true;
+        },
+        [createJobService.fulfilled]: (state, action) => {
+            state.loading = false
+            state.error = null
+            state.jobs.push(action.payload)
+        },
+        [createJobService.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload.data
+        },
     }
 })
 

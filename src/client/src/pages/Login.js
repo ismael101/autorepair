@@ -17,7 +17,7 @@ function Login(){
     }
     useEffect(() => {
         if(token){
-            navigate('/dashboard')
+            navigate('/jobs')
         }
     },[token])
 
