@@ -106,7 +106,6 @@ public class Customer {
                 ", last='" + last + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
-                ", work=" + work +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

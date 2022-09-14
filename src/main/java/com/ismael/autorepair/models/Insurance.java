@@ -106,7 +106,6 @@ public class Insurance {
                 ", license='" + license + '\'' +
                 ", policy='" + policy + '\'' +
                 ", vin='" + vin + '\'' +
-                ", work=" + work +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

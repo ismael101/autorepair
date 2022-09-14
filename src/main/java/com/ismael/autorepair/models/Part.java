@@ -93,7 +93,6 @@ public class Part {
                 ", title='" + title + '\'' +
                 ", location='" + location + '\'' +
                 ", cost=" + cost +
-                ", work=" + work +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

@@ -136,7 +136,6 @@ public class Work {
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", user=" + user +
                 '}';
     }
 }

@@ -94,7 +94,6 @@ public class Vehicle {
                 ", make='" + make + '\'' +
                 ", model='" + model + '\'' +
                 ", year=" + year +
-                ", work=" + work +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

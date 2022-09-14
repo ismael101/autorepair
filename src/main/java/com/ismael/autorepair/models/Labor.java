@@ -94,7 +94,6 @@ public class Labor {
                 ", task='" + task + '\'' +
                 ", location=" + location +
                 ", cost=" + cost +
-                ", work=" + work +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
