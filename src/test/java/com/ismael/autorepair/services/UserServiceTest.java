@@ -1,6 +1,6 @@
 package com.ismael.autorepair.services;
 
-import com.ismael.autorepair.exceptions.UserAlreadyExists;
+import com.ismael.autorepair.exceptions.AlreadyExists;
 import com.ismael.autorepair.models.User;
 import com.ismael.autorepair.repositories.UserRepository;
 import com.ismael.autorepair.requests.UserRequest;
@@ -47,7 +47,7 @@ class UserServiceTest {
 
         //section for testing duplicate usernames
         when(userRepository.findUserByUsername(anyString())).thenReturn(Optional.of(new User("username", "password")));
-        Exception exception = assertThrows(UserAlreadyExists.class, () -> {
+        Exception exception = assertThrows(AlreadyExists.class, () -> {
             underTest.signUp(request);
         });
         assertEquals(exception.getMessage(), "user with username: username already exists");
