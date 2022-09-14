@@ -72,17 +72,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getWriter(), error);
             filterChain.doFilter(request,response);
-        }catch (Exception e){
-            Map<String, Object> error = new HashMap<>();
-            error.put("timestamp", LocalDateTime.now().toString());
-            error.put("status", 401);
-            error.put("path", request.getRequestURI().toString());
-            error.put("error", e.getMessage());
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getWriter(), error);
-            filterChain.doFilter(request,response);
         }
     }
 }

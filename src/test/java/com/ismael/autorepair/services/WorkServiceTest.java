@@ -64,7 +64,7 @@ class WorkServiceTest {
         Work work = new Work("title", "description", user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
-        Map<String, Object> response = underTest.getWork(id);
+        Map<String, Object> response = underTest.getWorkById(id);
         verify(workRepository).findById(id);
         assertEquals(response.get("path"), "/api/v1/work/" + id);
         assertEquals(response.get("status"), 200);
@@ -76,14 +76,14 @@ class WorkServiceTest {
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
-            underTest.getWork(id);
+            underTest.getWorkById(id);
         });
         assertEquals(exception.getMessage(), "user: username action not allowed");
 
         //section for testing user fetching work order that doesn't exist
         when(workRepository.findById(id)).thenReturn(Optional.empty());
         exception = assertThrows(NotFound.class, () -> {
-            underTest.getWork(id);
+            underTest.getWorkById(id);
         });
         assertEquals(exception.getMessage(), "work with id: " + id + " not found");
     }

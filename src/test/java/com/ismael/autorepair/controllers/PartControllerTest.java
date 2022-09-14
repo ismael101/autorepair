@@ -11,12 +11,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.UUID;
 
+@SpringJUnitConfig
 @ExtendWith(MockitoExtension.class)
 class PartControllerTest {
     @Mock
@@ -33,6 +36,7 @@ class PartControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "username")
     void createPartMethodTest() throws Exception{
         ObjectMapper mapper = new ObjectMapper();
         UUID id = UUID.randomUUID();
@@ -71,6 +75,7 @@ class PartControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "username")
     void updatePartMethodTest() throws Exception{
         ObjectMapper mapper = new ObjectMapper();
         UUID id = UUID.randomUUID();
