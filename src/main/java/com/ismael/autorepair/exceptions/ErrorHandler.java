@@ -71,7 +71,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .map(x -> x.getDefaultMessage())
                 .collect(Collectors.toList());
-        body.put("errors", errors);
+        body.put("error", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }

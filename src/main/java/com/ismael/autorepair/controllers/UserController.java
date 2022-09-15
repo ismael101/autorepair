@@ -24,7 +24,7 @@ public class UserController {
     //controller method for creating a new user
     @PostMapping(path = "/signup")
     public ResponseEntity signUp(@RequestBody @Validated(Create.class) UserRequest request) {
-        logger.info("Get Parts Method Accessed By: " + request.getUsername());
+        logger.info("Signup Method Accessed By: " + request.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUp(request));
     }
 }

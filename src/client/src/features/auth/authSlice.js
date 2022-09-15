@@ -8,7 +8,7 @@ const initialState = {
     isError : false,
     isSuccess : false,
     isLoading: false,
-    error:null,
+    error:null
 }
 
 export const signup = createAsyncThunk(
@@ -18,7 +18,7 @@ export const signup = createAsyncThunk(
             const response = await axios.post('http://localhost:8080/api/v1/auth/signup', user)
             return response.data
         }catch(error){
-            return thunkAPI.rejectWithValue(error)
+            return thunkAPI.rejectWithValue(error.response.data)
         }
     }
 )
@@ -31,7 +31,7 @@ export const login = createAsyncThunk(
             await localStorage.setItem('token', response.data.token)
             return response.data
         }catch(error){
-            return thunkAPI.rejectWithValue(error)
+            return thunkAPI.rejectWithValue(error.response.data)
         }
     }
 )
@@ -50,8 +50,7 @@ export const authSlice = createSlice({
         reset: (state) => {
             state.isError = false
             state.isSuccess = false
-            state.isError = false
-            state.error = ''
+            state.error = null
         },
     },
     extraReducers: (builder) => {
@@ -59,10 +58,20 @@ export const authSlice = createSlice({
         .addCase(login.pending, (state) => {
             state.isLoading = true
         })
+        .addCase(signup.pending, (state) => {
+            state.isLoading = true
+        })
         .addCase(login.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
             state.token = action.payload.token
+        })
+        .addCase(signup.fulfilled, (state) => {
+            state.isLoading = false
+            state.isSuccess = true
+        })
+        .addCase(logout.fulfilled, (state) => {
+            state.token = null
         })
         .addCase(login.rejected, (state, action) => {
             state.isLoading = false
@@ -70,22 +79,12 @@ export const authSlice = createSlice({
             state.error = action.payload
             state.token = null
         })
-        .addCase(signup.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(signup.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.isSuccess = true
-        })
         .addCase(signup.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.error = action.payload
             state.token = null
 
-        })
-        .addCase(logout.fulfilled, (state) => {
-            state.token = null
         })
     }
 })
