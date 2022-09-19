@@ -48,8 +48,8 @@ class PartServiceTest {
 
         //section for testing successfully fetching all parts belonging to user
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Part part = new Part("task", "location", 100.00, work);
+        Work work = new Work("title", "description", false, user);
+        Part part = new Part("task", "location", 100.00, false, work);
         work.setParts(List.of(part));
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
         when(workRepository.findWorkByUser(user)).thenReturn(List.of(work));
@@ -68,8 +68,8 @@ class PartServiceTest {
         //section for testing successfully fetching part by id that belongs to user
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Part part = new Part("task", "location", 100.00, work);
+        Work work = new Work("title", "description",false, user);
+        Part part = new Part("task", "location", 100.00, false, work);
         when(partRepository.findById(id)).thenReturn(Optional.of(part));
         Map<String, Object> response = underTest.getPartById(id);
         verify(partRepository).findById(id);
@@ -79,8 +79,8 @@ class PartServiceTest {
 
         //section for testing user fetching part that doesn't belong to him
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
-        part = new Part("task", "location", 100.00, work);
+        work = new Work("title", "description", false, user);
+        part = new Part("task", "location", 100.00, false, work);
         when(partRepository.findById(id)).thenReturn(Optional.of(part));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.getPartById(id);
@@ -102,9 +102,9 @@ class PartServiceTest {
         //section for testing successfully fetching part with work id
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false, user);
         work.setId(id);
-        Part part = new Part("title", "location", 100.00, work);
+        Part part = new Part("title", "location", 100.00, false, work);
         work.setParts(List.of(part));
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.getPartByWork(id);
@@ -115,7 +115,7 @@ class PartServiceTest {
 
         //section for testing user fetching part that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description",false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -137,8 +137,8 @@ class PartServiceTest {
 
         //section for testing successfully creating a part
         User user = new User("username", "password");
-        Work work = new Work("title","description", user);
-        PartRequest request = new PartRequest("title", "location", 100.00, work.getId().toString());
+        Work work = new Work("title","description", false, user);
+        PartRequest request = new PartRequest("title", "location", 100.00, "false", work.getId().toString());
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.createPart(request);
         verify(partRepository).save(any());
@@ -151,7 +151,7 @@ class PartServiceTest {
 
         //section for testing user creating part for work that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description",false, user);
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class,  () -> {
             underTest.createPart(request);
@@ -174,9 +174,9 @@ class PartServiceTest {
         //section for testing successfully updating part
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Part part = new Part("title", "location", 100.00, work);
-        PartRequest request = new PartRequest("new title", "new location", 200.00, work.getId().toString());
+        Work work = new Work("title", "description", false, user);
+        Part part = new Part("title", "location", 100.00, false, work);
+        PartRequest request = new PartRequest("new title", "new location", 200.00, "false", work.getId().toString());
         when(partRepository.findById(id)).thenReturn(Optional.of(part));
         Map<String, Object> response = underTest.updatePart(id, request);
         verify(partRepository).findById(id);
@@ -189,8 +189,8 @@ class PartServiceTest {
 
         //section for testing user updating part that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
-        part =  new Part("title", "location", 100.00, work);
+        work = new Work("title", "description",false, user);
+        part =  new Part("title", "location", 100.00, false, work);
         when(partRepository.findById(id)).thenReturn(Optional.of(part));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.updatePart(id, request);
@@ -212,8 +212,8 @@ class PartServiceTest {
         //section for testing successfully deleting part
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Part part = new Part("title", "location", 100.00, work);
+        Work work = new Work("title", "description",false, user);
+        Part part = new Part("title", "location", 100.00,false, work);
         when(partRepository.findById(id)).thenReturn(Optional.of(part));
         Map<String, Object> response = underTest.deletePart(id);
         verify(partRepository).delete(part);
@@ -223,8 +223,8 @@ class PartServiceTest {
 
         //section for testing deleting part that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
-        part = new Part("title", "location", 100.00, work);
+        work = new Work("title", "description", false, user);
+        part = new Part("title", "location", 100.00,false, work);
         when(partRepository.findById(id)).thenReturn(Optional.of(part));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.deletePart(id);

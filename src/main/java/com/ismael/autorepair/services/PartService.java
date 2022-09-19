@@ -106,7 +106,7 @@ public class PartService {
             logger.error("Unauthorized Action Exception Thrown By: " + username + " For Work With Id: " + request.getWork());
             throw new UnauthorizedAction("user: " + username + " action not allowed");
         }
-        Part part = new Part(request.getTitle(), request.getLocation(), request.getCost(), work);
+        Part part = new Part(request.getTitle(), request.getLocation(), request.getCost(), Boolean.parseBoolean(request.getOrdered()), work);
         partRepository.save(part);
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -136,6 +136,8 @@ public class PartService {
                 .ifPresent(location -> part.setLocation(location));
         Optional.ofNullable(request.getTitle())
                 .ifPresent(title -> part.setTitle(title));
+        Optional.ofNullable(request.getOrdered())
+                .ifPresent(ordered -> part.setOrdered(Boolean.parseBoolean(ordered)));
         part.setUpdatedAt(LocalDateTime.now());
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());

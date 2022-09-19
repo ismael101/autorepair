@@ -56,7 +56,7 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("username cannot be null", "username cannot be blank", "password cannot be null", "password cannot be blank")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("username cannot be null", "username cannot be blank", "password cannot be null", "password cannot be blank")));
 
         //section for testing blank username and password
         request = new UserRequest("", "");
@@ -66,7 +66,7 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder(        "username cannot be blank", "password cannot be blank")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder(        "username cannot be blank", "password cannot be blank")));
     }
 
 

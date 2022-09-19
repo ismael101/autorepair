@@ -27,7 +27,7 @@ class CustomerRepositoryTest {
     void setUp(){
         User user = new User("username", "password");
         userRepository.save(user);
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         workRepository.save(work);
         Customer customer = new Customer("first", "last", "email", 7632275152l, work);
         underTest.save(customer);

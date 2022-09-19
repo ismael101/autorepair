@@ -43,7 +43,7 @@ class WorkServiceTest {
 
         //section for testing successfully fetching all work orders for a user
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false,user);
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
         when(workRepository.findWorkByUser(user)).thenReturn(List.of(work));
         Map<String, Object> response = underTest.getWorks();
@@ -61,7 +61,7 @@ class WorkServiceTest {
         //section for testing successfully fetching user by id
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.getWorkById(id);
@@ -72,7 +72,7 @@ class WorkServiceTest {
 
         //section for testing user fetching work order that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -95,10 +95,10 @@ class WorkServiceTest {
         //section for testing successfully creating a new work order
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         work.setId(id);
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
-        WorkRequest request = new WorkRequest("title", "description");
+        WorkRequest request = new WorkRequest("title", "description", "false");
         Map<String, Object> response = underTest.createWork(request);
         verify(workRepository).save(any());
         assertEquals(response.get("path"), "/api/v1/work");
@@ -115,10 +115,10 @@ class WorkServiceTest {
         //section for testing successfully updating a work order
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
-        WorkRequest request = new WorkRequest("new title", "new description");
+        WorkRequest request = new WorkRequest("new title", "new description", "false");
         Map<String, Object> response = underTest.updateWork(id, request);
         verify(workRepository).findById(id);
         assertEquals(response.get("path"), "/api/v1/work/" + id);
@@ -129,7 +129,7 @@ class WorkServiceTest {
 
         //section for testing updating work order that doesn't belong to the user
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description",false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -153,7 +153,7 @@ class WorkServiceTest {
         //section for testing successfully deleting a work order
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.deleteWork(id);
@@ -164,7 +164,7 @@ class WorkServiceTest {
         assertEquals(response.get("message"), "work order deleted");
         //section for testing deleting work order that doesn't belong to the user
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
            underTest.deleteWork(id);

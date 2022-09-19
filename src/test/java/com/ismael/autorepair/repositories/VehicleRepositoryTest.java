@@ -26,7 +26,7 @@ class VehicleRepositoryTest {
     void setUp(){
         User user = new User("username", "password");
         userRepository.save(user);
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         workRepository.save(work);
         Vehicle vehicle = new Vehicle("make", "model", 1999, work);
         underTest.save(vehicle);

@@ -15,20 +15,37 @@ public class Labor {
     private String location;
     @Column(nullable = false)
     private Double cost;
+    @Column(nullable = false)
+    private Boolean complete = false;
     @JsonIgnore
     @ManyToOne
     private Work work;
+    @Transient
+    private UUID workId;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public Labor(String task, String location, Double cost, Work work) {
+    public Labor(String task, String location, Double cost, Boolean complete, Work work) {
         this.task = task;
         this.location = location;
         this.work = work;
         this.cost = cost;
+        this.complete = complete;
     }
 
     public Labor() {
+    }
+
+    public Boolean getComplete() {
+        return complete;
+    }
+
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
+    }
+
+    public UUID getWorkId() {
+        return work.getId();
     }
 
     public Double getCost() {

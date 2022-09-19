@@ -42,7 +42,7 @@ class PartControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid part request
-        PartRequest request = new PartRequest("piston tool","engine",100.00, id.toString());
+        PartRequest request = new PartRequest("piston tool","engine",100.00, "false", id.toString());
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/part")
                         .content(content)
@@ -58,20 +58,20 @@ class PartControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
                         Matchers.containsInAnyOrder("title cannot be null", "title cannot be blank", "location cannot be null", "location cannot be blank",
-                                "cost cannot be null", "work cannot be null")));
+                                "cost cannot be null", "work cannot be null", "ordered cannot be null")));
 
         //section for testing blank title, location and invalid cost and work uuid
-        request = new PartRequest("", "", -100.00, "invalid uuid");
+        request = new PartRequest("", "", -100.00,"not false", "invalid uuid");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/part")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
-                        Matchers.containsInAnyOrder("title cannot be blank", "location cannot be blank", "cost is invalid", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
+                        Matchers.containsInAnyOrder("allowed input: true or false", "title cannot be blank", "location cannot be blank", "cost is invalid", "invalid uuid")));
     }
 
     @Test
@@ -81,7 +81,7 @@ class PartControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid part request
-        PartRequest request = new PartRequest("piston tool","engine",100.00, id.toString());
+        PartRequest request = new PartRequest("piston tool","engine",100.00,"false", id.toString());
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/part/" + id)
                         .content(content)
@@ -90,15 +90,15 @@ class PartControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //section for testing blank title, location and cost and work uuid
-        request = new PartRequest("","",-100.00, "invalid uuid");
+        request = new PartRequest("","",-100.00, "not false", "invalid uuid");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put( "/api/v1/part/" + id)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
-                        Matchers.containsInAnyOrder("title cannot be blank", "location cannot be blank", "cost is invalid", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
+                        Matchers.containsInAnyOrder("allowed input: true or false", "title cannot be blank", "location cannot be blank", "cost is invalid", "invalid uuid")));
     }
 
 }

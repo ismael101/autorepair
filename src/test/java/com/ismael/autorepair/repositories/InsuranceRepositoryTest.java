@@ -27,7 +27,7 @@ class InsuranceRepositoryTest {
     void setUp(){
         User user = new User("username", "password");
         userRepository.save(user);
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         workRepository.save(work);
         Insurance insurance = new Insurance("provider", "license", "policy", "vin", work);
         underTest.save(insurance);

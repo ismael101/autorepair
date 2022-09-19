@@ -48,8 +48,8 @@ class LaborServiceTest {
 
         //section for testing successfully fetching all labor belonging to user
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Labor labor = new Labor("task", "location" , 100.00, work);
+        Work work = new Work("title", "description", false, user);
+        Labor labor = new Labor("task", "location" , 100.00, false, work);
         work.setLabors(List.of(labor));
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
         when(workRepository.findWorkByUser(user)).thenReturn(List.of(work));
@@ -68,8 +68,8 @@ class LaborServiceTest {
         //section for testing successfully fetching labor by id that belongs to user
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Labor labor = new Labor("task", "location", 100.00, work);
+        Work work = new Work("title", "description", false, user);
+        Labor labor = new Labor("task", "location", 100.00, false, work);
         when(laborRepository.findById(id)).thenReturn(Optional.of(labor));
         Map<String, Object> response = underTest.getLaborById(id);
         verify(laborRepository).findById(id);
@@ -79,8 +79,8 @@ class LaborServiceTest {
 
         //section for testing user fetching labor that doesn't belong to him
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
-        labor = new Labor("task", "location", 100.00, work);
+        work = new Work("title", "description",false, user);
+        labor = new Labor("task", "location", 100.00, false, work);
         when(laborRepository.findById(id)).thenReturn(Optional.of(labor));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.getLaborById(id);
@@ -102,9 +102,9 @@ class LaborServiceTest {
         //section for testing successfully fetching labor with work id
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false, user);
         work.setId(id);
-        Labor labor = new Labor("task", "location", 100.00, work);
+        Labor labor = new Labor("task", "location", 100.00, false, work);
         work.setLabors(List.of(labor));
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.getLaborByWork(id);
@@ -115,7 +115,7 @@ class LaborServiceTest {
 
         //section for testing user fetching labor that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -137,8 +137,8 @@ class LaborServiceTest {
 
         //section for testing successfully creating a labor
         User user = new User("username", "password");
-        Work work = new Work("title","description", user);
-        LaborRequest request = new LaborRequest("task", "location", 100.00, work.getId().toString());
+        Work work = new Work("title","description", false, user);
+        LaborRequest request = new LaborRequest("task", "location", 100.00, "false", work.getId().toString());
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.createLabor(request);
         verify(laborRepository).save(any());
@@ -151,7 +151,7 @@ class LaborServiceTest {
 
         //section for testing user creating labor for work that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class,  () -> {
             underTest.createLabor(request);
@@ -174,9 +174,9 @@ class LaborServiceTest {
         //section for testing successfully updating labor
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Labor labor = new Labor("task", "location" , 100.00, work);
-        LaborRequest request = new LaborRequest("new task", "new location", 200.00, work.getId().toString());
+        Work work = new Work("title", "description", false, user);
+        Labor labor = new Labor("task", "location" , 100.00, false, work);
+        LaborRequest request = new LaborRequest("new task", "new location", 200.00,"false", work.getId().toString());
         when(laborRepository.findById(id)).thenReturn(Optional.of(labor));
         Map<String, Object> response = underTest.updateLabor(id, request);
         verify(laborRepository).findById(id);
@@ -189,8 +189,8 @@ class LaborServiceTest {
 
         //section for testing user updating labor that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
-        labor =  new Labor("task", "location", 100.00, work);
+        work = new Work("title", "description", false, user);
+        labor =  new Labor("task", "location", 100.00, false, work);
         when(laborRepository.findById(id)).thenReturn(Optional.of(labor));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.updateLabor(id, request);
@@ -212,8 +212,8 @@ class LaborServiceTest {
         //section for testing successfully deleting labor
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
-        Labor labor = new Labor("task", "location", 100.00, work);
+        Work work = new Work("title", "description", false, user);
+        Labor labor = new Labor("task", "location", 100.00, false, work);
         when(laborRepository.findById(id)).thenReturn(Optional.of(labor));
         Map<String, Object> response = underTest.deleteLabor(id);
         verify(laborRepository).delete(labor);
@@ -223,8 +223,8 @@ class LaborServiceTest {
 
         //section for testing deleting labor that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
-        labor = new Labor("task", "location", 100.00, work);
+        work = new Work("title", "description",false, user);
+        labor = new Labor("task", "location", 100.00, false, work);
         when(laborRepository.findById(id)).thenReturn(Optional.of(labor));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.deleteLabor(id);

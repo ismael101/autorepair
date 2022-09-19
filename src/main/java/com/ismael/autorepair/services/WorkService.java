@@ -67,7 +67,7 @@ public class WorkService {
     public Map<String, Object> createWork(WorkRequest request){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByUsername(username).get();
-        Work work = new Work(request.getTitle(), request.getDescription(), user);
+        Work work = new Work(request.getTitle(), request.getDescription(),Boolean.parseBoolean(request.getComplete()), user);
         workRepository.save(work);
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -95,6 +95,8 @@ public class WorkService {
                 .ifPresent(title -> work.setTitle(title));
         Optional.ofNullable(request.getDescription())
                 .ifPresent(description -> work.setDescription(description));
+        Optional.ofNullable(request.getComplete())
+                .ifPresent(complete -> work.setComplete(Boolean.parseBoolean(complete)));
         work.setUpdatedAt(LocalDateTime.now());
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());

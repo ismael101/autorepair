@@ -15,7 +15,7 @@ export default function Login(){
 
     useEffect(() => {
         if(isSuccess || token){
-            navigate('/')
+            navigate('/works')
         }
         dispatch(reset())
     },[token, isError, isSuccess])
@@ -46,7 +46,7 @@ export default function Login(){
         <div className="h-screen bg-gray-300 flex">
             <div className="rounded-md w-1/3 px-10 pt-10 pb-2 bg-white mx-auto my-auto">
                 <form className="space-y-5" onSubmit={handleSubmit}>
-                    <h1 className="text-center text-4xl font-bold">Login</h1>
+                    <h1 className="text-black text-center text-4xl font-bold">Login</h1>
                     {
                     isError ?
                     <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">

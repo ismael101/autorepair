@@ -106,7 +106,7 @@ public class LaborService {
             logger.error("Unauthorized Action Exception Thrown By: " + username + " For Work With Id: " + request.getWork());
             throw new UnauthorizedAction("user: " + username + " action not allowed");
         }
-        Labor labor = new Labor(request.getTask(), request.getLocation(), request.getCost(),work);
+        Labor labor = new Labor(request.getTask(), request.getLocation(), request.getCost(), Boolean.parseBoolean(request.getComplete()), work);
         laborRepository.save(labor);
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -136,6 +136,8 @@ public class LaborService {
                 .ifPresent(cost -> labor.setCost(cost));
         Optional.ofNullable(request.getLocation())
                 .ifPresent(location -> labor.setLocation(location));
+        Optional.of(request.getComplete())
+                .ifPresent(complete -> labor.setComplete(Boolean.parseBoolean(complete)));
         labor.setUpdatedAt(LocalDateTime.now());
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());

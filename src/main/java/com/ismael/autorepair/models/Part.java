@@ -1,5 +1,6 @@
 package com.ismael.autorepair.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,15 +15,21 @@ public class Part {
     private String location;
     @Column(nullable = false)
     private Double cost;
+    @Column(nullable = false)
+    private Boolean ordered = false;
+    @Transient
+    private UUID workId;
+    @JsonIgnore
     @ManyToOne
     private Work work;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public Part(String title, String location, Double cost, Work work) {
+    public Part(String title, String location, Double cost, Boolean ordered, Work work) {
         this.title = title;
         this.location = location;
         this.cost = cost;
+        this.ordered = ordered;
         this.work = work;
     }
 
@@ -60,6 +67,18 @@ public class Part {
 
     public void setCost(Double cost) {
         this.cost = cost;
+    }
+
+    public Boolean getOrdered() {
+        return ordered;
+    }
+
+    public void setOrdered(Boolean ordered) {
+        this.ordered = ordered;
+    }
+
+    public UUID getWorkId() {
+        return work.getId();
     }
 
     public Work getWork() {

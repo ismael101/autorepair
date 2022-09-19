@@ -20,6 +20,8 @@ public class Insurance {
     @JsonIgnore
     @OneToOne
     private Work work;
+    @Transient
+    private UUID workId;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
@@ -40,6 +42,10 @@ public class Insurance {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getWorkId() {
+        return work.getId();
     }
 
     public String getProvider() {

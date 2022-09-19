@@ -26,9 +26,9 @@ class PartRepositoryTest {
     void setUp(){
         User user = new User("username", "password");
         userRepository.save(user);
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         workRepository.save(work);
-        Part part = new Part("title", "location", 0.0, work);
+        Part part = new Part("title", "location", 0.0,false, work);
         underTest.save(part);
     }
 

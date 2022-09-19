@@ -59,7 +59,7 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
                         Matchers.containsInAnyOrder("first cannot be null", "first cannot be blank", "last cannot be null", "last cannot be blank", "email cannot be null",
                                 "phone cannot be null", "work cannot be null")));
 
@@ -71,7 +71,7 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("first cannot be blank", "last cannot be blank", "email is invalid", "phone number is invalid", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("first cannot be blank", "last cannot be blank", "email is invalid", "phone number is invalid", "invalid uuid")));
     }
 
     @Test
@@ -97,7 +97,7 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("first cannot be blank", "last cannot be blank", "email is invalid", "phone number is invalid", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("first cannot be blank", "last cannot be blank", "email is invalid", "phone number is invalid", "invalid uuid")));
 
     }
 

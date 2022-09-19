@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { reset, signup } from '../features/auth/authSlice'
 
-
 export default function Signup(){
     const [ username, setUsername ] = useState()
     const [ password, setPassword ] = useState()
@@ -17,7 +16,7 @@ export default function Signup(){
 
     useEffect(() => {
         if(token){
-            navigate('/work')
+            navigate('/works')
         }
 
         if(isSuccess){
@@ -53,7 +52,7 @@ export default function Signup(){
         <div className="h-screen bg-gray-300 flex">
             <div className="rounded-md w-1/3 px-10 pt-10 pb-2 bg-white mx-auto my-auto">
                 <form className="space-y-5" onSubmit={handleSubmit}>
-                    <h1 className="text-center text-4xl font-bold">Signup</h1>
+                    <h1 className="text-black text-center text-4xl font-bold">Signup</h1>
                     {
                     isError ?
                     <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">

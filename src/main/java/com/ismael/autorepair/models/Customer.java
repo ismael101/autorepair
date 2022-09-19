@@ -20,6 +20,8 @@ public class Customer {
     @JsonIgnore
     @OneToOne
     private Work work;
+    @Transient
+    private UUID workId;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
@@ -40,6 +42,10 @@ public class Customer {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getWorkId() {
+        return work.getId();
     }
 
     public String getFirst() {

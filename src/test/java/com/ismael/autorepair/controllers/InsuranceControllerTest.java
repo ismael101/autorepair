@@ -58,7 +58,7 @@ class InsuranceControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
                         Matchers.containsInAnyOrder("provider cannot be null", "provider cannot be blank", "license cannot be null", "license cannot be blank", "policy cannot be null",
                                 "policy cannot be blank", "vin cannot be null",  "vin cannot be blank", "work cannot be null")));
 
@@ -70,7 +70,7 @@ class InsuranceControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("provider cannot be blank", "license cannot be blank", "policy cannot be blank", "vin cannot be blank", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("provider cannot be blank", "license cannot be blank", "policy cannot be blank", "vin cannot be blank", "invalid uuid")));
     }
 
     @Test
@@ -96,7 +96,7 @@ class InsuranceControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("provider cannot be blank", "license cannot be blank", "policy cannot be blank", "vin cannot be blank", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("provider cannot be blank", "license cannot be blank", "policy cannot be blank", "vin cannot be blank", "invalid uuid")));
     }
 
 }

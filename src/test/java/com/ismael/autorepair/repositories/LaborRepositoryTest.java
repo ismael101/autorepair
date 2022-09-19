@@ -27,9 +27,9 @@ class LaborRepositoryTest {
     void setUp(){
         User user = new User("username", "password");
         userRepository.save(user);
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         workRepository.save(work);
-        Labor labor = new Labor("task", "location", 0.0, work);
+        Labor labor = new Labor("task", "location", 0.0, false, work);
         underTest.save(labor);
     }
 

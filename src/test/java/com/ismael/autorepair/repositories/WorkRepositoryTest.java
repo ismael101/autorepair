@@ -24,7 +24,7 @@ class WorkRepositoryTest {
     void setUp(){
         User user = new User("username", "password");
         userRepository.save(user);
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         underTest.save(work);
     }
     @AfterAll

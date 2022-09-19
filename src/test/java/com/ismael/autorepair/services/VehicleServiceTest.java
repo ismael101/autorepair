@@ -47,7 +47,7 @@ class VehicleServiceTest {
 
         //section for testing successfully fetching all vehicles belonging to user
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         Vehicle vehicle = new Vehicle("make", "model", 2020 , work);
         work.setVehicle(vehicle);
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
@@ -67,7 +67,7 @@ class VehicleServiceTest {
         //section for testing successfully fetching vehicle by id that belongs to user
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         Vehicle vehicle = new Vehicle("make", "model", 2020 , work);
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
         Map<String, Object> response = underTest.getVehicleById(id);
@@ -77,7 +77,7 @@ class VehicleServiceTest {
         assertEquals(response.get("vehicle"), vehicle);
         //section for testing user fetching vehicle that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description",false,  user);
         vehicle = new Vehicle("make", "model", 2020 , work);
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -100,7 +100,7 @@ class VehicleServiceTest {
         //section for testing successfully fetching vehicle with work id
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false, user);
         work.setId(id);
         Vehicle vehicle = new Vehicle("make", "model", 2020 , work);
         work.setVehicle(vehicle);
@@ -113,7 +113,7 @@ class VehicleServiceTest {
 
         //section for testing user fetching vehicle that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -143,7 +143,7 @@ class VehicleServiceTest {
 
         //section for testing successfully creating a vehicle
         User user = new User("username", "password");
-        Work work = new Work("title","description", user);
+        Work work = new Work("title","description",false, user);
         VehicleRequest request = new VehicleRequest("make", "model" ,2020, work.getId().toString());
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.createVehicle(request);
@@ -157,7 +157,7 @@ class VehicleServiceTest {
 
         //section for testing user creating vehicle for work that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class,  () -> {
             underTest.createVehicle(request);
@@ -189,7 +189,7 @@ class VehicleServiceTest {
         //section for testing successfully updating vehicle
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         Vehicle vehicle = new Vehicle("make", "model", 2020, work);
         VehicleRequest request = new VehicleRequest("new make", "new model" ,2022, work.getId().toString());
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
@@ -204,7 +204,7 @@ class VehicleServiceTest {
 
         //section for testing user updating vehicle that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         vehicle = new Vehicle("make", "model", 2020, work);
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -227,7 +227,7 @@ class VehicleServiceTest {
         //section for testing successfully deleting vehicle
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false, user);
         Vehicle vehicle = new Vehicle("make", "model", 2020, work);
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
         Map<String, Object> response = underTest.deleteVehicle(id);
@@ -238,7 +238,7 @@ class VehicleServiceTest {
 
         //section for testing deleting vehicle that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         vehicle = new Vehicle("make", "model", 2020, work);
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {

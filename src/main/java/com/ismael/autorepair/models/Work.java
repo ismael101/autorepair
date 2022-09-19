@@ -15,6 +15,8 @@ public class Work {
     private String title;
     @Column(nullable = false, name = "work_order_description")
     private String description;
+    @Column(nullable = false)
+    private Boolean complete = false;
     @JsonIgnore
     @ManyToOne
     private User user;
@@ -31,9 +33,10 @@ public class Work {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public Work(String title, String description,  User user) {
+    public Work(String title, String description, Boolean complete,  User user) {
         this.title = title;
         this.description = description;
+        this.complete = complete;
         this.user = user;
     }
 
@@ -62,6 +65,14 @@ public class Work {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getComplete() {
+        return complete;
+    }
+
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
     }
 
     public LocalDateTime getCreatedAt() {

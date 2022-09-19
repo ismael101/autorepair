@@ -41,7 +41,7 @@ class WorkControllerTest {
         ObjectMapper mapper = new ObjectMapper();
 
         //section for testing valid work request
-        WorkRequest request = new WorkRequest("title", "description");
+        WorkRequest request = new WorkRequest("title", "description", "false");
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/work")
                         .content(content)
@@ -57,17 +57,19 @@ class WorkControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("title cannot be null", "title cannot be blank", "description cannot be null", "description cannot be blank")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
+                        Matchers.containsInAnyOrder("complete cannot be null", "title cannot be null", "title cannot be blank", "description cannot be null", "description cannot be blank")));
 
         //section for testing blank title and description
-        request = new WorkRequest("", "");
+        request = new WorkRequest("", "", "not false");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/work")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("title cannot be blank", "description cannot be blank")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
+                        Matchers.containsInAnyOrder("allowed input: true or false", "title cannot be blank", "description cannot be blank")));
     }
 
     @Test
@@ -77,7 +79,7 @@ class WorkControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid work request
-        WorkRequest request = new WorkRequest("title", "description");
+        WorkRequest request = new WorkRequest("title", "description", "false");
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/work/" + id)
                         .content(content)
@@ -86,14 +88,15 @@ class WorkControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //section for testing blank title and description
-        request = new WorkRequest("", "");
+        request = new WorkRequest("", "", "not false");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put( "/api/v1/work/" + id)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("title cannot be blank", "description cannot be blank")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
+                        Matchers.containsInAnyOrder("allowed input: true or false","title cannot be blank", "description cannot be blank")));
     }
 
 

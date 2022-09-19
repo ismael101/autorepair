@@ -59,7 +59,7 @@ class VehicleControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
                         Matchers.containsInAnyOrder("make cannot be null", "make cannot be blank", "model cannot be null", "model cannot be blank", "year cannot be null", "work cannot be null")));
 
         //section for testing null, make, model and invalid year, work uuid
@@ -70,7 +70,7 @@ class VehicleControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors",
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error",
                         Matchers.containsInAnyOrder("make cannot be blank", "model cannot be blank", "year is invalid", "invalid uuid")));
     }
 
@@ -97,7 +97,7 @@ class VehicleControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", Matchers.containsInAnyOrder("make cannot be blank", "model cannot be blank", "year is invalid", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("make cannot be blank", "model cannot be blank", "year is invalid", "invalid uuid")));
     }
 
 

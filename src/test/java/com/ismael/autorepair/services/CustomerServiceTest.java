@@ -48,7 +48,7 @@ class CustomerServiceTest {
 
         //section for testing successfully fetching all customer belonging to user
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false,  user);
         Customer customer = new Customer("first", "last", "email@gmail.com",6123452343l , work);
         work.setCustomer(customer);
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
@@ -68,7 +68,7 @@ class CustomerServiceTest {
         //section for testing successfully fetching customer by id that belongs to user
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         Customer customer = new Customer("first", "last", "email@gmail.com",6123452343l , work);
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
         Map<String, Object> response = underTest.getCustomerById(id);
@@ -79,7 +79,7 @@ class CustomerServiceTest {
 
         //section for testing user fetching customer that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         customer = new Customer("first", "last", "email@gmail.com",6123452343l , work);
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -102,7 +102,7 @@ class CustomerServiceTest {
         //section for testing successfully fetching customer with work id
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         work.setId(id);
         Customer customer = new Customer("first", "last", "email@gmail.com",7632275152l , work);
         work.setCustomer(customer);
@@ -115,7 +115,7 @@ class CustomerServiceTest {
 
         //section for testing user fetching customer that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         work.setId(id);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -145,7 +145,7 @@ class CustomerServiceTest {
 
         //section for testing successfully creating a customer
         User user = new User("username", "password");
-        Work work = new Work("title","description", user);
+        Work work = new Work("title","description", false, user);
         CustomerRequest request = new CustomerRequest("first", "last", "email", 7632275152l, work.getId().toString());
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.createCustomer(request);
@@ -160,7 +160,7 @@ class CustomerServiceTest {
 
         //section for testing user creating customer for work that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Exception exception = assertThrows(UnauthorizedAction.class,  () -> {
             underTest.createCustomer(request);
@@ -192,7 +192,7 @@ class CustomerServiceTest {
         //section for testing successfully updating customer
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description",false, user);
         Customer customer = new Customer("first", "last", "email", 7632275152l, work);
         CustomerRequest request = new CustomerRequest("new first", "new last", "new email", 6122443928l, work.getId().toString());
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
@@ -208,7 +208,7 @@ class CustomerServiceTest {
 
         //section for testing user updating customer that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         customer = new Customer("first", "last", "email", 7632275152l, work);
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
@@ -231,7 +231,7 @@ class CustomerServiceTest {
         //section for testing successfully deleting customer
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
-        Work work = new Work("title", "description", user);
+        Work work = new Work("title", "description", false, user);
         Customer customer = new Customer("first", "last", "email", 7632275152l, work);
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
         Map<String, Object> response = underTest.deleteCustomer(id);
@@ -242,7 +242,7 @@ class CustomerServiceTest {
 
         //section for testing deleting customer that doesn't belong to them
         user = new User("ismael101", "password");
-        work = new Work("title", "description", user);
+        work = new Work("title", "description", false, user);
         customer = new Customer("first", "last", "email", 7632275152l, work);
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {

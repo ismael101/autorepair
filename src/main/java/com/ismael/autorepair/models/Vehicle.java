@@ -18,6 +18,8 @@ public class Vehicle {
     @JsonIgnore
     @OneToOne
     private Work work;
+    @Transient
+    private UUID workId;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
@@ -69,6 +71,10 @@ public class Vehicle {
 
     public void setWork(Work work) {
         this.work = work;
+    }
+
+    public UUID getWorkId() {
+        return work.getId();
     }
 
     public LocalDateTime getCreatedAt() {
