@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-export default function Works(){
+export default function Dashboard(){
     const [show, setShow] = useState(false)
     
     useEffect(() => {
