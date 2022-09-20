@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 
 const initialState = {
     parts:[],
@@ -151,3 +152,6 @@ export const partSlice = createSlice({
         })  
     }
 })
+
+export const {reset} = partSlice.actions
+export default partSlice.reducer

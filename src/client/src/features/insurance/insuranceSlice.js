@@ -151,3 +151,6 @@ export const insuranceSlice = createSlice({
         })
     }
 })
+
+export const {reset} = insuranceSlice.actions
+export default insuranceSlice.reducer

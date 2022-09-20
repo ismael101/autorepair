@@ -152,3 +152,6 @@ export const vehicleSlice = createSlice({
         })
     }
 })
+
+export const {reset} = vehicleSlice.actions
+export default vehicleSlice.reducer
