@@ -78,7 +78,7 @@ export const deleteInsurance = createAsyncThunk(
 )
 
 export const insuranceSlice = createSlice({
-    name:"insurances",
+    name:"insurance",
     initialState,
     reducers:{
         reset:(state) => initialState
