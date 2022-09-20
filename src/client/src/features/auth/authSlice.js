@@ -4,10 +4,10 @@ import axios from 'axios'
 const token = localStorage.getItem("token")
 
 const initialState = {
-    token : token ? token : null,
-    isError : false,
-    isSuccess : false,
-    isLoading: false,
+    token:token ? token : null,
+    isError:false,
+    isSuccess:false,
+    isLoading:false,
     error:null
 }
 
@@ -89,5 +89,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const { reset } = authSlice.actions
+export const {reset} = authSlice.actions
 export default authSlice.reducer

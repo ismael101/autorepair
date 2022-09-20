@@ -44,7 +44,7 @@ export default function Login(){
     
     return(
         <div className="h-screen bg-gray-300 flex">
-            <div className="rounded-md w-1/3 px-10 pt-10 pb-2 bg-white mx-auto my-auto">
+            <div className="rounded-md w-1/3 px-10 pt-10 h-1/2 mt-36 pb-2 bg-white mx-auto">
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <h1 className="text-black text-center text-4xl font-bold">Login</h1>
                     {
