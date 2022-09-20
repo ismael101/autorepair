@@ -112,7 +112,7 @@ export const customerSlice = createSlice({
         })
         .addCase(updateCustomer.fulfilled, (state, action) => {
             state.customers = state.customers.forEach(customer => {
-                if(customer.id == action.payload.id){
+                if(customer.id == action.payload.customer.id){
                     customer = action.payload
                 }
             })
