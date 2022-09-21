@@ -30,9 +30,7 @@ export default function Dashboard(){
 
     return(
         <div className='flex'>
-            <div className='bg-white ronuded-md h-1/3 w-1/3'>
-                <h1>{completeWork}</h1>
-            </div>
+
         </div>
     )
 

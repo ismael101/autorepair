@@ -8,13 +8,15 @@ const initialState = {
     isError:false,
     isSuccess:false,
     isLoading:false,
-    error:null
+    error:null,
+    message:""
 }
 
 export const signup = createAsyncThunk(
     'auth/signup',
     async(user, thunkAPI) => {
         try{
+            console.log(thunkAPI.getState())
             const response = await axios.post('http://localhost:8080/api/v1/auth/signup', user)
             return response.data
         }catch(error){
@@ -48,10 +50,13 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         reset: (state) => {
+            state.token = null
+            state.isLoading = false
             state.isError = false
             state.isSuccess = false
             state.error = null
-        },
+            state.message = ""
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -76,15 +81,14 @@ export const authSlice = createSlice({
         .addCase(login.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
-            state.error = action.payload
+            state.message = action.payload.error
             state.token = null
         })
         .addCase(signup.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
-            state.error = action.payload
+            state.message = action.payload.error
             state.token = null
-
         })
     }
 })

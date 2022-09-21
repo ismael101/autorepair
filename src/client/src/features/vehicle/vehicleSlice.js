@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
-
+import { createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import axios from "axios"
 
 const initialState = {
     vehicles:[],
@@ -21,13 +21,13 @@ export const fetchVehicles = createAsyncThunk(
             const response = await axios.get(`http://localhost:8080/api/v1/vehicle`, config)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
 
 export const createVehicle = createAsyncThunk(
-    'vehicle/fetch',
+    'vehicle/create',
     async(vehicle, thunkAPI) => {
         try{
             const config = {
@@ -38,7 +38,7 @@ export const createVehicle = createAsyncThunk(
             const response = await axios.post(`http://localhost:8080/api/v1/vehicle`, config, vehicle)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -56,7 +56,7 @@ export const updateVehicle = createAsyncThunk(
             const response = await axios.put(`http://localhost:8080/api/v1/vehicle/${id}`, config, vehicle)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -73,7 +73,7 @@ export const deleteVehicle = createAsyncThunk(
             const response = await axios.get(`http://localhost:8080/api/v1/insruance`, config)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -86,19 +86,19 @@ export const vehicleSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder
-        .addCase(fetchVehicle.pending, (state) => {
-            state.isLoading =  true
+        .addCase(fetchVehicles.pending, (state) => {
+            state.isLoading = true
         })
         .addCase(createVehicle.pending, (state) => {
-            state.isLoading =  true
+            state.isLoading = true
         })
         .addCase(updateVehicle.pending, (state) => {
-            state.isLoading =  true
+            state.isLoading = true
         })
         .addCase(deleteVehicle.pending, (state) => {
-            state.isLoading =  true
+            state.isLoading = true
         })
-        .addCase(fetchVehicles.fulfilled, (state) => {
+        .addCase(fetchVehicles.fulfilled, (state, action) => {
             state.vehicles = action.payload.vehicles
             state.isLoading = false
             state.isSuccess = true
@@ -114,7 +114,7 @@ export const vehicleSlice = createSlice({
         })
         .addCase(updateVehicle.fulfilled, (state, action) => {
             state.vehicles = state.vehicles.forEach(vehicle => {
-                if(vehicle.id == action.payload.vehicle.id){
+                if(vehicle.id === action.payload.vehicle.id){
                     vehicle = action.payload.vehicle
                 }
             })

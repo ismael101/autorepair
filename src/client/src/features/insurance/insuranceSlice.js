@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "axios"
 
 const initialState = {
     insurances:[],
@@ -7,7 +8,6 @@ const initialState = {
     isLoading:false,
     message:""
 }
-
 
 export const fetchInsurances = createAsyncThunk(
     'insurance/fetch',
@@ -21,7 +21,7 @@ export const fetchInsurances = createAsyncThunk(
             const response = await axios.get(`http://localhost:8080/api/v1/insruance`, config)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -38,7 +38,7 @@ export const createInsurance = createAsyncThunk(
             const response = await axios.post(`http://localhost:8080/api/v1/insruance`, config, insurance)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -55,24 +55,24 @@ export const updateInsurance = createAsyncThunk(
             const response = await axios.put(`http://localhost:8080/api/v1/insruance`, config, insurance)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )
 
 export const deleteInsurance = createAsyncThunk(
     'insurance/delete',
-    async(thunkAPI) => {
+    async(id, thunkAPI) => {
         try{
             const config = {
                 headers:{
                     Authorization:`Bearer ${thunkAPI.state.auth.token}`
                 }
             }
-            await axios.delete(`http://localhost:8080/api/v1/insruance`, config)
+            await axios.delete(`http://localhost:8080/api/v1/insruance/${id}`, config)
             return id
         }catch(error){
-            thunkAPI.rejectValueWith(error.data)
+            thunkAPI.rejectWithValue(error.data)
         }
     }
 )

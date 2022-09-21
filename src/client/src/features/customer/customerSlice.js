@@ -21,7 +21,7 @@ export const fetchCustomers = createAsyncThunk(
             const response = await axios.get(`http://localhost:8080/api/v1/customers`, config)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(thunkAPI.error.data)
+            thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
     }
 )
@@ -38,7 +38,7 @@ export const createCustomer = createAsyncThunk(
             const response = await axios.post(`http://localhost:8080/api/v1/customers`, config, customer)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(thunkAPI.error.data)
+            thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
     }
 )
@@ -55,14 +55,14 @@ export const updateCustomer = createAsyncThunk(
             const response = await axios.put(`http://localhost:8080/api/v1/customers/${id}`, config, customer)
             return response.data
         }catch(error){
-            thunkAPI.rejectValueWith(thunkAPI.error.data)
+            thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
     }
 )
 
 export const deleteCustomer = createAsyncThunk(
     'customer/delete',
-    async(id) => {
+    async(id, thunkAPI) => {
         try{
             const config = {
                 headers:{
@@ -72,7 +72,7 @@ export const deleteCustomer = createAsyncThunk(
             await axios.delete(`http://localhost:8080/api/v1/customers/${id}`, config)
             return id
         }catch(error){
-            thunkAPI.rejectValueWith(thunkAPI.error.data)
+            thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
     }
 )

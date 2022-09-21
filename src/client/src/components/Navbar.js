@@ -11,7 +11,6 @@ export default function Navbar(){
 
     const signout = async () => {
         await dispatch(logout())
-        navigate('/')
     }
 
     return(
@@ -21,7 +20,7 @@ export default function Navbar(){
                 <span className="text-black self-center text-xl font-semibold whitespace-nowrap">Autorepair</span>
             </div>
             <div className="flex md:order-2">
-                { token ? <button onClick={() => signout()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0">Logout</button> : null}
+                { token ? <button onClick={() => signout()} type="button" className="btn no-animation normal-case text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium">Logout</button> : null}
             </div>
         </div>
     </nav>

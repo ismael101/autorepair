@@ -98,35 +98,35 @@ export const laborSlice = createSlice({
             state.isLoading = true
         })
         .addCase(fetchLabors.fulfilled, (state, action) => {
-            state.labor = action.payload.labors
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.labors = action.payload.labors
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "labors successfully fetched"
         })
         .addCase(createLabor.fulfilled, (state, action) => {
-            state.labor = state.labors.push(action.payload.labor)
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.labors = state.labors.push(action.payload.labor)
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "labor successfully created"
         })
-        .addCase(updateLabor.fulfilled, (state) => {
-            state.labor = state.labors.forEach(labor => {
+        .addCase(updateLabor.fulfilled, (state, action) => {
+            state.labors = state.labors.forEach(labor => {
                 if(labor.id == action.payload.labor.id){
                     labor = action.payload.labor
                 }
             })
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "labor successfully updated"
         })
         .addCase(deleteLabor.fulfilled, (state, action) => {
-            state.labor = state.labors.filter(labor => labor.id == action.payload)
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.labors = state.labors.filter(labor => labor.id == action.payload)
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "labor successfully deleted"
         })
         .addCase(fetchLabors.rejected, (state, action) => {

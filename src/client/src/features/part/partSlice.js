@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit"
+import { createAsyncThunk , createSlice} from "@reduxjs/toolkit"
 import axios from "axios"
 
 const initialState = {
@@ -62,7 +62,6 @@ export const updatePart = createAsyncThunk(
 
 export const deletePart = createAsyncThunk(
     'part/delete',
-    'part/create',
     async(id, thunkAPI) => {
         try{
             const config = {
@@ -70,7 +69,7 @@ export const deletePart = createAsyncThunk(
                     Authorization:`Bearer ${thunkAPI.state.auth.token}`
                 }
             }
-            await axios.delete(`http://localhost:8080/api/v1/parts`, config, part)
+            await axios.delete(`http://localhost:8080/api/v1/parts/${id}`, config)
             return id
         }catch(error){
             thunkAPI.rejectWithValue(error.data)
@@ -100,16 +99,16 @@ export const partSlice = createSlice({
         })
         .addCase(fetchParts.fulfilled, (state, action) => {
             state.parts = action.payload.parts
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "part successfully fetched"
         })
         .addCase(createPart.fulfilled, (state, action) => {
             state.parts = state.parts.push(action.payload.part)
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "part successfully created"
         })
         .addCase(updatePart.fulfilled, (state, action) => {
@@ -118,36 +117,36 @@ export const partSlice = createSlice({
                     part = action.payload.part
                 }
             })
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "part successfully updated"
         })
         .addCase(deletePart.fulfilled, (state, action) => {
             state.parts = action.payload.filter(part => part.id == action.payload)
-            state.isLoading = false,
-            state.isSuccess = true,
-            state.isError = false,
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.message = "part successfully fetched"
         })
         .addCase(fetchParts.rejected, (state, action) => {
-            state.isLoading = false,
-            state.isError = true,
+            state.isLoading = false
+            state.isError = true
             state.message = action.payload.error
         })
         .addCase(createPart.rejected, (state, action) => {
-            state.isLoading = false,
-            state.isError = true,
+            state.isLoading = false
+            state.isError = true
             state.message = action.payload.error
         })
         .addCase(updatePart.rejected, (state, action) => {
-            state.isLoading = false,
-            state.isError = true,
+            state.isLoading = false
+            state.isError = true
             state.message = action.payload.error
         })
         .addCase(deletePart.rejected, (state, action) => {
-            state.isLoading = false,
-            state.isError = true,
+            state.isLoading = false
+            state.isError = true
             state.message = action.payload.error
         })  
     }

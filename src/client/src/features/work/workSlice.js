@@ -11,17 +11,18 @@ const initialState = {
 
 export const fetchWorks = createAsyncThunk(
     'work/fetch',
-    async(thunkAPI) => {
+    async(_,thunkAPI) => {
         try{
+            const token = thunkAPI.getState().auth.token
             const config = {
                 headers:{
-                    Authorization: `Bearer ${thunkAPI.getState().auth.token}`
+                    Authorization: `Bearer ${token}`
                 }
             }
             const repsonse = await axios.get('http://localhost:8080/api/v1/work', config)
             return repsonse.data
         }catch(error){
-            return thunkAPI.rejectWithValue(error.response.data)
+            return thunkAPI.rejectWithValue(error.response)
         }
     }
 )
@@ -126,9 +127,10 @@ export const workSlice = createSlice({
             state.isSuccess = true
             state.message = "work order successfully deleted"
         })
-        .addCase(fetchWorks.rejected, (state) => {
+        .addCase(fetchWorks.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
+            state.message = action.payload
         })
         .addCase(createWork.rejected, (state, action) => {
             state.isLoading = false
