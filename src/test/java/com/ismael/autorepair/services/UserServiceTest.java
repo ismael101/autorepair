@@ -41,7 +41,7 @@ class UserServiceTest {
         Map<String, Object> response = underTest.signUp(request);
         verify(userRepository).findUserByUsername("username");
         verify(userRepository).save(any());
-        assertEquals(response.get("message"), "new user created");
+        assertEquals(response.get("message"), "new user: username created");
         assertEquals(response.get("path"), "/api/v1/auth/signup");
         assertEquals(response.get("status"), 201);
 

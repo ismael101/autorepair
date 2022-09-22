@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { logout } from '../features/auth/authSlice'
+import { logout, reset } from '../../features/auth/authSlice'
 
 export default function Navbar(){
     const dispatch = useDispatch()
@@ -9,8 +9,10 @@ export default function Navbar(){
         (state) => state.auth
     )
 
-    const signout = async () => {
-        await dispatch(logout())
+    const signout = () => {
+        dispatch(logout())
+        dispatch(reset())
+        navigate('/')
     }
 
     return(

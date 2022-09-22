@@ -3,6 +3,7 @@ package com.ismael.autorepair.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,9 +28,9 @@ public class Work {
     @OneToOne(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
     private Insurance insurance;
     @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Labor> labors;
+    private List<Labor> labors = new ArrayList<>();
     @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Part> parts;
+    private List<Part> parts = new ArrayList<>();
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 

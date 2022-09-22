@@ -38,7 +38,7 @@ public class UserService {
         body.put("timestamp", LocalDateTime.now());
         body.put("status", 201);
         body.put("path", "/api/v1/auth/signup");
-        body.put("message", "new user created");
+        body.put("message", "new user: " + request.getUsername() + " created");
         logger.info(request.getUsername() + " Created");
         return body;
     }

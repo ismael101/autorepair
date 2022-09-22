@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { fetchService, createService, updateService, deleteService } from './workService'
 
 const initialState = {
     works:[],
@@ -14,15 +14,9 @@ export const fetchWorks = createAsyncThunk(
     async(_,thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            const config = {
-                headers:{
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            const repsonse = await axios.get('http://localhost:8080/api/v1/work', config)
-            return repsonse.data
+            return await fetchService(token)
         }catch(error){
-            return thunkAPI.rejectWithValue(error.response)
+            return thunkAPI.rejectWithValue(error.response.data)
         }
     }
 )
@@ -31,13 +25,8 @@ export const createWork = createAsyncThunk(
     'work/create',
     async(work, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization: `Bearer ${thunkAPI.getState().auth.token}`
-                }
-            }
-            const response = await axios.post(`http://localhost:8080/api/v1/work`, work, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await createService(token, work)
         }catch(error){
             return thunkAPI.rejectWithValue(error.response.data)
         }
@@ -48,13 +37,8 @@ export const updateWork = createAsyncThunk(
     'work/update',
     async(id, work, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization: `Bearer ${thunkAPI.getState().auth.token}`
-                }
-            }
-            const response = await axios.put(`http://localhost:8080/api/v1/work/${id}`, work, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await updateService(id, work, token)
         }catch(error){
             return thunkAPI.rejectWithValue(error.response.data)
         }
@@ -65,12 +49,8 @@ export const deleteWork = createAsyncThunk(
     'work/delete',
     async(id, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization: `Bearer ${thunkAPI.getState().auth.token}`
-                }
-            }
-            await axios.delete(`http://localhost:8080/api/v1/work/${id}`, config)
+            const token = thunkAPI.getState().auth.token
+            await deleteService(id, token)
             return id
         }catch(error){
             return thunkAPI.rejectWithValue(error.response.data)
@@ -85,68 +65,70 @@ export const workSlice = createSlice({
     reducers:{
         reset: (state) => initialState,
     },
-    extraReducers: (builder) => {
-        builder
-        .addCase(fetchWorks.pending, (state) => {
+    extraReducers: {
+        [fetchWorks.pending]: (state) => {
             state.isLoading = true
-        })
-        .addCase(createWork.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(updateWork.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(deleteWork.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(fetchWorks.fulfilled, (state, action) => {
+        },
+        [fetchWorks.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
             state.works = action.payload.works
+        },
+        [fetchWorks.rejected]: (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload.error
+        },
+        [createWork.pending]: (state) => {
+            state.isLoading = true
+        },
+        [createWork.fulfilled]: (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.message = "work orders succesfully fetched"
-        }) 
-        .addCase(createWork.fulfilled, (state, action) => {
-            state.works = state.works.push(action.payload.work)
+            state.isError = false
+            state.works.push(action.payload.work)
+        },
+        [createWork.rejected]: (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.message = "work order successfully created"
-        })
-        .addCase(updateWork.fulfilled, (state, action) => {
-            state.works = state.works.forEach(work => {
+            state.isError = false
+            state.message = action.payload.error
+        },
+        [updateWork.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateWork.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.isError = false
+            state.works.forEach(work => {
                 if(work.id == action.payload.work.id){
                     work = action.payload.work
                 }
             })
+        },
+        [updateWork.rejected]: (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.message = "work order successfully updated"
-        })
-        .addCase(deleteWork.fulfilled, (state, action) => {
-            state.works = state.works.filter(work => work.id == action.payload)
+            state.isError = false
+            state.message = action.payload.error
+        },
+        [deleteWork.pending]: (state) => {
+            state.isLoading = true
+        },
+        [deleteWork.fulfilled]: (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.message = "work order successfully deleted"
-        })
-        .addCase(fetchWorks.rejected, (state, action) => {
+            state.isError = false
+            state.works.filter(work => work.id == action.payload.id)
+        },
+        [deleteWork.rejected]: (state, action) => {
             state.isLoading = false
-            state.isError = true
-            state.message = action.payload
-        })
-        .addCase(createWork.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
+            state.isSuccess = true
+            state.isError = false
             state.message = action.payload.error
-        })
-        .addCase(updateWork.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(deleteWork.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
+        }
     }
 })
 
