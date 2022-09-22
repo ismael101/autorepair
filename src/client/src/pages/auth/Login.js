@@ -18,12 +18,13 @@ export default function Login(){
         if(isError){
             setError(true)
         }
-        if(isSuccess || token){
-            navigate('/work')
+        if(token){
+            navigate('/works')
         }
     },[token, isError, isSuccess, navigate, dispatch])
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
         const userData = {
             username:username,
             password:password

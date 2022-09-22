@@ -5,7 +5,7 @@ import Signup from './pages/auth/Signup.js'
 import Dashboard from './pages/info/Dashboard.js';
 import Navbar from './components/navigation/Navbar.js';
 import Works from './pages/list/Works'
-import Work from './pages/item/Work'
+import Work from './pages/item/Work.js';
 import Sidebar from './components/navigation/Sidebar.js';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
               <Route path='/signup' element={<Signup/>}/>
               <Route path='/dashboard' element={<Dashboard/>}/>
               <Route path='/works' element={<Works/>}/>
-              <Route path='/works/:id'></Route>
+              <Route path='/works/:id' element={<Work/>}/>
             </Routes>
           </div>
         </Router>

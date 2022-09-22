@@ -14,7 +14,7 @@ export default function Work(props){
     })
 
     return(
-            <div onClick={() => {navigate(`/work/${props.work.id}`)}} className={`bg-white rounded-lg w-1/3 p-3 flex flex-col space-y-3 cursor-pointer ${props.work.complete ? "border-green-600" : "border-red-600"} border-l-8 hover:shadow-lg duration-300`}>
+            <div onClick={() => {navigate(`/works/${props.work.id}`)}} className={`bg-white rounded-lg w-1/3 p-3 flex flex-col space-y-3 cursor-pointer ${props.work.complete ? "border-green-600" : "border-red-600"} border-l-8 hover:shadow-lg duration-300`}>
                 <h1 className="text-black font-bold">{props.work.title}</h1>
                 <div className="flex space-x-2 text-black">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
