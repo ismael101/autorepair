@@ -128,14 +128,6 @@ class InsuranceServiceTest {
         });
         assertEquals(exception.getMessage(), "work with id: " + id + " not found");
 
-        //section for testing fetching insurance that doesn't exist
-        user = new User("username", "password");
-        work = new Work("title", "description",false, user);
-        when(workRepository.findById(id)).thenReturn(Optional.of(work));
-        exception = assertThrows(NotFound.class, () -> {
-           underTest.getInsuranceByWork(id);
-        });
-        assertEquals(exception.getMessage(), "insurance for work with id: " + id + " not found");
     }
 
     @Test

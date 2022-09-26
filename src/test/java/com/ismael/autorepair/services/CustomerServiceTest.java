@@ -129,14 +129,6 @@ class CustomerServiceTest {
             underTest.getCustomerByWork(id);
         });
         assertEquals(exception.getMessage(), "work with id: " + id + " not found");
-
-        //section for testing user fetching customer that doesn't exist
-        work.setUser(new User("username", "password"));
-        when(workRepository.findById(id)).thenReturn(Optional.of(work));
-        exception = assertThrows(NotFound.class, () -> {
-            underTest.getCustomerByWork(id);
-        });
-        assertEquals(exception.getMessage(), "customer for work with id: " + id + " not found");
     }
 
     @Test

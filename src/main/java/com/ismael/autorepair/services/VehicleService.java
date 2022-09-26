@@ -87,10 +87,6 @@ public class VehicleService {
             logger.error("Unauthorized Action Exception Thrown By: " + username + " For Work With Id: " + id);
             throw new UnauthorizedAction("user: " + username + " action not allowed");
         }
-        if(work.getVehicle() == null){
-            logger.error("Not Found Exception Thrown By: " + username + " For Vehicle With Work Id: " + id);
-            throw new NotFound("vehicle for work with id: " + id + " not found");
-        }
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", 200);

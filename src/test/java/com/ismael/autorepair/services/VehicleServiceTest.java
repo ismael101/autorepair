@@ -128,13 +128,6 @@ class VehicleServiceTest {
         });
         assertEquals(exception.getMessage(), "work with id: " + id + " not found");
 
-        //section for testing user fetching vehicle that doesn't exist
-        work.setUser(new User("username", "password"));
-        when(workRepository.findById(id)).thenReturn(Optional.of(work));
-        exception = assertThrows(NotFound.class, () -> {
-            underTest.getVehicleByWork(id);
-        });
-        assertEquals(exception.getMessage(), "vehicle for work with id: " + id + " not found");
     }
 
     @Test
