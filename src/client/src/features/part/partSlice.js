@@ -1,27 +1,32 @@
 import { createAsyncThunk , createSlice} from "@reduxjs/toolkit"
-import axios from "axios"
+import { fetchPartsService, createPartService, updatePartService, deletePartService } from './partService'
 
 const initialState = {
     parts:[],
-    isError:false,
-    isSuccess:false,
     isLoading:false,
-    message:""
+    error:null
 }
 
 export const fetchParts = createAsyncThunk(
     'part/fetch',
-    async(thunkAPI) => {
+    async(_,thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/api/v1/parts`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await fetchPartsService(token)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
+        }
+    }
+)
+
+export const fetchWorkParts = createAsyncThunk(
+    'part/work/fetch',
+    async(id, thunkAPI) => {
+        try{
+            const token = thunkAPI.getState().auth.token
+            return await fetchWorkParts(token, id)
+        }catch(error){
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -30,32 +35,23 @@ export const createPart = createAsyncThunk(
     'part/create',
     async(part, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.create(`http://localhost:8080/api/v1/parts`, config, part)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await createPartService(token, part)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
+
 
 export const updatePart = createAsyncThunk(
     'part/update',
     async(id, part, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.put(`http://localhost:8080/api/v1/parts/${id}`, config, part)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await updatePartService(toke, id, part)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -64,91 +60,74 @@ export const deletePart = createAsyncThunk(
     'part/delete',
     async(id, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            await axios.delete(`http://localhost:8080/api/v1/parts/${id}`, config)
+            const token = thunkAPI.getState().auth.token
+            await deletePartService(token, id)
             return id
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
 
-export const partSlice = createSlice({
+export const part = createSlice({
     name:"part",
     initialState,
     reducers:{
         reset:(state) => initialState
     },
-    extraReducers:(builder) => {
-        builder
-        .addCase(fetchParts.pending, (state) => {
+    extraReducers:{
+        [fetchParts.pending]:(state) => {
             state.isLoading = true
-        })
-        .addCase(createPart.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(updatePart.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(deletePart.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(fetchParts.fulfilled, (state, action) => {
+        },
+        [fetchParts.fulfilled]:(state, action) => {
+            state.isLoading = false
+            state.error = null
             state.parts = action.payload.parts
+        },
+        [fetchParts.rejected]:(state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "part successfully fetched"
-        })
-        .addCase(createPart.fulfilled, (state, action) => {
-            state.parts = state.parts.push(action.payload.part)
+            state.error = action.payload
+        },
+        [fetchWorkParts.pending]: (state) => {
+            state.isLoading = true
+        },
+        [fetchWorkParts.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "part successfully created"
-        })
-        .addCase(updatePart.fulfilled, (state, action) => {
-            state.parts = state.parts.forEach(part => {
+            state.error = null
+            state.parts = action.payload.parts   
+        },
+        [fetchWorkParts.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [updatePart.pending]:(state) => {
+            state.isLoading = true
+        },
+        [updatePart.fulfilled]:(state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.parts.forEach(part => {
                 if(part.id == action.payload.part.id){
                     part = action.payload.part
                 }
             })
+        },
+        [updatePart.rejected]:(state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "part successfully updated"
-        })
-        .addCase(deletePart.fulfilled, (state, action) => {
-            state.parts = action.payload.filter(part => part.id == action.payload)
+            state.error = action.payload
+        },
+        [deletePart.pending]:(state) => {
+            state.isLoading = true
+        },
+        [deletePart.fulfilled]:(state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "part successfully fetched"
-        })
-        .addCase(fetchParts.rejected, (state, action) => {
+            state.error = null
+            state.parts.filter(part => part.id == action.payload.id)
+        },
+        [deletePart.rejected]:(state, action) => {
             state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(createPart.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(updatePart.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(deletePart.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })  
+            state.error = action.payload
+        }         
     }
 })
 

@@ -1,27 +1,32 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import { fetchCustomersService, updateCustomerService, deleteCustomerService, createCustomerService } from './customerService'
 
 const initialState = {
     customers:[],
-    isError:false,
-    isSuccess:false,
-    isLoading:false,
-    message:""
+    isLoading: false,
+    error:null
 }
 
 export const fetchCustomers = createAsyncThunk(
     'customer/fetch',
-    async(thunkAPI) => {
+    async(_,thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/api/v1/customers`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await fetchCustomersService(token)
         }catch(error){
-            thunkAPI.rejectWithValue(thunkAPI.error.data)
+            return thunkAPI.rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const fetchWorkCustomer = createAsyncThunk(
+    'customer/work/fetch',
+    async(id, thunkAPI) => {
+        try{
+            const token = thunkAPI.getState().auth.token
+            return await fetchWorkCustomer(token, id)
+        }catch(error){
+            return thunkAPI.rejectWithValue(error.response.data)
         }
     }
 )
@@ -30,32 +35,23 @@ export const createCustomer = createAsyncThunk(
     'customer/create',
     async(customer, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.post(`http://localhost:8080/api/v1/customers`, config, customer)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await createCustomerService(token, customer)
         }catch(error){
-            thunkAPI.rejectWithValue(thunkAPI.error.data)
+            return thunkAPI.rejectWithValue(error.response.data)
         }
     }
 )
 
+
 export const updateCustomer = createAsyncThunk(
     'customer/update',
-    async(id, customer, thunkAPI) => {
-        try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.put(`http://localhost:8080/api/v1/customers/${id}`, config, customer)
-            return response.data
+    async(id, customer, thunkAPI)  => {
+        try{ 
+            const token = thunkAPI.getState().auth.token
+            return await updateCustomerService(token, id, customer)
         }catch(error){
-            thunkAPI.rejectWithValue(thunkAPI.error.data)
+            return thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
     }
 )
@@ -64,15 +60,11 @@ export const deleteCustomer = createAsyncThunk(
     'customer/delete',
     async(id, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            await axios.delete(`http://localhost:8080/api/v1/customers/${id}`, config)
+            const token = thunkAPI.getState().auth.token
+            await deleteCustomerService(token, id)
             return id
         }catch(error){
-            thunkAPI.rejectWithValue(thunkAPI.error.data)
+            return thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
     }
 )
@@ -84,68 +76,71 @@ export const customerSlice = createSlice({
     reducers:{
         reset:(state) => initialState
     },
-    extraReducers: (builder) => {
-        builder
-        .addCase(fetchCustomers.pending, (state) => {
+    extraReducers: {
+        [fetchCustomers.pending]: (state) => {
             state.isLoading = true
-        })
-        .addCase(createCustomer.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(updateCustomer.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(deleteCustomer.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(fetchCustomers.fulfilled, (state, action) => {
+        },   
+        [fetchCustomers.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
             state.customers = action.payload.customers
+        },
+        [fetchCustomers.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.message = "customers successfully fetched"
-        })
-        .addCase(createCustomer.fulfilled, (state, action) => {
-            state.customers = state.customers.push(action.payload)
+            state.error = action.payload
+        },
+        [fetchWorkCustomer.pending]: (state) => {
+            state.isLoading = true
+        },
+        [fetchWorkCustomer.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.message = "customer successfully created"
-        })
-        .addCase(updateCustomer.fulfilled, (state, action) => {
-            state.customers = state.customers.forEach(customer => {
+            state.error = null
+            state.customers = [action.payload.customer]
+        },
+        [fetchWorkCustomer.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [createCustomer.pending]: (state) => {
+            state.isLoading = true
+        },
+        [createCustomer.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.customers = [action.payload.customer]
+        },
+        [createCustomer.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [updateCustomer.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateCustomer.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.customers.forEach(customer => {
                 if(customer.id == action.payload.customer.id){
-                    customer = action.payload
+                    customer = action.payload.customer
                 }
             })
+        },
+        [updateCustomer.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.message = "customer successfully updated"
-        })
-        .addCase(deleteCustomer.fulfilled, (state, id) => {
-            state.customers = state.customers.filter(customer => customer.id == id)
+            state.error = action.payload
+        },
+        [deleteCustomer.pending]: (state) => {
+            state.isLoading = true
+        },
+        [deleteCustomer.fulfilled]: (state) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.message = "customer successfully deleted"
-        })
-        .addCase(fetchCustomers.rejected, (state, action) => {
+            state.error = null
+            state.customers.filter(customer => customer.id = action.payload.id)
+        },
+        [deleteCustomer.rejected]: (state) => {
             state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(createCustomer.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(updateCustomer.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(deleteCustomer.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
+            state.error = action.payload
+        }
     }
 })
 

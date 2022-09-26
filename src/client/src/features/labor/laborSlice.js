@@ -1,44 +1,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import { fetchLaborsService, fetchWorkLaborService, updateLaborService, deleteLaborService, createLaborService } from './laborService'
 
 const initialState = {
     labors:[],
-    isError:false,
-    isSuccess:false,
-    isLoading:false,
-    message:""
+    isLoading: false,
+    error:null
 }
 
 export const fetchLabors = createAsyncThunk(
     'labor/fetch',
-    async(thunkAPI) => {
+    async(_,thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/api/v1/labors`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await fetchLaborsService(token)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
+        }
+    }
+)
+
+export const fetchWorkLabors = createAsyncThunk(
+    'labor/work/fetch',
+    async(id, thunkAPI) => {
+        try{
+            const token = thunkAPI.getState().auth.token
+            return await fetchWorkLaborService(token, id)
+        }catch(error){
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
 
 export const createLabor = createAsyncThunk(
     'labor/create',
-    async(thunkAPI) => {
+    async(labor, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.post(`http://localhost:8080/api/v1/labors`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await createLaborService(token, labor)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -47,15 +47,10 @@ export const updateLabor = createAsyncThunk(
     'labor/update',
     async(id, labor, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.put(`http://localhost:8080/api/v1/labors/${id}`, config, labor)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await updateLaborService(token, id, labor)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -64,15 +59,10 @@ export const deleteLabor = createAsyncThunk(
     'labor/delete',
     async(id, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            await axios.delete(`http://localhost:8080/api/v1/labors/${id}`, config)
-            return id
+            const token = thunkAPI.getState().auth.token
+            return await deleteLaborService(token, id)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -83,73 +73,71 @@ export const laborSlice = createSlice({
     reducers:{
         reset:(state) => initialState
     },
-    extraReducers:(builder) => {
-        builder
-        .addCase(fetchLabors.pending, (state) => {
+    extraReducers:{
+        [fetchLabors.pending]: (state) => {
             state.isLoading = true
-        })
-        .addCase(createLabor.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(updateLabor.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(deleteLabor.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(fetchLabors.fulfilled, (state, action) => {
+        },
+        [fetchLabors.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
             state.labors = action.payload.labors
+        },
+        [fetchLabors.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "labors successfully fetched"
-        })
-        .addCase(createLabor.fulfilled, (state, action) => {
-            state.labors = state.labors.push(action.payload.labor)
+            state.error = action.payload
+        },
+        [fetchWorkLabors.pending]: (state) => {
+            state.isLoading = true
+        },
+        [fetchWorkLabors.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "labor successfully created"
-        })
-        .addCase(updateLabor.fulfilled, (state, action) => {
-            state.labors = state.labors.forEach(labor => {
+            state.error = null
+            state.labors = action.payload.labors
+        },
+        [fetchWorkLabors.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [createLabor.pending]: (state) => {
+            state.isLoading = true
+        },
+        [createLabor.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.labors.push(action.payload.labor)
+        },
+        [createLabor.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [updateLabor.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateLabor.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.labors.forEach(labor => {
                 if(labor.id == action.payload.labor.id){
                     labor = action.payload.labor
                 }
             })
+        },
+        [updateLabor.rejected]: (state, action) => {
+            state.isLoading - false
+            state.error = action.payload  
+        },
+        [deleteLabor.pending]: (state) => {
+            state.isLoading = true
+        },
+        [deleteLabor.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "labor successfully updated"
-        })
-        .addCase(deleteLabor.fulfilled, (state, action) => {
-            state.labors = state.labors.filter(labor => labor.id == action.payload)
+            state.error = null
+            state.labors.filter(labor => labor.id == action.payload.id)
+        },
+        [deleteLabor.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "labor successfully deleted"
-        })
-        .addCase(fetchLabors.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(createLabor.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(updateLabor.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(deleteLabor.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-
+            state.error = action.payload
+        }
     }
 })
 

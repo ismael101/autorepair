@@ -3,10 +3,8 @@ import { fetchService, createService, updateService, deleteService } from './wor
 
 const initialState = {
     works:[],
-    isError:false,
-    isSuccess:false,
     isLoading:false,
-    message:null,
+    error:null
 }
 
 export const fetchWorks = createAsyncThunk(

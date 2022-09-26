@@ -1,27 +1,32 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import { fetchInsurancesService, fetchWorkInsuranceService, createInsuranceService, updateInsuranceService, deleteInsuranceService } from './insuranceService'
 
 const initialState = {
     insurances:[],
-    isError:false,
-    isSuccess:false,
-    isLoading:false,
-    message:""
+    isLoading: false,
+    error:null
 }
 
 export const fetchInsurances = createAsyncThunk(
     'insurance/fetch',
-    async(thunkAPI) => {
+    async(_,thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/api/v1/insruance`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await fetchInsurancesService(token)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
+        }
+    }
+)
+
+export const fetchWorkInsurance = createAsyncThunk(
+    'insurance/work/fetch', 
+    async(id, thunkAPI) => {
+        try{
+            const token = thunkAPI.getState().auth.token
+            return await fetchWorkInsurancesService(token, id)
+        }catch(error){
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -30,32 +35,22 @@ export const createInsurance = createAsyncThunk(
     'insurance/create',
     async(insurance, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.post(`http://localhost:8080/api/v1/insruance`, config, insurance)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await createInsuranceService(token, insurance)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
 
 export const updateInsurance = createAsyncThunk(
     'insurance/update',
-    async(insurance, thunkAPI) => {
+    async(id, insurance, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.put(`http://localhost:8080/api/v1/insruance`, config, insurance)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await updateInsuranceService(token, id, insurance)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -64,15 +59,11 @@ export const deleteInsurance = createAsyncThunk(
     'insurance/delete',
     async(id, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            await axios.delete(`http://localhost:8080/api/v1/insruance/${id}`, config)
+            const token = thunkAPI.getState().auth.token
+            await deleteInsuranceService(token, id)
             return id
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -83,72 +74,71 @@ export const insuranceSlice = createSlice({
     reducers:{
         reset:(state) => initialState
     },
-    extraReducers:(builder) => {
-        builder
-        .addCase(fetchInsurances.pending, (state) => {
+    extraReducers:{
+        [fetchInsurances.pending]: (state) => {
             state.isLoading = true
-        })
-        .addCase(createInsurance.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(updateInsurance.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(deleteInsurance.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(fetchInsurances.fulfilled, (state, action) => {
+        },
+        [fetchInsurances.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
             state.insurances = action.payload.insurances
+        },
+        [fetchInsurances.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "insurances successfully fetched"
-        })
-        .addCase(createInsurance.fulfilled, (state, action) => {
-            state.insurances.push(action.payload.insurance)
+            state.error = action.payload
+        },
+        [fetchWorkInsurance.pending]: (state) => {
+            state.isLoading = true
+        },
+        [fetchWorkInsurance.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "insurances successfully created"
-        })
-        .addCase(updateInsurance.fulfilled, (state, action) => {
-            state.insurances = state.insurances.forEach(insurance => {
+            state.error = null
+            state.insurances = [action.payload.insurance]
+        },
+        [fetchWorkInsurance.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [createInsurance.pending]: (state) => {
+            state.isLoading = true
+        },
+        [createInsurance.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.insurance = [action.payload.insurance]
+        },
+        [createInsurance.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [updateInsurance.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateInsurance.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.insurances.forEach(insurance => {
                 if(insurance.id == action.payload.insurance.id){
                     insurance = action.payload.insurance
                 }
             })
+        },
+        [updateInsurance.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "insurances successfully updated"
-        })
-        .addCase(deleteInsurance.fulfilled, (state, action) => {
-            state.insurances = state.insurances.filter(insurance => insurance.id == action.payload)
+            state.error = action.payload
+        },
+        [deleteInsurance.pending]: (state) => {
+            state.isLoading = true
+        },
+        [deleteInsurance.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
-            state.message = "insurances successfully deleted"
-        })
-        .addCase(fetchInsurances.rejected, (state, action) => {
+            state.error = null
+            state.insurances.filter(insurance => insurance.id == action.payload.id)
+        },
+        [deleteInsurance.rejected]: (state, action) => {
             state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(createInsurance.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(updateInsurance.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(deleteInsurance.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
+            state.error = action.payload
+        }
     }
 })
 

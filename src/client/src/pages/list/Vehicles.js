@@ -12,7 +12,7 @@ export default function Vehicles(){
     const [error, setError] = useState()
     const navigate = useNavigate()
     const {token} = useSelector(
-        (state) => state.auth
+        (state) => state.auth 
     )
 
     useEffect(() => {

@@ -1,27 +1,32 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit"
-import axios from "axios"
+import { fetchVehiclesService, fetchWorkVehicleService, createVehicleService, updateVehicleService, deleteVehicleService } from './vehicleService'
 
 const initialState = {
     vehicles:[],
-    isError:false,
-    isSuccess:false,
     isLoading:false,
-    message:""
+    error:null
 }
 
 export const fetchVehicles = createAsyncThunk(
     'vehicle/fetch',
-    async(thunkAPI) => {
+    async(_,thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/api/v1/vehicle`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await fetchVehiclesService(token)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
+        }
+    }
+)
+
+export const fetchWorkVehicle = createAsyncThunk(
+    'vehicle/work/fetch',
+    async(id, thunkAPI) => {
+        try{
+            const token = thunkAPI.getState().auth.token
+            return await fetchWorkVehicleService(token, id)
+        }catch(error){
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -30,50 +35,35 @@ export const createVehicle = createAsyncThunk(
     'vehicle/create',
     async(vehicle, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.post(`http://localhost:8080/api/v1/vehicle`, config, vehicle)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await createVehicleService(token, vehicle)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
-
 
 export const updateVehicle = createAsyncThunk(
     'vehicle/update',
     async(id, vehicle, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.put(`http://localhost:8080/api/v1/vehicle/${id}`, config, vehicle)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            return await updateVehicleService(token, id, vehicle)
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
 
 export const deleteVehicle = createAsyncThunk(
     'vehicle/delete',
-    async(thunkAPI) => {
+    async(id, thunkAPI) => {
         try{
-            const config = {
-                headers:{
-                    Authorization:`Bearer ${thunkAPI.state.auth.token}`
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/api/v1/insruance`, config)
-            return response.data
+            const token = thunkAPI.getState().auth.token
+            await deleteVehicleService(token, id)
+            return id
         }catch(error){
-            thunkAPI.rejectWithValue(error.data)
+            return thunkAPI.rejectWithValue(error.data)
         }
     }
 )
@@ -84,72 +74,71 @@ export const vehicleSlice = createSlice({
     reducers:{
         reset:(state) => initialState
     },
-    extraReducers:(builder) => {
-        builder
-        .addCase(fetchVehicles.pending, (state) => {
+    extraReducers:{
+        [fetchVehicles.pending]: (state) => {
             state.isLoading = true
-        })
-        .addCase(createVehicle.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(updateVehicle.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(deleteVehicle.pending, (state) => {
-            state.isLoading = true
-        })
-        .addCase(fetchVehicles.fulfilled, (state, action) => {
+        },
+        [fetchVehicles.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
             state.vehicles = action.payload.vehicles
+        },
+        [fetchVehicles.rejected]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = true
-            state.message = "vehicles successfully fetched"
-        })
-        .addCase(createVehicle.fulfilled, (state, action) => {
-            state.vehicles = state.vehicles.push(action.payload.vehicle)
+            state.error = action.payload
+        },
+        [fetchWorkVehicle.pending]: (state) => {
+            state.isLoading = true
+        },
+        [fetchWorkVehicle.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = true
-            state.message = "vehicle successfully fetched"
-        })
-        .addCase(updateVehicle.fulfilled, (state, action) => {
-            state.vehicles = state.vehicles.forEach(vehicle => {
-                if(vehicle.id === action.payload.vehicle.id){
+            state.error = null
+            state.vehicles = [action.payload.vehicle]
+        },
+        [fetchWorkVehicle.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [createVehicle.pending]: (state) => {
+            state.isLoading = true
+        },
+        [createVehicle.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.vehicles = [action.payload.vehicle]
+        },
+        [createVehicle.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error = action.payload
+        },
+        [updateVehicle.pending]: (state) => {
+            state.isLoading = true
+        },
+        [updateVehicle.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.error = null
+            state.vehicles.forEach(vehicle => {
+                if(vehicle.id == action.payload.vehicle.id){
                     vehicle = action.payload.vehicle
                 }
             })
+        },
+        [updateVehicle.rejected]: (state) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = true
-            state.message = "vehicle successfully created"
-        })
-        .addCase(deleteVehicle.fulfilled, (state, id) => {
-            state.vehicles = state.vehicles.filter(vehicle => vehicle.id == id)
+            state.error = action.payload
+        },
+        [deleteVehicle.pending]: (state) => {
+            state.isLoading = true
+        },
+        [deleteVehicle.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.isSuccess = true
-            state.isError = true
-            state.message = "vehicle successfully fetched"
-        })
-        .addCase(fetchVehicles.rejected, (state, action) => {
+            state.error = null
+            state.vehicles.filter(vehicle => vehicle.id == action.payload.id)
+        },
+        [deleteVehicle.rejected]: (state, action) => {
             state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(createVehicle.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(updateVehicle.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
-        .addCase(deleteVehicle.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
-        })
+            state.error = action.payload
+        }
     }
 })
 
