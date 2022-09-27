@@ -1,4 +1,4 @@
-import EditCustomer from "../modals/Edit/EditCustomer"
+import EditCustomer from "../modals/edit/EditCustomer"
 
 
 export default function Customer(props){

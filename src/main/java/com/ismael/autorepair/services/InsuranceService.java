@@ -110,7 +110,7 @@ public class InsuranceService {
             logger.error("Unauthorized Action Exception Thrown By: " + username + " For Work With Id: " + request.getWork());
             throw new AlreadyExists("work order already has a insurance");
         }
-        Insurance insurance = new Insurance(request.getProvider(), request.getLicense(), request.getPolicy(), request.getVin(), work);
+        Insurance insurance = new Insurance(request.getProvider(), request.getPolicy(), request.getVin(), work);
         insuranceRepository.save(insurance);
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -136,8 +136,6 @@ public class InsuranceService {
         }
         Optional.ofNullable(request.getProvider())
                 .ifPresent(provider -> insurance.setProvider(provider));
-        Optional.ofNullable(request.getLicense())
-                .ifPresent(license -> insurance.setLicense(license));
         Optional.ofNullable(request.getPolicy())
                 .ifPresent(policy -> insurance.setPolicy(policy));
         Optional.ofNullable(request.getVin())

@@ -42,7 +42,7 @@ class InsuranceControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid insurance request
-        InsuranceRequest request = new InsuranceRequest("GEICO", "A91K2KDOASODKXAS", "12DIAUSDUC91U3NAD", "ADSC1H3UYHASDIJCB" , id.toString());
+        InsuranceRequest request = new InsuranceRequest("provider", 7894568743l, "vin" , id.toString());
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/insurance")
                         .content(content)
@@ -59,18 +59,18 @@ class InsuranceControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error",
-                        Matchers.containsInAnyOrder("provider cannot be null", "provider cannot be blank", "license cannot be null", "license cannot be blank", "policy cannot be null",
-                                "policy cannot be blank", "vin cannot be null",  "vin cannot be blank", "work cannot be null")));
+                        Matchers.containsInAnyOrder("provider cannot be null", "provider cannot be blank", "policy cannot be null",
+                                 "vin cannot be null",  "vin cannot be blank", "work cannot be null")));
 
         //section for testing blank provider license, policy, vin and invalid work uuid
-        request = new InsuranceRequest("", "", "", "", "invalid uuid");
+        request = new InsuranceRequest("", 0l, "", "invalid uuid");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/insurance")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("provider cannot be blank", "license cannot be blank", "policy cannot be blank", "vin cannot be blank", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("provider cannot be blank", "policy number is invalid", "vin cannot be blank", "invalid uuid")));
     }
 
     @Test
@@ -80,7 +80,7 @@ class InsuranceControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid insurance request
-        InsuranceRequest request = new InsuranceRequest("GEICO", "A91K2KDOASODKXAS", "12DIAUSDUC91U3NAD", "ADSC1H3UYHASDIJCB" , id.toString());
+        InsuranceRequest request = new InsuranceRequest("provider", 7894568743l, "vin" , id.toString());
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/insurance/" + id)
                         .content(content)
@@ -89,14 +89,14 @@ class InsuranceControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //section for testing blank provider license, policy, vin and invalid work uuid
-        request = new InsuranceRequest("", "", "", "" , "invalid uuid");
+        request = new InsuranceRequest("", 0l, "" , "invalid uuid");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put( "/api/v1/insurance/" + id)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("provider cannot be blank", "license cannot be blank", "policy cannot be blank", "vin cannot be blank", "invalid uuid")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Matchers.containsInAnyOrder("provider cannot be blank", "policy number is invalid", "vin cannot be blank", "invalid uuid")));
     }
 
 }
