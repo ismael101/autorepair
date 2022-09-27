@@ -1,112 +1,92 @@
 import {useParams, useNavigate} from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import Customer from '../../components/Customer'
-import Vehicle from '../../components/Vehicle'
-import Insurance from '../../components/Insurance'
-import Part from '../../components/Part'
-import Labor from '../../components/Labor'
-import { useSelector } from "react-redux"
-import axios from 'axios'
+import { useEffect } from 'react'
+import Customer from '../../components/items/Customer'
+import Vehicle from '../../components/items/Vehicle'
+import Insurance from '../../components/items/Insurance'
+import Part from '../../components/items/Part'
+import Labor from '../../components/items/Labor'
+import { useDispatch, useSelector } from "react-redux"
+import { fetchWork } from '../../features/work/workSlice'
 import Spinner from '../../components/Spinner'
 
 
 export default function Work(){
     const params = useParams()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [work, setWork] = useState()
-    const [error, setError] = useState()
-    const[loading, setLoading] = useState(false)
-
+    const {works, loading, error} = useSelector(
+        (state) => state.work
+    )
     const {token} = useSelector(
         (state) => state.auth
     )
-
-    useEffect(() => {
-        fetchWork()
-    },[])
-
     useEffect(() => {
         if(!token){
             navigate('/')
         }
-    },[token])
-
-    const fetchWork = async() => {
-        try{
-            setLoading(true)
-            const id = params.id
-            const response = axios.get(`http://localhost:8080/api/v1/work/${id}`)
-            setLoading(false)
-            setWork(response.data.work)
-        }catch(error){
-            setLoading(false)
-            setError(error.repsonse.data)
+        if(error){
+            if(error.status = 401){
+                navigate('/')
+            }
         }
-    }
+        dispatch(fetchWork(params.id))
+    },[token, navigate, error])
 
     if(loading){
         return(
             <Spinner/>
         )
     }
+
     return(
-        <div className='h-screen p-5'>
-        <div className='flex flex-row'>
-            <div className='bg-white p-5 rounded-md'>
-                <h1>{work.title}</h1>
-                <p>{work.description}</p>
-            </div>
-            {
-                work.customer ?
-                <Customer customer={work.customer} />
-                :
-                <div className='bg-white p-5 rounded-md flex'>
-                    <h1 className='mx-auto my-auto text-black'>No Customer Found</h1>
+        <div className='h-fit p-5'>
+            <section className='flex flex-row space-x-3 h-1/3 mb-4'>
+                <div className='w-2/5 h-52 rounded-md bg-white flex'>
+                    <h1>{works[0].title}</h1>
+                    <h1>{works[0].description}</h1>
                 </div>
-            }
-            {
-                work.vehicle ?
-                <Vehicle vehicle={work.vehicle} />
+                {works[0].customer ? 
+                <Customer customer={works[0].customer}/>
                 :
-                <div className='bg-white p-5 rounded-md flex'>
-                    <h1 className='mx-auto my-auto text-black'>No Vehicle Found</h1>
+                <div className='w-1/5 h-52 rounded-md bg-white flex'>
+                    <h1 className='text-2xl mx-auto my-auto'>No Customer Found</h1>
                 </div>
-            }
-            {
-                work.insurance ?
-                <Insurance insurance={work.insurance} />
+                }
+                {works[0].vehicle ? 
+                <Vehicle vehicle={works[0].vehicle}/>
                 :
-                <div className='bg-white p-5 rounded-md flex'>
-                    <h1 className='mx-auto my-auto text-black'>No Insurance Found</h1>
+                <div className='w-1/5 h-52 rounded-md bg-white flex'>
+                    <h1 className='text-2xl mx-auto my-auto'>No Vehicle Found</h1>
                 </div>
-            }
+                }
+                {works[0].vehicle ? 
+                <Insurance Insurance={works[0].insurance}/>
+                :
+                <div className='w-1/5 h-52 rounded-md bg-white flex'>
+                    <h1 className='text-2xl mx-auto my-auto'>No Insurance Found</h1>
+                </div>
+                }
+            </section>
+            <section className='h-2/3 flex flex-row space-x-3'>
+                <div className='flex h-full rounded-md w-1/2 bg-white'>
+                    {works[0].labors.length == 0 ? 
+                    <h1 className='mx-auto my-auto text-3xl'>Labor Not Found</h1>
+                    :
+                    works[0].labors.forEach(labor => {
+                        <Labor labor={labor}/>
+                    })    
+                    }
+                </div>
+                <div className='flex h-96 rounded-md w-1/2 bg-white'>
+                    {works[0].parts.length == 0 ? 
+                    <h1 className='mx-auto my-auto text-3xl'>Part Not Found</h1>
+                    :
+                    works[0].parts.forEach(part => {
+                        <Part part={part}/>
+                    })    
+                    }
+                </div>
+            </section>
         </div>
-        <div className='flex flex-row'>
-            {
-                work.labors.length == 0 ?
-                <div className='flex'>
-                    <h1 className='my-auto mx-auto'>No Labor Found</h1>
-                </div>
-                :
-                <div className='flex flex-col space-y-3'>
-                    {works.labors.map((labor) => 
-                        <Labor labor={labor} key={labor.id}/>
-                    )}
-                </div>
-            }
-            {
-                work.parts.length == 0 ?
-                <div className='flex'>
-                    <h1 className='my-auto mx-auto'>No Part Found</h1>
-                </div>
-                :
-                <div className='flex flex-col space-y-3'>
-                    {works.parts.map((part) => 
-                        <Part part={part} key={part.id}/>
-                    )}
-                </div>
-            }
-        </div>
-    </div>
     )
 }

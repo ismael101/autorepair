@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { fetchInsurancesService, fetchWorkInsuranceService, createInsuranceService, updateInsuranceService, deleteInsuranceService } from './insuranceService'
+import { fetchInsurancesService, createInsuranceService, updateInsuranceService, deleteInsuranceService } from './insuranceService'
 
 const initialState = {
     insurances:[],
@@ -13,18 +13,6 @@ export const fetchInsurances = createAsyncThunk(
         try{
             const token = thunkAPI.getState().auth.token
             return await fetchInsurancesService(token)
-        }catch(error){
-            return thunkAPI.rejectWithValue(error.data)
-        }
-    }
-)
-
-export const fetchWorkInsurance = createAsyncThunk(
-    'insurance/work/fetch', 
-    async(id, thunkAPI) => {
-        try{
-            const token = thunkAPI.getState().auth.token
-            return await fetchWorkInsurancesService(token, id)
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -84,30 +72,6 @@ export const insuranceSlice = createSlice({
             state.insurances = action.payload.insurances
         },
         [fetchInsurances.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
-        [fetchWorkInsurance.pending]: (state) => {
-            state.isLoading = true
-        },
-        [fetchWorkInsurance.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.insurances = [action.payload.insurance]
-        },
-        [fetchWorkInsurance.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
-        [createInsurance.pending]: (state) => {
-            state.isLoading = true
-        },
-        [createInsurance.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.insurance = [action.payload.insurance]
-        },
-        [createInsurance.rejected]: (state, action) => {
             state.isLoading = false
             state.error = action.payload
         },

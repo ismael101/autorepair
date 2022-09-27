@@ -12,16 +12,6 @@ export const fetchLaborsService = async(token) => {
     return response.data
 }
 
-export const fetchWorkLaborService = async(token, id) => {
-    const config = {
-        header:{
-            Authorization: `Bearer ${token}`
-        }
-    }
-    const response = await axios.get(BASE_URL + `/work/${id}`, config)
-    return response.data   
-}
-
 export const createLaborService = async(token, labor) => {
     const config = {
         header:{

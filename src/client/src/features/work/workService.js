@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = 'http://localhost:8080/api/v1/work'
 
-export const fetchService = async(token) => {
+export const fetchWorksService = async(token) => {
     const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -12,7 +12,17 @@ export const fetchService = async(token) => {
     return response.data
 }
 
-export const createService = async(token, work) => {
+export const fetchWorkService = async(token, id) => {
+  const config = {
+    headers:{
+      Authorization: `Bearer ${token}`
+    }
+  }
+  const response = await axios.get(BASE_URL + `/${id}`, config)
+  return response.data
+}
+
+export const createWorkService = async(token, work) => {
     const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -22,7 +32,7 @@ export const createService = async(token, work) => {
     return response.data
 }
 
-export const updateService = async(token, id, work) => {
+export const updateWorkService = async(token, id, work) => {
     const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -32,7 +42,7 @@ export const updateService = async(token, id, work) => {
     return response.data
 }
 
-export const deleteService = async(token, id) => {
+export const deleteWorkService = async(token, id) => {
     const config = {
         headers: {
           Authorization: `Bearer ${token}`,

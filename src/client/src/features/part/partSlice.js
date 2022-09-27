@@ -19,18 +19,6 @@ export const fetchParts = createAsyncThunk(
     }
 )
 
-export const fetchWorkParts = createAsyncThunk(
-    'part/work/fetch',
-    async(id, thunkAPI) => {
-        try{
-            const token = thunkAPI.getState().auth.token
-            return await fetchWorkParts(token, id)
-        }catch(error){
-            return thunkAPI.rejectWithValue(error.data)
-        }
-    }
-)
-
 export const createPart = createAsyncThunk(
     'part/create',
     async(part, thunkAPI) => {
@@ -49,7 +37,7 @@ export const updatePart = createAsyncThunk(
     async(id, part, thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            return await updatePartService(toke, id, part)
+            return await updatePartService(token, id, part)
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -69,7 +57,7 @@ export const deletePart = createAsyncThunk(
     }
 )
 
-export const part = createSlice({
+export const partSlice = createSlice({
     name:"part",
     initialState,
     reducers:{
@@ -85,18 +73,6 @@ export const part = createSlice({
             state.parts = action.payload.parts
         },
         [fetchParts.rejected]:(state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
-        [fetchWorkParts.pending]: (state) => {
-            state.isLoading = true
-        },
-        [fetchWorkParts.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.parts = action.payload.parts   
-        },
-        [fetchWorkParts.rejected]: (state, action) => {
             state.isLoading = false
             state.error = action.payload
         },

@@ -5,10 +5,9 @@ const token = localStorage.getItem("token")
 
 const initialState = {
     token:token ? token : null,
-    isError:false,
-    isSuccess:false,
-    isLoading:false,
-    message:""
+    loading:false,
+    error:null,
+    message:null
 }
 
 export const signup = createAsyncThunk(
@@ -46,39 +45,36 @@ export const authSlice = createSlice({
     reducers: {
         reset: (state) => {
             state.token = null
-            state.isLoading = false
-            state.isError = false
-            state.isSuccess = false
-            state.message = ""
+            state.loading = false
+            state.error = null
+            state.success = false
+            state.message = null
         }
     },
     extraReducers: {
         [login.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [login.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
+            state.loading = false
+            state.error = null
             state.token = action.payload.token
         },
         [login.rejected]: (state, action) => {
-            state.isLoading = false
-            state.isError = true
-            state.message = action.payload.error
+            state.loading = false
+            state.error = action.payload
         },
         [signup.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [signup.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.isSuccess = true
-            state.isError = false
+            state.loading = false
+            state.error = null
             state.message = action.payload.message
         },
         [signup.rejected]: (state, action) => {
-            state.isLoading = false
-            state.isError = true
+            state.loading = false
+            state.error = action.payload
             state.message = action.payload.error
         },
         [logout.fulfilled]: (state) => {

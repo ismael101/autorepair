@@ -12,16 +12,6 @@ export const fetchVehiclesService = async(token) => {
     return response.data
 }
 
-export const fetchWorkVehicleService = async(token, id) => {
-    const config = {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    }
-    const response = await axios.get(BASE_URL + `/work/${id}`, config)
-    return response.data
-}
-
 export const createVehicleService = async(token, vehicle) => {
     const config = {
         headers:{
@@ -32,7 +22,7 @@ export const createVehicleService = async(token, vehicle) => {
     return response.data
 }
 
-export const updateVehicleService = async(token, id, token) => {
+export const updateVehicleService = async(token, id, vehicle) => {
     const config = {
         headers:{
             Authorization: `Bearer ${token}`

@@ -12,16 +12,6 @@ export const fetchInsurancesService = async(token) => {
     return response.data
 }
 
-export const fetchWorkInsuranceService = async(token, id) => {
-    const config = {
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
-    }
-    const response = await axios.get(BASE_URL + `/work/${id}`, config)
-    return response.data
-}
-
 export const createInsuranceService = async(token, insurance) => {
     const config = {
         headers:{

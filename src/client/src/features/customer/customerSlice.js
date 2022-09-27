@@ -19,17 +19,6 @@ export const fetchCustomers = createAsyncThunk(
     }
 )
 
-export const fetchWorkCustomer = createAsyncThunk(
-    'customer/work/fetch',
-    async(id, thunkAPI) => {
-        try{
-            const token = thunkAPI.getState().auth.token
-            return await fetchWorkCustomer(token, id)
-        }catch(error){
-            return thunkAPI.rejectWithValue(error.response.data)
-        }
-    }
-)
 
 export const createCustomer = createAsyncThunk(
     'customer/create',
@@ -89,30 +78,6 @@ export const customerSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
-        [fetchWorkCustomer.pending]: (state) => {
-            state.isLoading = true
-        },
-        [fetchWorkCustomer.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.customers = [action.payload.customer]
-        },
-        [fetchWorkCustomer.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
-        [createCustomer.pending]: (state) => {
-            state.isLoading = true
-        },
-        [createCustomer.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.customers = [action.payload.customer]
-        },
-        [createCustomer.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
         [updateCustomer.pending]: (state) => {
             state.isLoading = true
         },
@@ -132,12 +97,12 @@ export const customerSlice = createSlice({
         [deleteCustomer.pending]: (state) => {
             state.isLoading = true
         },
-        [deleteCustomer.fulfilled]: (state) => {
+        [deleteCustomer.fulfilled]: (state, action) => {
             state.isLoading = false
             state.error = null
             state.customers.filter(customer => customer.id = action.payload.id)
         },
-        [deleteCustomer.rejected]: (state) => {
+        [deleteCustomer.rejected]: (state, action) => {
             state.isLoading = false
             state.error = action.payload
         }

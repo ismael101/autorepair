@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { fetchLaborsService, fetchWorkLaborService, updateLaborService, deleteLaborService, createLaborService } from './laborService'
+import { fetchLaborsService, updateLaborService, deleteLaborService, createLaborService } from './laborService'
 
 const initialState = {
     labors:[],
@@ -13,18 +13,6 @@ export const fetchLabors = createAsyncThunk(
         try{
             const token = thunkAPI.getState().auth.token
             return await fetchLaborsService(token)
-        }catch(error){
-            return thunkAPI.rejectWithValue(error.data)
-        }
-    }
-)
-
-export const fetchWorkLabors = createAsyncThunk(
-    'labor/work/fetch',
-    async(id, thunkAPI) => {
-        try{
-            const token = thunkAPI.getState().auth.token
-            return await fetchWorkLaborService(token, id)
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -86,30 +74,6 @@ export const laborSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
-        [fetchWorkLabors.pending]: (state) => {
-            state.isLoading = true
-        },
-        [fetchWorkLabors.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.labors = action.payload.labors
-        },
-        [fetchWorkLabors.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
-        [createLabor.pending]: (state) => {
-            state.isLoading = true
-        },
-        [createLabor.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.labors.push(action.payload.labor)
-        },
-        [createLabor.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
         [updateLabor.pending]: (state) => {
             state.isLoading = true
         },
@@ -123,7 +87,7 @@ export const laborSlice = createSlice({
             })
         },
         [updateLabor.rejected]: (state, action) => {
-            state.isLoading - false
+            state.isLoading = false
             state.error = action.payload  
         },
         [deleteLabor.pending]: (state) => {

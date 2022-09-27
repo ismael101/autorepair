@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit"
-import { fetchVehiclesService, fetchWorkVehicleService, createVehicleService, updateVehicleService, deleteVehicleService } from './vehicleService'
+import { fetchVehiclesService, createVehicleService, updateVehicleService, deleteVehicleService } from './vehicleService'
 
 const initialState = {
     vehicles:[],
@@ -13,18 +13,6 @@ export const fetchVehicles = createAsyncThunk(
         try{
             const token = thunkAPI.getState().auth.token
             return await fetchVehiclesService(token)
-        }catch(error){
-            return thunkAPI.rejectWithValue(error.data)
-        }
-    }
-)
-
-export const fetchWorkVehicle = createAsyncThunk(
-    'vehicle/work/fetch',
-    async(id, thunkAPI) => {
-        try{
-            const token = thunkAPI.getState().auth.token
-            return await fetchWorkVehicleService(token, id)
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -87,30 +75,6 @@ export const vehicleSlice = createSlice({
             state.isLoading = false
             state.error = action.payload
         },
-        [fetchWorkVehicle.pending]: (state) => {
-            state.isLoading = true
-        },
-        [fetchWorkVehicle.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.vehicles = [action.payload.vehicle]
-        },
-        [fetchWorkVehicle.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
-        [createVehicle.pending]: (state) => {
-            state.isLoading = true
-        },
-        [createVehicle.fulfilled]: (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.vehicles = [action.payload.vehicle]
-        },
-        [createVehicle.rejected]: (state, action) => {
-            state.isLoading = false
-            state.error = action.payload
-        },
         [updateVehicle.pending]: (state) => {
             state.isLoading = true
         },
@@ -123,7 +87,7 @@ export const vehicleSlice = createSlice({
                 }
             })
         },
-        [updateVehicle.rejected]: (state) => {
+        [updateVehicle.rejected]: (state, action) => {
             state.isLoading = false
             state.error = action.payload
         },

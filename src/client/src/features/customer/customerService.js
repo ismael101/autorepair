@@ -12,16 +12,6 @@ export const fetchCustomersService = async(token) => {
     return response.data
 }
 
-export const fetchWorkCustomerService = async(token, id) => {
-    const config = {
-        headers:{
-            Authoriation:`Bearer ${token}`
-        }
-    }
-    const response = await axios.get(BASE_URL + `/work/${id}`, config)
-    return response.data
-}
-
 export const createCustomerService = async(token, customer) => {
     const config = {
         headers:{
