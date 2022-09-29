@@ -22,13 +22,13 @@ export const createPartService = async(token, part) => {
     return response.data
 }
 
-export const updatePartService = async(token, id, part) => {
+export const updatePartService = async(token, part) => {
     const config = {
         headers:{
             Authorization: `Bearer ${token}`
         }
     }
-    const response =  await axios.put(BASE_URL + `/${id}`, part, config) 
+    const response =  await axios.put(BASE_URL + `/${part.id}`, part, config) 
     return response.data
 }
 

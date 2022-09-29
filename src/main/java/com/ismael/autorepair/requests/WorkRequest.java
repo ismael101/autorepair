@@ -13,13 +13,13 @@ import jakarta.validation.constraints.*;
 @Getter
 @Setter
 public class WorkRequest {
-    @NotNull(message = "title cannot be null", groups = Create.class)
-    @NotBlank(message = "title cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "title cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "title has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String title;
-    @NotNull(message = "description cannot be null", groups = Create.class)
-    @NotBlank(message = "description cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "description cannot be blank", groups = Create.class)
+    @Size(min = 10, max = 100, message = "description has a min length of 10 and max length of 100 characters", groups = {Create.class, Update.class})
     private String description;
-    @NotNull(message = "complete cannot be null", groups = Create.class)
+    @NotBlank(message = "complete cannot be blank", groups = Create.class)
     @Pattern(regexp = "^true$|^false$", message = "allowed input: true or false", groups = {Create.class, Update.class})
     private String complete;
 }

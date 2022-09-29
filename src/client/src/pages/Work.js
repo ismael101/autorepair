@@ -1,13 +1,13 @@
 import {useParams, useNavigate} from 'react-router-dom'
 import { useEffect } from 'react'
-import Customer from '../../components/items/Customer'
-import Vehicle from '../../components/items/Vehicle'
-import Insurance from '../../components/items/Insurance'
-import Part from '../../components/items/Part'
-import Labor from '../../components/items/Labor'
+import Customer from '../components/Customer'
+import Vehicle from '../components/Vehicle'
+import Insurance from '../components/Insurance'
+import Part from '../components/Part'
+import Labor from '../components/Labor'
 import { useDispatch, useSelector } from "react-redux"
-import { fetchWork } from '../../features/work/workSlice'
-import Spinner from '../../components/Spinner'
+import { fetchWork } from '../features/work/workSlice'
+import Spinner from '../components/Spinner'
 
 
 export default function Work(){

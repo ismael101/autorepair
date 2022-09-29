@@ -3,7 +3,7 @@ import { fetchPartsService, createPartService, updatePartService, deletePartServ
 
 const initialState = {
     parts:[],
-    isLoading:false,
+    loading:false,
     error:null
 }
 
@@ -34,11 +34,12 @@ export const createPart = createAsyncThunk(
 
 export const updatePart = createAsyncThunk(
     'part/update',
-    async(id, part, thunkAPI) => {
+    async(part, thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            return await updatePartService(token, id, part)
+            return await updatePartService(token, part)
         }catch(error){
+            console.log(error)
             return thunkAPI.rejectWithValue(error.data)
         }
     }
@@ -65,22 +66,22 @@ export const partSlice = createSlice({
     },
     extraReducers:{
         [fetchParts.pending]:(state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [fetchParts.fulfilled]:(state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.parts = action.payload.parts
         },
         [fetchParts.rejected]:(state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         },
         [updatePart.pending]:(state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [updatePart.fulfilled]:(state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.parts.forEach(part => {
                 if(part.id == action.payload.part.id){
@@ -89,19 +90,19 @@ export const partSlice = createSlice({
             })
         },
         [updatePart.rejected]:(state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         },
         [deletePart.pending]:(state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [deletePart.fulfilled]:(state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.parts.filter(part => part.id == action.payload.id)
         },
         [deletePart.rejected]:(state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         }         
     }

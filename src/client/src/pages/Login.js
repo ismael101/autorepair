@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { login, reset } from '../../features/auth/authSlice'
+import { login, reset } from '../features/auth/authSlice'
 
 export default function Login(){
     const [ username, setUsername ] = useState("ismael101")

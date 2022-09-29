@@ -14,17 +14,17 @@ import java.util.UUID;
 @Getter
 @Setter
 public class VehicleRequest {
-    @NotNull(message = "make cannot be null", groups = Create.class)
-    @NotBlank(message = "make cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "make cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "make has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String make;
-    @NotNull(message = "model cannot be null", groups = Create.class)
-    @NotBlank(message = "model cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "model cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "model has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String model;
     @NotNull(message = "year cannot be null", groups = Create.class)
     @Min(value = 1950, message = "year is invalid", groups = {Create.class, Update.class})
     @Max(value = 2050, message = "year is invalid", groups = {Create.class, Update.class})
     private Integer year;
-    @NotNull(message = "work cannot be null", groups = Create.class)
+    @NotBlank(message = "work cannot be blank", groups = Create.class)
     @Pattern(message = "invalid uuid", regexp = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", groups = {Create.class, Update.class})
     private String work;
 }

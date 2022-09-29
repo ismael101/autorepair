@@ -3,7 +3,7 @@ import { fetchVehiclesService, createVehicleService, updateVehicleService, delet
 
 const initialState = {
     vehicles:[],
-    isLoading:false,
+    loading:false,
     error:null
 }
 
@@ -64,22 +64,22 @@ export const vehicleSlice = createSlice({
     },
     extraReducers:{
         [fetchVehicles.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [fetchVehicles.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.vehicles = action.payload.vehicles
         },
         [fetchVehicles.rejected]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         },
         [updateVehicle.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [updateVehicle.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.vehicles.forEach(vehicle => {
                 if(vehicle.id == action.payload.vehicle.id){
@@ -88,19 +88,19 @@ export const vehicleSlice = createSlice({
             })
         },
         [updateVehicle.rejected]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         },
         [deleteVehicle.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [deleteVehicle.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.vehicles.filter(vehicle => vehicle.id == action.payload.id)
         },
         [deleteVehicle.rejected]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         }
     }

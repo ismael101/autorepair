@@ -13,19 +13,19 @@ import jakarta.validation.constraints.*;
 @Getter
 @Setter
 public class PartRequest {
-    @NotNull(message = "title cannot be null", groups = Create.class)
-    @NotBlank(message = "title cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "title cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "title has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String title;
-    @NotNull(message = "location cannot be null", groups = Create.class)
-    @NotBlank(message = "location cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "location cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "location has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String location;
     @NotNull(message = "cost cannot be null", groups = Create.class)
     @Min(value = 0, message = "cost is invalid", groups = {Create.class, Update.class})
     private Double cost;
-    @NotNull(message = "ordered cannot be null", groups = Create.class)
+    @NotBlank(message = "ordered cannot be blank", groups = Create.class)
     @Pattern(regexp = "^true$|^false$", message = "allowed input: true or false", groups = {Create.class, Update.class})
     private String ordered;
-    @NotNull(message = "work cannot be null", groups = Create.class)
+    @NotBlank(message = "work cannot be blank", groups = Create.class)
     @Pattern(message = "invalid uuid", regexp = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", groups = {Create.class, Update.class})
     private String work;
 }

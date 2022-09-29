@@ -5,12 +5,13 @@ const BASE_URL = 'http://localhost:8080/api/v1/customer'
 export const fetchCustomersService = async(token) => {
     const config = {
         headers:{
-            Authoriation:`Bearer ${token}`
+            Authorization:`Bearer ${token}`
         }
     }
     const response = await axios.get(BASE_URL, config)
     return response.data
 }
+
 
 export const createCustomerService = async(token, customer) => {
     const config = {

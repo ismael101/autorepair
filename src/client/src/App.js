@@ -1,12 +1,18 @@
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { useSelector } from 'react-redux';
-import Login from './pages/auth/Login.js'
-import Signup from './pages/auth/Signup.js'
-import Dashboard from './pages/info/Dashboard.js';
-import Navbar from './components/navigation/Navbar.js';
-import Works from './pages/list/Works'
-import Work from './pages/item/Work.js';
-import Sidebar from './components/navigation/Sidebar.js';
+import Sidebar from './components/Sidebar'
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard'
+import Works from './pages/Works'
+import Work from './pages/Work'
+import Customers from './pages/Customers'
+import Vehicles from './pages/Vehicles'
+import Insurances from './pages/Insurances'
+import Parts from './pages/Parts'
+import Labors from './pages/Labors'
+import Navbar from './components/Navbar';
+
 
 function App() {
   const { token } = useSelector(
@@ -24,6 +30,11 @@ function App() {
               <Route path='/dashboard' element={<Dashboard/>}/>
               <Route path='/works' element={<Works/>}/>
               <Route path='/works/:id' element={<Work/>}/>
+              <Route path='/customers' element={<Customers/>} />
+              <Route path='/vehicles' element={<Vehicles/>}/>
+              <Route path='/insurances' element={<Insurances/>}/>
+              <Route path='/parts' element={<Parts/>}/>
+              <Route path='/labors' element={<Labors/>}/>
             </Routes>
           </div>
         </Router>

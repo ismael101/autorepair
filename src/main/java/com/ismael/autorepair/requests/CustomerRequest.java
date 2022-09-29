@@ -13,20 +13,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerRequest {
-    @NotNull(message = "first cannot be null", groups = Create.class)
-    @NotBlank(message = "first cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "first cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "first has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String first;
-    @NotNull(message = "last cannot be null", groups = Create.class)
-    @NotBlank(message = "last cannot be blank", groups = {Create.class, Update.class})
+    @NotBlank(message = "last cannot be blank", groups = Create.class)
+    @Size(min = 1, max = 20, message = "last has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String last;
-    @NotNull(message = "email cannot be null", groups = Create.class)
+    @NotBlank(message = "email cannot be blank", groups = Create.class)
     @Email(message = "email is invalid", groups = {Create.class, Update.class})
     private String email;
     @NotNull(message = "phone cannot be null", groups = Create.class)
     @Min(value = 1000000000l ,message = "phone number is invalid", groups = {Create.class, Update.class})
     @Max(value = 9999999999l ,message = "phone number is invalid", groups = {Create.class, Update.class})
     private Long phone;
-    @NotNull(message = "work cannot be null", groups = Create.class)
+    @NotBlank(message = "work cannot be blank", groups = Create.class)
     @Pattern(message = "invalid uuid", regexp = "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$", groups = {Create.class, Update.class})
     private String work;
 }

@@ -1,11 +1,10 @@
-import Work from '../../components/items/Work'
-import { logout } from '../../features/auth/authSlice'
-import { fetchWorks } from '../../features/work/workSlice'
+import Work from '../components/Work'
+import { logout } from '../features/auth/authSlice'
+import { fetchWorks } from '../features/work/workSlice'
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import AddWork from '../../components/modals/add/AddWork'
-import Spinner from '../../components/Spinner'
-import Error from '../../components/Error'
+import Spinner from '../components/Spinner'
+import Error from '../components/Error'
 import { useNavigate } from 'react-router-dom'
 
 export default function Works(){
@@ -28,7 +27,7 @@ export default function Works(){
             }
         }
         dispatch(fetchWorks())
-    },[error, token, navigate])
+    },[error, token, navigate, dispatch])
 
     if(loading){
         return(
@@ -41,15 +40,12 @@ export default function Works(){
         )
     }
     return(
-        <div className='h-fit p-10'>
-            <div className='flex py-2 px-5 justify-between place-items-center'>
-                <h1 className='font-bold text-xl text-black'>Work Orders</h1>
-                <AddWork/>
+        <div className='h-fit p-5'>
+            <div className='py-2 px-5 flex'>
+                <h1 className='font-bold text-xl'>Works</h1>
             </div>
-            <div className='flex p-5 space-x-5'>
-                {works.map((work) => 
-                    <Work work={work} key={work.id}/>
-                )}
+            <div className='flex flex-row p-5 space-x-5'>
+                {works.map((work) => <Work work={work} key={work.id}/>)}
             </div>
         </div>
     )
