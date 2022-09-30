@@ -32,22 +32,22 @@ export const createWorkService = async(token, work) => {
     return response.data
 }
 
-export const updateWorkService = async(token, id, work) => {
-    const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+export const updateWorkService = async(token, work) => {
+  const config = {
+      headers:{
+          Authorization: `Bearer ${token}`
       }
-    const response = await axios.put(BASE_URL + `/${id}`, config, work)
-    return response.data
+  }
+  console.log(work)
+  const response = await axios.put(BASE_URL + `/${work.id}`, work, config)
+  return response.data
 }
 
 export const deleteWorkService = async(token, id) => {
-    const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  const config = {
+      headers:{
+          Authorization: `Bearer ${token}`
       }
-    const response = await axios.delete(BASE_URL + `/${id}`, config)
-    return response.data
+  }
+  await axios.delete(BASE_URL + `/${id}`, config)
 }

@@ -22,13 +22,13 @@ export const createInsuranceService = async(token, insurance) => {
     return response.data
 }
 
-export const updateInsuranceService = async(token, id, insurance) => {
+export const updateInsuranceService = async(token, insurance) => {
     const config = {
         headers:{
-            Authorization:`Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.put(BASE_URL + `/${id}`, insurance, config)
+    const response =  await axios.put(BASE_URL + `/${insurance.id}`, insurance, config) 
     return response.data
 }
 
@@ -38,6 +38,5 @@ export const deleteInsuranceService = async(token, id) => {
             Authorization:`Bearer ${token}`
         }
     }
-    const response = await axios.delete(BASE_URL + `/${id}`, config)
-    return response.data
+    await axios.delete(BASE_URL + `/${id}`, config)
 }

@@ -12,10 +12,12 @@ export default function Labor(props){
     const [complete, setComplete] = useState(props.labor.complete)
 
     const handleUpdate = () => {
-        dispatch(updateLabor(props.labor.id, {task:task, location:location, cost:cost, complete:complete}))
+        setEdit(false)
+        dispatch(updateLabor({id:props.labor.id, task:task, location:location, cost:cost, complete:complete}))
     }
 
     const handleDelete = () => {
+        setDel(false)
         dispatch(deleteLabor(props.labor.id))
     }
 
@@ -58,25 +60,25 @@ export default function Labor(props){
                                     </button>
                                 </div>
                                 <div>
-                                    <form onSubmit={(e) => {handleUpdate(e)}}>
+                                    <form onSubmit={() => handleUpdate()}>
                                         <div className="mx-4 mb-1 mt-5"> 
                                             <label htmlFor="task" className="block mb-2 text-sm font-medium">Task</label>
-                                            <input value={task} onChange={(e) => {setTask(e.target.value)}} type="text" id="task" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Toyota" required/>
+                                            <input value={task} onChange={(e) => {setTask(e.target.value)}} type="text" id="task" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="switching out brake light fuse" minLength={1} maxLength={30} required/>
                                         </div>
                                         <div className="mx-4 my-2">
                                             <label htmlFor="location" className="block mb-2 text-sm font-medium">Location</label>
-                                            <input value={location} onChange={(e) => {setLocation(e.target.value)}} type="text" id="location" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Camry" required/>
+                                            <input value={location} onChange={(e) => {setLocation(e.target.value)}} type="text" id="location" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="electronics" minLength={1} maxLength={20} required/>
                                         </div>
                                         <div className="mx-4 my-2">
                                             <label htmlFor="cost" className="block mb-2 text-sm font-medium">Cost</label>
-                                            <input value={cost} onChange={(e) => {setCost(e.target.value)}} type="number" id="cost" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="2017" required/>
+                                            <input value={cost} onChange={(e) => {setCost(e.target.value)}} type="number" id="cost" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="30.75"  min={0} required/>
                                         </div>
                                         <div className="mx-4 my-2">
                                             <label htmlFor="complete" className="block mb-2 text-sm font-medium">Set Ordered</label>
                                             <input checked={complete} onChange={() => {setComplete(!complete)}} type="checkbox" id='complete'  className={`${complete ? "bg-green-600 ":"bg-red-600"} toggle`}/>
                                         </div>
                                         <div className="border-t-2 mt-5 flex justify-end">
-                                            <button type="button" className="m-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Submit</button>
+                                            <button type="submit" className="m-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Submit</button>
                                         </div>
                                     </form>
                                 </div>

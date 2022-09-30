@@ -22,22 +22,21 @@ export const createLaborService = async(token, labor) => {
     return response.data  
 }
 
-export const updateLaborService = async(token, id, labor) => {
+export const updateLaborService = async(token, labor) => {
     const config = {
-        header:{
+        headers:{
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.put(BASE_URL + `/${id}`, labor, config)
+    const response =  await axios.put(BASE_URL + `/${labor.id}`, labor, config) 
     return response.data
 }
 
 export const deleteLaborService = async(token, id) => {
     const config = {
-        header:{
+        headers:{
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.delete(BASE_URL + `/${id}`, config)
-    return response.data
+    await axios.delete(BASE_URL + `/${id}`, config) 
 }

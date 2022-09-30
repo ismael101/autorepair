@@ -42,7 +42,7 @@ class InsuranceControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid insurance request
-        InsuranceRequest request = new InsuranceRequest("provider", 7894568743l, "vin" , id.toString());
+        InsuranceRequest request = new InsuranceRequest("provider", "7894568743", "vin" , id.toString());
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/insurance")
                         .content(content)
@@ -63,7 +63,7 @@ class InsuranceControllerTest {
                                  "vin cannot be null",  "vin cannot be blank", "work cannot be null")));
 
         //section for testing blank provider license, policy, vin and invalid work uuid
-        request = new InsuranceRequest("", 0l, "", "invalid uuid");
+        request = new InsuranceRequest("", "", "", "invalid uuid");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/insurance")
                         .content(content)
@@ -80,7 +80,7 @@ class InsuranceControllerTest {
         UUID id = UUID.randomUUID();
 
         //section for testing valid insurance request
-        InsuranceRequest request = new InsuranceRequest("provider", 7894568743l, "vin" , id.toString());
+        InsuranceRequest request = new InsuranceRequest("provider", "7894568743", "vin" , id.toString());
         String content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/insurance/" + id)
                         .content(content)
@@ -89,7 +89,7 @@ class InsuranceControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         //section for testing blank provider license, policy, vin and invalid work uuid
-        request = new InsuranceRequest("", 0l, "" , "invalid uuid");
+        request = new InsuranceRequest("", "", "" , "invalid uuid");
         content = mapper.writeValueAsString(request);
         mockMvc.perform(MockMvcRequestBuilders.put( "/api/v1/insurance/" + id)
                         .content(content)

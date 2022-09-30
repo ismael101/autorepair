@@ -16,10 +16,9 @@ public class InsuranceRequest {
     @NotBlank(message = "provider cannot be blank", groups = Create.class)
     @Size(min = 1, max = 15, message = "provider has a min length of 1 and max length of 15", groups = {Create.class, Update.class})
     private String provider;
-    @NotNull(message = "policy cannot be null", groups = Create.class)
-    @Min(value = 1000000000l ,message = "policy number is invalid", groups = {Create.class, Update.class})
-    @Max(value = 9999999999l ,message = "policy number is invalid", groups = {Create.class, Update.class})
-    private Long policy;
+    @NotBlank(message = "policy cannot be blank", groups = Create.class)
+    @Size(min = 8, max = 10, message = "policy has a min length of 8 and max length of 10", groups = {Create.class, Update.class})
+    private String policy;
     @NotBlank(message = "vin cannot be blank", groups = Create.class)
     @Size(min = 17, max = 17, message = "vin has to have 17 characters", groups = {Create.class, Update.class})
     private String vin;

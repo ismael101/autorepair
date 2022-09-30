@@ -21,14 +21,20 @@ export default function Vehicles(){
         if(!token){
             navigate('/')
         }
+        dispatch(fetchVehicles())
+    },[])
+
+    useEffect(() => {
+        if(!token){
+            navigate('/')
+        }
         if(error){
             if(error.status == 401){
                 dispatch(reset())
                 dispatch(logout())
             }
         }
-        dispatch(fetchVehicles())
-    },[token, navigate, error, dispatch])
+    },[token, error])
 
     if(loading){
         <Spinner/>

@@ -29,7 +29,7 @@ class InsuranceRepositoryTest {
         userRepository.save(user);
         Work work = new Work("title", "description", false, user);
         workRepository.save(work);
-        Insurance insurance = new Insurance("provider",  1045678235l, "32EDIMWIUM9938FJSA", work);
+        Insurance insurance = new Insurance("provider",  "1045678235", "32EDIMWIUM9938FJSA", work);
         underTest.save(insurance);
     }
 

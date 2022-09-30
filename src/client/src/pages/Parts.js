@@ -21,15 +21,22 @@ export default function Parts(){
         if(!token){
             navigate('/')
         }
+        dispatch(fetchParts())
+    },[])
+
+
+    useEffect(() => {
+        if(!token){
+            navigate('/')
+        }
         if(error){
             if(error.status == 401){
                 dispatch(reset())
                 dispatch(logout())
             }
         }
-        dispatch(fetchParts())
-    },[token, navigate, error])
-    
+    },[token, error])
+
 
     if(loading){
         return(

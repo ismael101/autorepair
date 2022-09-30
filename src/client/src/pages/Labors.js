@@ -21,14 +21,20 @@ export default function Labors(){
         if(!token){
             navigate('/')
         }
+        dispatch(fetchLabors())
+    },[])
+
+    useEffect(() => {
+        if(!token){
+            navigate('/')
+        }
         if(error){
             if(error.status == 401){
                 dispatch(reset())
                 dispatch(logout())
             }
         }
-        dispatch(fetchLabors())
-    },[navigate, dispatch, error, token])
+    },[token, error])
 
     if(loading){
         return(

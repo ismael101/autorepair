@@ -21,14 +21,20 @@ export default function Insurances(){
         if(!token){
             navigate('/')
         }
+        dispatch(fetchInsurances())
+    },[])
+
+    useEffect(() => {
+        if(!token){
+            navigate('/')
+        }
         if(error){
             if(error.status == 401){
                 dispatch(reset())
                 dispatch(logout())
             }
         }
-        dispatch(fetchInsurances())
-    },[token, navigate, dispatch, error])
+    },[token, error])
 
     if(loading){
         return(

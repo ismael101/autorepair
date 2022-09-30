@@ -3,7 +3,7 @@ import { fetchLaborsService, updateLaborService, deleteLaborService, createLabor
 
 const initialState = {
     labors:[],
-    isLoading: false,
+    loading: false,
     error:null
 }
 
@@ -33,11 +33,12 @@ export const createLabor = createAsyncThunk(
 
 export const updateLabor = createAsyncThunk(
     'labor/update',
-    async(id, labor, thunkAPI) => {
+    async(labor, thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            return await updateLaborService(token, id, labor)
+            return await updateLaborService(token, labor)
         }catch(error){
+            console.log(error)
             return thunkAPI.rejectWithValue(error.data)
         }
     }
@@ -48,7 +49,8 @@ export const deleteLabor = createAsyncThunk(
     async(id, thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            return await deleteLaborService(token, id)
+            await deleteLaborService(token, id)
+            return id
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -63,43 +65,30 @@ export const laborSlice = createSlice({
     },
     extraReducers:{
         [fetchLabors.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [fetchLabors.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.labors = action.payload.labors
         },
         [fetchLabors.rejected]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
         },
-        [updateLabor.pending]: (state) => {
-            state.isLoading = true
-        },
         [updateLabor.fulfilled]: (state, action) => {
-            state.isLoading = false
             state.error = null
-            state.labors.forEach(labor => {
-                if(labor.id == action.payload.labor.id){
-                    labor = action.payload.labor
-                }
-            })
+            let index = state.labors.findIndex((labor) => labor.id == action.payload.labor.id)
+            state.labors[index] = action.payload.labor
         },
         [updateLabor.rejected]: (state, action) => {
-            state.isLoading = false
             state.error = action.payload  
         },
-        [deleteLabor.pending]: (state) => {
-            state.isLoading = true
-        },
         [deleteLabor.fulfilled]: (state, action) => {
-            state.isLoading = false
             state.error = null
-            state.labors.filter(labor => labor.id == action.payload.id)
+            state.labors = state.labors.filter((labor) => labor.id != action.payload)
         },
         [deleteLabor.rejected]: (state, action) => {
-            state.isLoading = false
             state.error = action.payload
         }
     }

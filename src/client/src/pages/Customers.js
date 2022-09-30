@@ -21,14 +21,20 @@ export default function Customers(){
         if(!token){
             navigate('/')
         }
+        dispatch(fetchCustomers())
+    },[])
+
+    useEffect(() => {
+        if(!token){
+            navigate('/')
+        }
         if(error){
             if(error.status == 401){
                 dispatch(reset())
-                dispatch(logout())
+                navigate(logout())
             }
         }
-        dispatch(fetchCustomers())
-    },[token, navigate, error, dispatch])
+    },[error, token])
 
     if(loading){
         return(

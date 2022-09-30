@@ -3,7 +3,7 @@ import { fetchCustomersService, updateCustomerService, deleteCustomerService, cr
 
 const initialState = {
     customers:[],
-    isLoading: false,
+    loading:false,
     error:null
 }
 
@@ -35,10 +35,10 @@ export const createCustomer = createAsyncThunk(
 
 export const updateCustomer = createAsyncThunk(
     'customer/update',
-    async(id, customer, thunkAPI)  => {
+    async(customer, thunkAPI)  => {
         try{ 
             const token = thunkAPI.getState().auth.token
-            return await updateCustomerService(token, id, customer)
+            return await updateCustomerService(token, customer)
         }catch(error){
             return thunkAPI.rejectWithValue(thunkAPI.error.data)
         }
@@ -67,43 +67,30 @@ export const customerSlice = createSlice({
     },
     extraReducers: {
         [fetchCustomers.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },   
         [fetchCustomers.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.customers = action.payload.customers
         },
         [fetchCustomers.rejected]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
-        },
-        [updateCustomer.pending]: (state) => {
-            state.isLoading = true
         },
         [updateCustomer.fulfilled]: (state, action) => {
-            state.isLoading = false
             state.error = null
-            state.customers.forEach(customer => {
-                if(customer.id == action.payload.customer.id){
-                    customer = action.payload.customer
-                }
-            })
+            let index = state.customers.findIndex((customer) => customer.id == action.payload.customer.id);
+            state.customers[index] = action.payload.customer
         },
         [updateCustomer.rejected]: (state, action) => {
-            state.isLoading = false
             state.error = action.payload
         },
-        [deleteCustomer.pending]: (state) => {
-            state.isLoading = true
-        },
         [deleteCustomer.fulfilled]: (state, action) => {
-            state.isLoading = false
             state.error = null
-            state.customers.filter(customer => customer.id = action.payload.id)
+            state.customers = state.customers.filter((customer) => customer.id != action.payload)
         },
         [deleteCustomer.rejected]: (state, action) => {
-            state.isLoading = false
             state.error = action.payload
         }
     }

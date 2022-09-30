@@ -14,7 +14,7 @@ import jakarta.validation.constraints.*;
 @Setter
 public class LaborRequest {
     @NotBlank(message = "task cannot be blank", groups = Create.class)
-    @Size(min = 1, max = 20, message = "task has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
+    @Size(min = 1, max = 30, message = "task has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})
     private String task;
     @NotBlank(message = "location cannot be blank", groups = Create.class)
     @Size(min = 1, max = 20, message = "location has a min length of 1 and max length of 20 characters", groups = {Create.class, Update.class})

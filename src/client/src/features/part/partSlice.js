@@ -39,7 +39,6 @@ export const updatePart = createAsyncThunk(
             const token = thunkAPI.getState().auth.token
             return await updatePartService(token, part)
         }catch(error){
-            console.log(error)
             return thunkAPI.rejectWithValue(error.data)
         }
     }
@@ -77,32 +76,19 @@ export const partSlice = createSlice({
             state.loading = false
             state.error = action.payload
         },
-        [updatePart.pending]:(state) => {
-            state.loading = true
-        },
         [updatePart.fulfilled]:(state, action) => {
-            state.loading = false
             state.error = null
-            state.parts.forEach(part => {
-                if(part.id == action.payload.part.id){
-                    part = action.payload.part
-                }
-            })
+            let index = state.parts.findIndex((part) => part.id == action.payload.part.id);
+            state.parts[index] = action.payload.part
         },
         [updatePart.rejected]:(state, action) => {
-            state.loading = false
             state.error = action.payload
         },
-        [deletePart.pending]:(state) => {
-            state.loading = true
-        },
         [deletePart.fulfilled]:(state, action) => {
-            state.loading = false
             state.error = null
-            state.parts.filter(part => part.id == action.payload.id)
+            state.parts = state.parts.filter((part) => part.id != action.payload)
         },
         [deletePart.rejected]:(state, action) => {
-            state.loading = false
             state.error = action.payload
         }         
     }

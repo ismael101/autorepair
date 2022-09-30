@@ -11,10 +11,12 @@ export default function Insurance(props){
     const [vin, setVin] = useState(props.insurance.vin)
 
     const handleUpdate = () => {
-        dispatch(updateInsurance(props.insurance.id, {provider:provider, policy:policy, vin:vin}))
+        setEdit(false)
+        dispatch(updateInsurance({id:props.insurance.id, provider:provider, policy:policy, vin:vin}))
     }
 
     const handleDelete = () => {
+        setDel(false)
         dispatch(deleteInsurance(props.insurance.id))
     }
 
@@ -43,21 +45,21 @@ export default function Insurance(props){
                                     </button>
                                 </div>
                                 <div>
-                                    <form onSubmit={(e) => {handleDelete(e)}}>
+                                    <form onSubmit={() => handleUpdate()}>
                                         <div className="mx-4 mb-1 mt-5"> 
                                             <label htmlFor="provider" className="block mb-2 text-sm font-medium">Provider</label>
-                                            <input value={provider} onChange={(e) => {setProvider(e.target.value)}} type="text" id="provider" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Toyota" required/>
+                                            <input value={provider} onChange={(e) => {setProvider(e.target.value)}} type="text" id="provider" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Geico" minLength={1} maxLength={15} required/>
                                         </div>
                                         <div className="mx-4 my-1">
                                             <label htmlFor="policy" className="block mb-2 text-sm font-medium">Policy</label>
-                                            <input value={policy} onChange={(e) => {setPolicy(e.target.value)}} type="number" id="policy" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Camry" required/>
+                                            <input value={policy} onChange={(e) => {setPolicy(e.target.value)}} type="number" id="policy" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="9134854233" minLength={8} maxLength={10} required/>
                                         </div>
                                         <div className="mx-4 my-1">
                                             <label htmlFor="vin" className="block mb-2 text-sm font-medium">Vin</label>
-                                            <input value={vin} onChange={(e) => {setVin(e.target.value)}} type="text" id="vin" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="2017" required/>
+                                            <input value={vin} onChange={(e) => {setVin(e.target.value)}} type="text" id="vin" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="11AR87DJEWD184DI5" minLength={17} required/>
                                         </div>
                                         <div className="border-t-2 mt-5 flex justify-end">
-                                            <button type="button" className="m-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Submit</button>
+                                            <button type="submit" className="m-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -84,8 +86,8 @@ export default function Insurance(props){
                                     </svg>
                                     <h1 className="text-center text-2xl">Are You Sure You Want To Delete Insurance?</h1>
                                     <div className="mx-auto">
-                                        <button onClick={() => {setDel(false)}} type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2">Cancel</button>
-                                        <button onClick={() => {handleDelete()}} type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                        <button onClick={() => setDel(false)} type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2">Cancel</button>
+                                        <button onClick={() => handleDelete()} type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
                                     </div>
                                 </div>
                             </div>

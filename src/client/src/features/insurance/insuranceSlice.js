@@ -3,7 +3,7 @@ import { fetchInsurancesService, createInsuranceService, updateInsuranceService,
 
 const initialState = {
     insurances:[],
-    isLoading: false,
+    loading: false,
     error:null
 }
 
@@ -33,10 +33,10 @@ export const createInsurance = createAsyncThunk(
 
 export const updateInsurance = createAsyncThunk(
     'insurance/update',
-    async(id, insurance, thunkAPI) => {
+    async(insurance, thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            return await updateInsuranceService(token, id, insurance)
+            return await updateInsuranceService(token, insurance)
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -64,43 +64,31 @@ export const insuranceSlice = createSlice({
     },
     extraReducers:{
         [fetchInsurances.pending]: (state) => {
-            state.isLoading = true
+            state.loading = true
         },
         [fetchInsurances.fulfilled]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = null
             state.insurances = action.payload.insurances
         },
         [fetchInsurances.rejected]: (state, action) => {
-            state.isLoading = false
+            state.loading = false
             state.error = action.payload
-        },
-        [updateInsurance.pending]: (state) => {
-            state.isLoading = true
         },
         [updateInsurance.fulfilled]: (state, action) => {
-            state.isLoading = false
             state.error = null
-            state.insurances.forEach(insurance => {
-                if(insurance.id == action.payload.insurance.id){
-                    insurance = action.payload.insurance
-                }
-            })
+            let index = state.insurances.findIndex((insurance) => insurance.id == action.payload.insurance.id);
+            state.insurances[index] = action.payload.insurance
         },
         [updateInsurance.rejected]: (state, action) => {
-            state.isLoading = false
             state.error = action.payload
         },
-        [deleteInsurance.pending]: (state) => {
-            state.isLoading = true
-        },
         [deleteInsurance.fulfilled]: (state, action) => {
-            state.isLoading = false
             state.error = null
-            state.insurances.filter(insurance => insurance.id == action.payload.id)
+            state.insurances = state.insurances.filter((insurance) => insurance.id != action.payload)
+
         },
         [deleteInsurance.rejected]: (state, action) => {
-            state.isLoading = false
             state.error = action.payload
         }
     }

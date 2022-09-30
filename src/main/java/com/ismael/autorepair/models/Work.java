@@ -21,15 +21,15 @@ public class Work {
     @JsonIgnore
     @ManyToOne
     private User user;
-    @OneToOne(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "work", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Customer customer;
-    @OneToOne(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "work", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Vehicle vehicle;
-    @OneToOne(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "work", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Insurance insurance;
-    @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "work", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Labor> labors = new ArrayList<>();
-    @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "work", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Part> parts = new ArrayList<>();
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();

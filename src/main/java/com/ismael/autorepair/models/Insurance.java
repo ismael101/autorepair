@@ -12,7 +12,7 @@ public class Insurance {
     @Column(nullable = false)
     private String provider;
     @Column(nullable = false)
-    private Long policy;
+    private String policy;
     @Column(nullable = false)
     private String vin;
     @JsonIgnore
@@ -23,7 +23,7 @@ public class Insurance {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public Insurance(String provider, Long policy, String vin, Work work) {
+    public Insurance(String provider, String policy, String vin, Work work) {
         this.provider = provider;
         this.policy = policy;
         this.vin = vin;
@@ -53,11 +53,11 @@ public class Insurance {
         this.provider = provider;
     }
 
-    public Long getPolicy() {
+    public String getPolicy() {
         return policy;
     }
 
-    public void setPolicy(Long policy) {
+    public void setPolicy(String policy) {
         this.policy = policy;
     }
 

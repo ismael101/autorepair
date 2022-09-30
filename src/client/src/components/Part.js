@@ -17,7 +17,8 @@ export default function Part(props){
         dispatch(updatePart({id: props.part.id, title:title, location:location, cost:cost, ordered:ordered}))
     }
 
-    const handleDelete = () => {    
+    const handleDelete = () => { 
+        setDel(false)   
         dispatch(deletePart(props.part.id))
     }
 
@@ -63,15 +64,15 @@ export default function Part(props){
                                     <form onSubmit={() => handleUpdate()}>
                                         <div className="mx-4 mb-1 mt-5"> 
                                             <label htmlFor="title" className="block mb-2 text-sm font-medium">Title</label>
-                                            <input value={title} onChange={(e) => {setTitle(e.target.value)}} type="text" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Toyota" required/>
+                                            <input value={title} onChange={(e) => {setTitle(e.target.value)}} type="text" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="taillight fuse" minLength={1} maxLength={20} required/>
                                         </div>
                                         <div className="mx-4 my-2">
                                             <label htmlFor="location" className="block mb-2 text-sm font-medium">Location</label>
-                                            <input value={location} onChange={(e) => {setLocation(e.target.value)}} type="text" id="location" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Camry" required/>
+                                            <input value={location} onChange={(e) => {setLocation(e.target.value)}} type="text" id="location" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="electronics" minLength={1} maxLength={20} required/>
                                         </div>
                                         <div className="mx-4 my-2">
                                             <label htmlFor="cost" className="block mb-2 text-sm font-medium">Cost</label>
-                                            <input value={cost} onChange={(e) => {setCost(e.target.value)}} type="number" id="cost" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="2017" required/>
+                                            <input value={cost} onChange={(e) => {setCost(e.target.value)}} type="number" id="cost" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="12.50" min={0} required/>
                                         </div>
                                         <div className="mx-4 my-2">
                                             <label htmlFor="ordered" className="block mb-2 text-sm font-medium">Set Ordered</label>

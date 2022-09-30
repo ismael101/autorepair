@@ -12,10 +12,12 @@ export default function Vehicle(props){
     const [year, setYear] = useState(props.vehicle.year)
 
     const handleUpdate = () => {
-        dispatch(updateVehicle(props.vehicle.id, {make:make, model:model, year:year}))
+        setEdit(false)
+        dispatch(updateVehicle({id:props.vehicle.id, make:make, model:model, year:year}))
     }  
 
     const handleDelete = () => {
+        setDel(false)
         dispatch(deleteVehicle(props.vehicle.id))
     }
 
@@ -43,21 +45,21 @@ export default function Vehicle(props){
                                             </button>
                                         </div>
                                         <div>
-                                            <form onSubmit={(e) => {handleDelete(e)}}>
+                                            <form onSubmit={() => handleUpdate()}>
                                                 <div className="mx-4 mb-1 mt-5"> 
                                                     <label htmlFor="make" className="block mb-2 text-sm font-medium">Make</label>
-                                                    <input value={make} onChange={(e) => {setMake(e.target.value)}} type="text" id="make" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Toyota" required/>
+                                                    <input value={make} onChange={(e) => {setMake(e.target.value)}} type="text" id="make" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Toyota" minLength={1} maxLength={20} required/>
                                                 </div>
                                                 <div className="mx-4 my-1">
                                                     <label htmlFor="model" className="block mb-2 text-sm font-medium">Model</label>
-                                                    <input value={model} onChange={(e) => {setModel(e.target.value)}} type="text" id="model" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Camry" required/>
+                                                    <input value={model} onChange={(e) => {setModel(e.target.value)}} type="text" id="model" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Camry" minLength={1} maxLength={20} required/>
                                                 </div>
                                                 <div className="mx-4 my-1">
                                                     <label htmlFor="year" className="block mb-2 text-sm font-medium">Year</label>
-                                                    <input value={year} onChange={(e) => {setYear(e.target.value)}} type="number" id="year" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="2017" required/>
+                                                    <input value={year} onChange={(e) => {setYear(e.target.value)}} type="number" id="year" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="2017" min={1950} max={2050} required/>
                                                 </div>
                                                 <div className="border-t-2 mt-5 flex justify-end">
-                                                    <button type="button" className="m-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Submit</button>
+                                                    <button type="submit" className="m-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Submit</button>
                                                 </div>
                                             </form>
                                         </div>

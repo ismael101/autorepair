@@ -50,7 +50,7 @@ class InsuranceServiceTest {
         //section for testing successfully fetching all insurance belonging to the user
         User user = new User("username", "password");
         Work work = new Work("title", "description", false, user);
-        Insurance insurance = new Insurance("provider", 8423409939l, "vin", work);
+        Insurance insurance = new Insurance("provider", "8423409939", "vin", work);
         work.setInsurance(insurance);
         when(userRepository.findUserByUsername("username")).thenReturn(Optional.of(user));
         when(workRepository.findWorkByUser(user)).thenReturn(List.of(work));
@@ -70,7 +70,7 @@ class InsuranceServiceTest {
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
         Work work = new Work("title", "description", false, user);
-        Insurance insurance = new Insurance("provider", 8423409939l, "vin", work);
+        Insurance insurance = new Insurance("provider", "8423409939", "vin", work);
         when(insuranceRepository.findById(id)).thenReturn(Optional.of(insurance));
         Map<String, Object> response = underTest.getInsuranceById(id);
         verify(insuranceRepository).findById(id);
@@ -81,7 +81,7 @@ class InsuranceServiceTest {
         //section for testing fetching insurance that doesn't belong to the user
         user = new User("ismael101", "password");
         work = new Work("title", "description",false, user);
-        insurance = new Insurance("provider", 8423409939l, "vin", work);
+        insurance = new Insurance("provider", "8423409939", "vin", work);
         when(insuranceRepository.findById(id)).thenReturn(Optional.of(insurance));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
             underTest.getInsuranceById(id);
@@ -104,7 +104,7 @@ class InsuranceServiceTest {
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
         Work work = new Work("title", "description", false, user);
-        Insurance insurance = new Insurance("provider", 8423409939l, "vin", work);
+        Insurance insurance = new Insurance("provider", "8423409939", "vin", work);
         work.setInsurance(insurance);
         when(workRepository.findById(id)).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.getInsuranceByWork(id);
@@ -137,7 +137,7 @@ class InsuranceServiceTest {
         //section for testing successfully creating insurance
         User user = new User("username", "password");
         Work work = new Work("title", "description",false, user);
-        InsuranceRequest request = new InsuranceRequest("provider", 8423409939l, "vin", work.getId().toString());
+        InsuranceRequest request = new InsuranceRequest("provider", "8423409939", "vin", work.getId().toString());
         when(workRepository.findById(UUID.fromString(request.getWork()))).thenReturn(Optional.of(work));
         Map<String, Object> response = underTest.createInsurance(request);
         verify(insuranceRepository).save(any());
@@ -187,8 +187,8 @@ class InsuranceServiceTest {
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
         Work work = new Work("title", "description", false, user);
-        Insurance insurance = new Insurance("provider", 8423409939l, "vin", work);
-        InsuranceRequest request = new InsuranceRequest("new provider", 5678932340l, "new vin", work.getId().toString());
+        Insurance insurance = new Insurance("provider", "8423409939", "vin", work);
+        InsuranceRequest request = new InsuranceRequest("new provider", "5678932340", "new vin", work.getId().toString());
         when(insuranceRepository.findById(id)).thenReturn(Optional.of(insurance));
         Map<String, Object> response = underTest.updateInsurance(id, request);
         assertEquals(response.get("path"), "/api/v1/insurance/" + id);
@@ -201,7 +201,7 @@ class InsuranceServiceTest {
         //section for updating insurance that doesn't belong to them
         user = new User("ismael101", "password");
         work =  new Work("title", "description", false, user);
-        insurance = new Insurance("provider", 5678932340l, "vin", work);
+        insurance = new Insurance("provider", "5678932340", "vin", work);
         when(insuranceRepository.findById(id)).thenReturn(Optional.of(insurance));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
            underTest.updateInsurance(id, request);
@@ -224,7 +224,7 @@ class InsuranceServiceTest {
         UUID id = UUID.randomUUID();
         User user = new User("username", "password");
         Work work = new Work("title", "description", false, user);
-        Insurance insurance = new Insurance("provider", 5678932340l, "vin", work);
+        Insurance insurance = new Insurance("provider", "5678932340", "vin", work);
         when(insuranceRepository.findById(id)).thenReturn(Optional.of(insurance));
         Map<String, Object> response = underTest.deleteInsurance(id);
         verify(insuranceRepository).delete(insurance);
@@ -235,7 +235,7 @@ class InsuranceServiceTest {
         //section for deleting insurance that doesn't belong to them
         user = new User("ismael101", "password");
         work = new Work("title", "description", false, user);
-        insurance = new Insurance("provider", 5678932340l, "vin", work);
+        insurance = new Insurance("provider", "5678932340", "vin", work);
         when(insuranceRepository.findById(id)).thenReturn(Optional.of(insurance));
         Exception exception = assertThrows(UnauthorizedAction.class, () -> {
            underTest.deleteInsurance(id);

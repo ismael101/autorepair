@@ -38,6 +38,5 @@ export const deletePartService = async(token, id) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.delete(BASE_URL + `/${id}`, config) 
-    return response.data
+    await axios.delete(BASE_URL + `/${id}`, config) 
 }

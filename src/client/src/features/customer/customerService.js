@@ -23,24 +23,22 @@ export const createCustomerService = async(token, customer) => {
     return response.data
 }
 
-export const updateCustomerService = async(token , id, customer) => {
+export const updateCustomerService = async(token, customer) => {
     const config = {
         headers:{
-            Authoriation:`Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.put(BASE_URL + `/${id}`, customer, config)
+    const response =  await axios.put(BASE_URL + `/${customer.id}`, customer, config) 
     return response.data
 }
 
 export const deleteCustomerService = async(token, id) => {
     const config = {
         headers:{
-            Authoriation:`Bearer ${token}`
+            Authorization:`Bearer ${token}`
         }
     }
-    const response = await axios.delete(BASE_URL + `/${id}`, config)
-    return response.data
+    await axios.delete(BASE_URL + `/${id}`, config)
 }
-
  

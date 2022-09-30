@@ -33,10 +33,10 @@ export const createVehicle = createAsyncThunk(
 
 export const updateVehicle = createAsyncThunk(
     'vehicle/update',
-    async(id, vehicle, thunkAPI) => {
+    async(vehicle, thunkAPI) => {
         try{
             const token = thunkAPI.getState().auth.token
-            return await updateVehicleService(token, id, vehicle)
+            return await updateVehicleService(token, vehicle)
         }catch(error){
             return thunkAPI.rejectWithValue(error.data)
         }
@@ -75,32 +75,19 @@ export const vehicleSlice = createSlice({
             state.loading = false
             state.error = action.payload
         },
-        [updateVehicle.pending]: (state) => {
-            state.loading = true
-        },
         [updateVehicle.fulfilled]: (state, action) => {
-            state.loading = false
             state.error = null
-            state.vehicles.forEach(vehicle => {
-                if(vehicle.id == action.payload.vehicle.id){
-                    vehicle = action.payload.vehicle
-                }
-            })
+            let index = state.vehicles.findIndex((vehicle) => vehicle.id == action.payload.vehicle.id);
+            state.vehicles[index] = action.payload.vehicle
         },
         [updateVehicle.rejected]: (state, action) => {
-            state.loading = false
             state.error = action.payload
         },
-        [deleteVehicle.pending]: (state) => {
-            state.loading = true
-        },
         [deleteVehicle.fulfilled]: (state, action) => {
-            state.loading = false
             state.error = null
-            state.vehicles.filter(vehicle => vehicle.id == action.payload.id)
+            state.vehicles = state.vehicles.filter((vehicle) => vehicle.id != action.payload)
         },
         [deleteVehicle.rejected]: (state, action) => {
-            state.loading = false
             state.error = action.payload
         }
     }
